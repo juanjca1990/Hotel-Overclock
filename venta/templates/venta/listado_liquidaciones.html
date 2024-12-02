@@ -1,0 +1,99 @@
+{% extends 'base/base_administrador.html'%}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+{% endblock headerContenido %}
+
+
+{% block content %}
+
+<center><h1 class="my-4">LIQUIDACIONES</h1></center>
+
+<div class="formularioRegion" id="vistaLiquidacion">
+
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+        <form action="{% url 'venta:listado_liquidaciones' %}" method="post" id="formulario">
+            {% csrf_token %}
+            <label for="fecha1"> fecha inicio : </label>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" required>
+            <label for="fecha2"> fecha fin : </label>
+            <input type="date" name="fecha_fin" id="fecha_fin" required>
+            <input type="submit" name="cargar"  id="cargar" value="Cargar liquidaciones pendientes">
+        </form>
+
+        <div class="formularioRegion" id="vistaClientes">
+
+            <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Documento</th>
+                        <th>Monto</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for liquidacion_pendiente in liquidaciones_pendientes %}
+                    <tr>
+                        <td> {{liquidacion_pendiente.nombre}}</td>
+                        <td> {{liquidacion_pendiente.apellido}}</td>
+                        <td> {{liquidacion_pendiente.documento}}</td>
+                        <td> ${{liquidacion_pendiente.monto_total}}</td>
+                        <td><button class="btn btn-success"> <a href="{% url 'venta:liquidar' liquidacion_pendiente.documento fecha_inicio fecha_fin %}"> abonar </a> </button></td>
+                        
+                    </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No se encontraron resultados.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Monto</th>
+                    <th>Accion</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </table>
+</div>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    
+    $(document).ready(function () {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+    });</script>
+
+<script>
+
+    function valoresCargados(){
+        var fechaInicio = document.getElementById("fecha_inicio").value;
+        var fechaFin = document.getElementById("fecha_fin").value;
+        if((fechaFin == '') || (fechaInicio == '')){
+            return false
+        }
+        return true
+    }
+
+</script>
+
+{% endblock extrajs%}

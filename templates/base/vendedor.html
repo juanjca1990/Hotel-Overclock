@@ -1,0 +1,32 @@
+{% extends 'base/base_vendedor.html'%}
+{% load static %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block carritoz %}
+{% block carrito %}
+<button onclick="abrir_carrito();" style="text-decoration:none"
+    class="rounded-1 btn btn-lg btn-outline-secondary text-white float-right mt-2" > <i
+        class="fas fa-shopping-cart"><span class="badge badge-danger ml-2 mt-0" style="font-size:10px;"
+            id="carrito_contador">{%block carrito_contador %} {% endblock carrito_contador%}</span></i>
+</button>
+{% endblock carrito %}
+{% endblock carritoz %}
+
+
+
+
+{% block content %}
+<p>
+<h1>AQUI LAS COSAS DEL VENDEDOR</h1>
+</p>
+
+<p>
+<h1>LISTADO DE HOTELES, EL DATE PICKER ETC</h1>
+</p>
+{% endblock %}}
+
+{% block extrajs %}
+{% endblock %}

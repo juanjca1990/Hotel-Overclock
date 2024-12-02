@@ -1,0 +1,28 @@
+<div class="modal-xl modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title " id="exampleModalLabel">
+                ELIMINAR HABITACION: {{habitacion.numero}}
+                
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'hotel:modalEliminarHabitacion' hotel.pk habitacion.pk %}" method="POST">
+        <div class="modal-body">
+            
+            {% csrf_token %}
+            <p>Seguro que desea eliminar de <strong>{{hotel}}</strong></p>
+            <p>La habitacion <strong>{{habitacion.tipo}}</strong> numero <strong>{{habitacion.numero}}</strong>?</p>
+            <p>Presione "ACEPTAR" para confirmar!!!!</p>
+           
+        </div>
+        <div class="modal-footer">
+            <button type="dismiss" class="Cerrar" data-dismiss="modal">Cerrar</button>
+            <button type="submit" name="accion" class="Guardar" value="tipoHabitacion">Aceptar</button>
+
+        </div>
+        </form>
+    </div>
+</div>

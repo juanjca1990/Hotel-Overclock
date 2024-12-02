@@ -1,0 +1,26 @@
+<div class="modal-xl modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title " id="exampleModalLabel">
+                MODIFICAR TIPO HABITACION: {{tipo.tipo}}
+                
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'hotel:modalModificarTipoHabitacion' hotel.pk tipo.pk %}" method="POST">
+        <div class="modal-body">
+            
+            {% csrf_token %}
+            {{formulario.as_p}}
+           
+        </div>
+        <div class="modal-footer">
+            <button type="dismiss" class="Cerrar" data-dismiss="modal">Cerrar</button>
+            <button type="submit" name="accion" class="Guardar" value="categoria">Guardar</button>
+
+        </div>
+        </form>
+    </div>
+</div>

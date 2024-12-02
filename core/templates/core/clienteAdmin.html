@@ -1,0 +1,106 @@
+{% extends 'base/base_administrador.html'%}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+{% endblock headerContenido %}
+
+
+{% block content %}
+
+<center><h1 class="my-4">LISTADO DE CLIENTES</h1></center>
+
+
+<!-- VISTA CLIENTES -->
+
+<div class="formularioRegion" id="vistaClientes">
+
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+        <thead>
+
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>Puntos</th>
+                <th>
+                    <Center>ELIMINAR</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for cliente in colClientes %}
+            <tr>
+
+                <td> {{cliente.persona.nombre}}</td>
+                <td> {{cliente.persona.apellido}}</td>
+                <td> {{cliente.persona.get_tipo_documento_display}}</td>
+                <td> {{cliente.persona.documento}}</td>
+                <td> {{cliente.puntos}}</td>
+                
+                <td>
+                    <center>
+                        {% if cliente.bajaCliente %}
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reciclarCliente"
+                            onclick="abrir_modal('{% url 'core:modalReciclarCliente' cliente.pk %}','#reciclarCliente');"
+                            title="Reciclar">
+                            <i class="fas fa-recycle"></i>
+                        </button>
+                        {% else %}
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarCliente"
+                            onclick="abrir_modal('{% url 'core:modalEliminarCliente' cliente.pk %}', '#eliminarCliente');" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        {% endif %}
+                    </center>
+
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>Puntos</th>
+                <th>
+                    <Center>ELIMINAR</Center>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+    <!--Modal crear Encargado en otro html-->
+
+    <div class="modal fade-scale" id="eliminarCliente" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    
+    <div class="modal fade-scale" id="reciclarCliente" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    const $ = jQuery.noConflict();
+    $(document).ready(function () {
+        $('#example1').DataTable();
+    });</script>
+
+
+{% endblock extrajs%}

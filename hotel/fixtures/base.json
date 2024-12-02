@@ -1,0 +1,109 @@
+[
+  {
+    "model": "hotel.hotel",
+    "pk": 1,
+    "fields": {
+      "nombre": "El Libertador",
+      "direccion": "Rivadavia",
+      "email": "info@libertador.com.ar",
+      "telefono": "28045232123",
+      "localidad": 1,
+      "categoria": 5,
+      "servicios": [
+        4
+      ],
+      "vendedores": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "hotel.precioportipo",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "tipo": 1,
+      "baja": "1500.00",
+      "alta": "1800.00"
+    }
+  },
+  {
+    "model": "hotel.precioportipo",
+    "pk": 2,
+    "fields": {
+      "hotel": 1,
+      "tipo": 2,
+      "baja": "2000.00",
+      "alta": "2500.00"
+    }
+  },
+  {
+    "model": "hotel.habitacion",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "numero": 101,
+      "tipo": 1
+    }
+  },
+  {
+    "model": "hotel.habitacion",
+    "pk": 2,
+    "fields": {
+      "hotel": 1,
+      "numero": 102,
+      "tipo": 1
+    }
+  },
+  {
+    "model": "hotel.temporadaalta",
+    "pk": 1,
+    "fields": {
+      "nombre": "Verano 2021",
+      "hotel": 1,
+      "inicio": "2021-01-01",
+      "fin": "2021-02-28"
+    }
+  },
+  {
+    "model": "hotel.descuento",
+    "pk": 1,
+    "fields": {
+      "hotel": 1,
+      "cantidad_habitaciones": 1,
+      "coeficiente": "0.00"
+    }
+  },
+  {
+    "model": "hotel.descuento",
+    "pk": 2,
+    "fields": {
+      "hotel": 1,
+      "cantidad_habitaciones": 2,
+      "coeficiente": "0.02"
+    }
+  },
+  {
+    "model": "hotel.descuento",
+    "pk": 3,
+    "fields": {
+      "hotel": 1,
+      "cantidad_habitaciones": 3,
+      "coeficiente": "0.05"
+    }
+  },
+  {
+    "model": "hotel.paqueteturistico",
+    "pk": 1,
+    "fields": {
+      "nombre": "Verano 2021",
+      "coeficiente": "0.40",
+      "hotel": 1,
+      "inicio": "2021-01-04",
+      "fin": "2021-01-09",
+      "habitaciones": [
+        1
+      ]
+    }
+  }
+]

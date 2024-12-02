@@ -1,0 +1,81 @@
+{% extends 'base/vendedor.html'%} {% load static %}  {% block header %}
+<button onclick="location.href='/venta/vendedor'" style="text-decoration:none" class="rounded-1 btn btn-sm btn-outline-secondary text-white ml-4 mt-1"> VENDEDOR: {{vendedor.persona.nombre.upper}}
+    {{vendedor.persona.apellido.upper}} </button> {% endblock header %} {% block carrito %} {% endblock carrito %} {% block content %}
+
+<center>
+    <h1 class="my-4">Lista de compras de :  {{ cliente}}</h1>
+</center>
+
+
+<!-- VISTA CLIENTES -->
+
+<table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+    <div class="formularioCliente" id="vistaClientes">
+
+
+        <thead>
+
+            <tr>
+                <th>Nombre hotel</th>
+                <th>fecha inicio</th>
+                <th>fecha fin</th>
+                <th>nombre paquete</th>
+                <th>habitacion</th>
+                <th>tipo habitacion</th>
+                <th>total gastado</th>
+                <th>tipo de pago</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for elementos in lista_compras %}
+                <tr>
+                    <td> {{elementos.nombre_hotel}}</td>
+                    <td> {{elementos.fecha_inicio}}</td>
+                    <td> {{elementos.fecha_fin}}</td>
+                    <td> {{elementos.nombre_paquete}}</td>
+                    <td> {% for habitacion in elementos.paquete_habitacion %}
+                            {{habitacion}}
+                          {% endfor %}
+                    </td>
+                    <td>
+                        {% for tipo in elementos.paquete_tipo_habitacion %}
+                            {{tipo}} <br>
+                        {% endfor %}
+                    </td>
+                    <td> {{elementos.total_gastado}}</td>
+                    <td> {{elementos.tipo_pago}}</td>
+                </tr>
+
+                {% for habitacion in paquete.get_habitaciones %}
+                        <p>habitacion: {{habitacion.numero}} tipo: {{habitacion.tipo}}</p>
+                        {% endfor %}
+
+            {% endfor %}
+
+        </tbody>
+
+</table>
+<!--Modales en otro html-->
+
+<div class="modal fade-scale" id="modificarCliente" tabindex="-1" aria-labelledby="exampleModalLabel">
+</div>
+
+<div class="modal fade-scale" id="aniadirCliente" tabindex="-1" aria-labelledby="exampleModalLabel">
+</div>
+
+</div>
+
+{% endblock content %} {% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    const $ = jQuery.noConflict();
+    $(document).ready(function() {
+        $('#example1').DataTable();
+    });
+</script>
+
+
+{% endblock extrajs%}

@@ -1,0 +1,279 @@
+{% extends 'base/base_administrador.html'%}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+{% endblock extra_css %}
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+{% endblock headerContenido %}
+
+
+{% block content %}
+
+<div class="switch-toggle switch-3 switch-candy sm row justify-content-center my-4">
+
+    <input id="vendedor" name="state-d" radio type="radio"  value="vendedor" />
+    <label for="vendedor" onclick='seleccionarEstado("vendedor")'>
+        <h1>Vendedores</h1>
+    </label>
+
+    <input id="encargado" name="state-d" type="radio"  value="encargado" />
+    <label for="encargado" onclick='seleccionarEstado("encargado")'>
+        <h1>Encargados</h1>
+    </label>
+    <div id="effecto"></div>
+    
+ 
+    <style>
+        .switch-toggle {
+            margin-top: 1vh;
+            flex-direction: row;
+
+        }
+
+        .switch-toggle input {
+            position: absolute;
+            opacity: 0;
+            border-radius: 5px;
+        }
+
+        .switch-toggle input+label {
+            padding: 20px;
+            float: center;
+            cursor: pointer;
+        }
+    </style>
+</div>
+
+<!-- VISTA VENDEDORES -->
+
+<div class="formularioRegion" id="vistaVendedores">
+
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+        <thead>
+
+            <tr>
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearVendedor"
+                    onclick="abrir_modal('{% url 'core:modalCrearVendedor' %}','#crearVendedor');">
+
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>
+                    <Center>ACCIONES</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for vendedor in colVendedores %}
+
+            
+            <tr>
+
+                <td> {{vendedor.persona.nombre}}</td>
+                <td> {{vendedor.persona.apellido}}</td>
+                <td> {{vendedor.persona.get_tipo_documento_display}}</td>
+                <td> {{vendedor.persona.documento}}</td>
+
+                <td>
+                    <center>
+                        {% if vendedor.estoyHabilitado %}
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarVendedor"
+                            onclick="abrir_modal('{% url 'core:modalModificarVendedor' vendedor.pk %}','#modificarVendedor');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarVendedor"
+                            onclick="abrir_modal('{% url 'core:modalEliminarVendedor' vendedor.pk %}', '#eliminarVendedor');" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        {% else %}
+                        
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reciclarVendedor"
+                            onclick="abrir_modal('{% url 'core:modalReciclarVendedor' vendedor.pk %}','#reciclarVendedor');" title="Reciclar">
+                            <i class="fas fa-recycle"></i>
+                        </button>
+                        {% endif %}
+                    </center>
+
+                </td>
+
+            </tr>
+            
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>
+                    <Center>ACCIONES</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+    <!--Modal crear Servicio en otro html-->
+
+    <div class="modal fade-scale" id="crearVendedor" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="modificarVendedor" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="eliminarVendedor" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="reciclarVendedor" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+<!-- VISTA ENCARGADOS -->
+
+<div class="formularioRegion" id="vistaEncargados">
+
+    <table id="example2" class="table table-striped table-bordered" style="width:100%">
+
+        <thead>
+
+            <tr>
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearEncargado"
+                    onclick="abrir_modal('{% url 'core:modalCrearEncargado' %}','#crearEncargado');">
+
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>Clave</th>
+                <th>
+                    <Center>ACCIONES</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for encargado in colEncargados %}
+            
+            <tr>
+
+                <td> {{encargado.persona.nombre}}</td>
+                <td> {{encargado.persona.apellido}}</td>
+                <td> {{encargado.persona.get_tipo_documento_display}}</td>
+                <td> {{encargado.persona.documento}}</td>
+                <td> {{encargado.clave}}</td>
+
+                <td>
+                    <center>
+                    {% if encargado.bajaEncargado %}
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                               data-target="#reciclarEncargado"
+                               onclick="abrir_modal('{% url 'core:modalReciclarEncargado' encargado.pk %}','#reciclarEncargado');"
+                               title="Reciclar">
+                               <i class="fas fa-recycle"></i>
+                        </button>
+                    {% else %}
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#eliminarEncargado"
+                            onclick="abrir_modal('{% url 'core:modalEliminarEncargado' encargado.pk %}','#eliminarEncargado');"
+                            title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                            data-target="#modificarEncargado"
+                            onclick="abrir_modal('{% url 'core:modalModificarEncargado' encargado.pk %}','#modificarEncargado');">
+                            <i class="fas fa-edit"></i>
+                            </button>
+                    {% endif %}
+                </center>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo</th>
+                <th>Nro de Documento</th>
+                <th>Clave</th>
+                <th>
+                    <Center>ACCIONES</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+    <!--Modal crear Encargado en otro html-->
+
+    <div class="modal fade-scale" id="crearEncargado" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="modificarEncargado" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="eliminarEncargado" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <div class="modal fade-scale" id="reciclarEncargado" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<!-- const $ = jQuery.noConflict(); -->
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    
+    $(document).ready(function () {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+    });</script>
+
+<script>
+    let state = sessionStorage.getItem("persona") || "vendedor";
+    document.getElementById(state).setAttribute("checked" , "")
+    mostrarListado(state)
+    console.log(state)
+    
+    function seleccionarEstado(estado){
+        sessionStorage.setItem("persona" , estado)
+        document.getElementById(estado).setAttribute("checked" , "")
+        mostrarListado(estado)
+    }
+
+
+    function mostrarListado(state){
+        switch (state) {
+            case "vendedor":
+                document.getElementById("vistaEncargados").style.display = "none";
+                document.getElementById("vistaVendedores").style.display = "block";
+                break;
+            case "encargado":
+                document.getElementById("vistaEncargados").style.display = "block";
+                document.getElementById("vistaVendedores").style.display = "none";
+                break;
+        }
+    }
+
+</script>
+
+{% endblock extrajs%}

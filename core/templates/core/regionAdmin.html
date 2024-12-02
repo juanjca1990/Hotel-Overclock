@@ -1,0 +1,333 @@
+{% extends 'base/base_administrador.html'%}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+{% endblock extra_css %}
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+
+{% endblock headerContenido %}
+
+
+{% block content %}
+
+
+
+<div class="switch-toggle switch-3 switch-candy sm row justify-content-center my-4">
+    
+  
+        <input id="ciudad" name="state-d" radio type="radio"  value="ciudad" />
+        <label for="ciudad" onclick='seleccionarEstado("ciudad")'>
+            <h1>Localidades</h1>
+        </label>
+    
+        <input id="provincia" name="state-d" type="radio"  value="provincia" />
+        <label for="provincia" onclick='seleccionarEstado("provincia")'>
+            <h1>Provincias</h1>
+        </label>
+    
+        <input id="pais" name="state-d" type="radio"  value="pais" />
+        <label for="pais" onclick='seleccionarEstado("pais")'>
+            <h1>Paises</h1>
+        </label>
+        <div id="effecto"></div>
+    
+ 
+        <style>
+
+            
+            .switch-toggle {
+                margin-top: 1vh;
+                flex-direction: row;
+    
+            }
+    
+            .switch-toggle input {
+                position: absolute;
+                opacity: 0;
+                border-radius: 5px;
+            }
+    
+            .switch-toggle input+label {
+                padding: 20px;
+                float: center;
+                cursor: pointer;
+            }
+    
+        
+        </style>
+
+    </div>
+
+
+
+
+<div class="formularioRegion" id="vistaLocalidades">
+
+
+
+
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+        <thead>
+
+            <tr>
+
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearLocalidad"
+                    onclick="abrir_modal('{% url 'core:modalCrearLocalidad' %}','#crearLocalidad');">
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Pais</th>
+                <th>Provincia</th>
+                <th>Localidad</th>
+
+                <th>
+
+                    <Center>Modificar</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for ciudad in localidades %}
+
+
+            <tr>
+                <td>{{ciudad.provincia.pais.nombre}}</td>
+                <td>{{ciudad.provincia.nombre}}</td>
+                <td>{{ciudad.nombre}}</td>
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                            data-target="#modificarLocalidad"
+                            onclick="abrir_modal('{% url 'core:modalModificarLocalidad' ciudad %}','#modificarLocalidad');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </center>
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Pais</th>
+                <th>Provincia</th>
+                <th>Localidad</th>
+                <th>
+                    <Center>Modificar</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+    <!--Modal crear localidad en otro html-->
+
+    <div class="modal fade-scale" id="crearLocalidad" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!-- Modal modificar localidad en otro html-->
+    <div class="modal fade-scale" id="modificarLocalidad" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+<div class="formularioRegion" id="vistaProvincia">
+    <table id="example2" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearProvincia"
+                    onclick="abrir_modal('{% url 'core:modalCrearProvincia' %}','#crearProvincia');">
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Pais</th>
+                <th>Provincia</th>
+                <th>
+                    <Center>Modificar</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for provincia in provincias %}
+            <tr>
+                <td>{{provincia.pais.nombre}}</td>
+                <td>{{provincia.nombre}}</td>
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                            data-target="#modificarProvincia"
+                            onclick="abrir_modal('{% url 'core:modalModificarProvincia' provincia %}','#modificarProvincia');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </center>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Pais</th>
+                <th>Provincia</th>
+                <th>
+                    <Center>Modificar</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+    <!--Modal crear Provincia en otro html-->
+    <div class="modal fade-scale" id="crearProvincia" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+    <!--Modal modificar Provincia en otro html-->
+    <div class="modal fade-scale" id="modificarProvincia" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+</div>
+
+
+
+
+<div class="formularioRegion" id="vistaPais">
+
+
+    <table id="example3" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearPais" onclick="abrir_modal('{% url 'core:modalCrearPais' %}','#crearPais');">
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Pais</th>
+
+
+                <th>
+
+                    <Center>Modificar</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for pais in paises %}
+
+
+            <tr>
+                <td>{{pais.nombre}}</td>
+
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarPais"
+                            onclick="abrir_modal('{% url 'core:modalModificarPais' pais %}','#modificarPais');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </center>
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Pais</th>
+
+                <th>
+                    <Center>Modificar</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+
+    <!--Modal crear Pais en otro html-->
+    <div class="modal fade-scale" id="crearPais" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+
+    <!--Modal modificar Pais en otro html-->
+    <div class="modal fade-scale" id="modificarPais" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    
+    $(document).ready(function () {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+        $('#example3').DataTable();
+    });</script>
+
+<!--<script>
+    //ESTO ES PARA CAPTURAR LOS PAQUETES
+    $(function () {
+        var token = jQuery("[name=csrfmiddlewaretoken]").val();
+        $("form").submit(function (e) {
+            e.preventDefault();
+            var datosFormulario = $('form').serializeArray();
+            alert('DATOS CAPTURADOS' + datosFormulario[1].value);
+        });
+    });
+</script>-->
+
+
+<script>
+    let state = sessionStorage.getItem("region") || "ciudad";
+    document.getElementById(state).setAttribute("checked" , "")
+    mostrarListado(state)
+    console.log(state)
+    
+    function seleccionarEstado(estado){
+        sessionStorage.setItem("region" , estado)
+        document.getElementById(estado).setAttribute("checked" , "")
+        mostrarListado(estado)
+    }
+
+
+    function mostrarListado(state){
+        switch (state) {
+            case "provincia":
+                document.getElementById("vistaPais").style.display = "none";
+                document.getElementById("vistaLocalidades").style.display = "none";
+                document.getElementById("vistaProvincia").style.display = "block";
+                break;
+            case "pais":
+                document.getElementById("vistaPais").style.display = "block";
+                document.getElementById("vistaLocalidades").style.display = "none";
+                document.getElementById("vistaProvincia").style.display = "none";
+                break;
+            case "ciudad":
+                document.getElementById("vistaPais").style.display = "none";
+                document.getElementById("vistaLocalidades").style.display = "block";
+                document.getElementById("vistaProvincia").style.display = "none";
+                break;
+        }
+    }
+
+</script>
+
+
+
+
+{% endblock %}

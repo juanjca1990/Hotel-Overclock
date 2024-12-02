@@ -1,0 +1,151 @@
+
+
+{% load static %}
+
+<html>
+
+<head>
+    <link rel="icon" type="image/png" href="/static/icons/hotelIco.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--SWEET ALERT CSS-->
+    <link rel="stylesheet" href="{% static '/css/sweetalert2.css' %}">
+    <!--BOOTSTRAP CSS-->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap CSS para datatable-->
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static '/css/dataTables.bootstrap4.min.css' %}">
+    <!-- Bootstrap CSS para datatable-->
+
+    <!-- FONTAWESOME -->
+    <script src="{% static '/js/d91d4c71ff.js' %}"></script>
+
+    <!--CUSTOM CSS-->
+    <link rel="stylesheet" href="{% static '/css/styleBase.css' %}">
+    <link rel="stylesheet" href="{% static '/css/modal.css' %}">
+    <link rel="stylesheet" href="{% static '/css/botones.css' %}">
+
+
+    {% block extra_css %}
+
+    {% endblock extra_css %}
+</head>
+
+<body class="bodyComplete">
+
+
+    <!-- HEADER -->
+    <div class="container-fluid mainHeader p-3 fixed-top">
+        <div class="row">
+            <div class="col-2">
+                {% block header %}
+
+                {% endblock header %}
+
+            </div>
+            <div class="col-8">
+                {% block headerContenido %}
+                {% endblock headerContenido %}
+
+                {% block carrito %}
+                {% endblock carrito %}
+            </div>
+            <div class="col-2">
+
+                <button onclick="location.href='/core/logout'" style="text-decoration:none; align-items:right;"
+                    class="rounded-1 btn btn-lg btn-outline-secondary text-white float-center mt-1  "> Cerrar Sesion
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- opciones + contenido -->
+    <div class="container-fluid position-fixed">
+        <!-- CONTENIDO -->
+        <div class="col-12 position-relative" style="top: 200px;" id="main">
+            <div class="modal-xl modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            AÑADIR TIPO HABITACION A HOTEL
+                        </h5>
+                        <a type="button" class="close" data-dismiss="modal" aria-label="Close" href="{% url 'hotel:tipoHabitacionHotel' hotel.pk %}">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <form action="{% url 'hotel:modalCrearTipoHabitacion' hotel.pk %}" method="POST">
+                        <div class="modal-body">
+            
+                            {% csrf_token %}
+                            {{formulario}}
+            
+            
+                        </div>
+                        <div class="modal-footer">
+                            <a  href="{% url 'hotel:tipoHabitacionHotel' hotel.pk %}">Cerrar</a>
+                            <button type="submit" name="accion" class="guardar" value="hotel">Guardar</button>
+            
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer text-center mb-0 fixed-bottom">
+        <div class="container">
+            {% block footer %}
+
+            {% endblock footer %}
+            <p class="m-0 mbt1 text-white">&copy; UNPSJB - GRUPO 1 - DESARROLLO DE SOFTWARE</p>
+        </div>
+    </div>
+
+
+    <!--sweet alert2-->
+
+    <script src="{% static '/js/sweetalert2@10.js' %}"></script>
+
+    <!-- Bootstrap 4.5-->
+    <script src="{% static '/js/jquery-3.5.1.js' %}"></script>
+    <script src="{% static '/js/bootstrap.bundle.js' %}"></script>
+
+    <script src="{% static '/js/bootstrap-datetimepicker.min.js' %}"></script>
+
+    <!--dataTable jquery + bootstrap + popper include-->
+    <script src="{% static 'js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static '/js/dataTables.bootstrap4.min.js'%}"></script>
+
+    <!--scripts personalizados-->
+    <script src="{% static '/js/main.js' %}"></script>
+
+    <!--sweet alert2-->
+    <script src="{% static '/js/sweetalert2@10.js' %}"></script>
+
+
+
+    <!--dataTable jquery + bootstrap + popper include-->
+    <script src="{% static '/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static '/js/dataTables.bootstrap4.min.js'%}"></script>
+
+
+    <!--scripts personalizados-->
+
+    <script src="{% static '/js/main.js' %}"></script>
+
+    <!--CUSTOM CSS-->
+    <link rel="stylesheet" href="{% static '/css/styleBase.css' %}">
+    <link rel="stylesheet" href="{% static '/css/modal.css' %}">
+    <link rel="stylesheet" href="{% static '/css/botones.css' %}">
+
+    {% block extrajs %}
+    {% endblock %}
+
+</body>
+
+
+</html>

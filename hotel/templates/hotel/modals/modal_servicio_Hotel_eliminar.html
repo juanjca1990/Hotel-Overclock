@@ -1,0 +1,30 @@
+<div class="modal-xl modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                ELIMINAR SERVICIO EXTRA A HOTEL : {{servicio.nombre.upper}}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'hotel:modalEliminarserviciosHotel' hotel.pk servicio.pk %}" method="POST">
+            <div class="modal-body">
+
+                {% csrf_token %}
+            <p>Seguro que desea eliminar de <strong>{{hotel}}</strong></p>
+            <p>El servicio <strong>{{servicio.nombre}}</strong>?</p>
+            <p>Presione "ACEPTAR" para confirmar!!!!</p>
+                
+                
+                     
+
+            </div>
+            <div class="modal-footer">
+                <button type="dismiss" class="cerrar" data-dismiss="modal">Cerrar</button>
+                <button type="submit" name="accion" class="guardar" value="servicio_hotel">Guardar</button>
+
+            </div>
+        </form>
+    </div>
+</div>

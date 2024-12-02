@@ -1,0 +1,93 @@
+{% extends "hotel/vistaHotelAdmin.html" %}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block datosVista %}
+
+<div class="formularioTemporada" id="temporadaHabitaciones">
+    <center>
+        <h3 class="mb-5">TEMPORADA</h3>
+    </center>
+    <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
+        <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
+            data-target="#crearTemporadaHotel"
+            onclick="abrir_modal('{% url 'hotel:modalCrearTemporadaHotel' hotel.pk %}', '#crearTemporadaHotel');">
+            <i class="fas fa-plus-circle"></i>
+            AÑADIR</button>
+        <thead>
+
+            <tr>
+
+                <th>nombre</th>
+                <th>comienza</th>
+                <th>finaliza</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if not hotel.get_temporadas %}
+            <td valign="top" colspan="7" class="dataTables_empty"> NO HAY TEMPORADAS CREADAS EN ESTE HOTEL !!!!
+            </td>
+            {% endif %}
+            {% for temporada in hotel.get_temporadas %}
+
+
+            <tr>
+
+                <td>{{temporada.nombre}}</td>
+                <td>{{temporada.inicio}}</td>
+                <td>{{temporada.fin}}</td>
+
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarTemporada" onclick="abrir_modal('{% url 'hotel:modalModificarTemporada' hotel.pk temporada.pk%}','#modificarTemporada');" title="Modificar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                            data-target="#eliminarTemporada"
+                            onclick="abrir_modal('{% url 'hotel:modalEliminarTemporada' hotel.pk temporada.pk%}','#eliminarTemporada');" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                        </button>
+                    </center>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <!--Modal crear temporada Hotel en otro html-->
+    
+
+    <div class="modal fade-scale" id="crearTemporadaHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+         <!--Modal eliminar Temporada en otro html-->
+
+     <div class="modal fade-scale" id="eliminarTemporada" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+       <!--Modal modificar Temporada en otro html-->
+
+       <div class="modal fade-scale" id="modificarTemporada" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+{% endblock datosVista %}
+
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    const $ = jQuery.noConflict();
+    $(document).ready(function () {
+        $('#example2').DataTable();
+    });</script>
+

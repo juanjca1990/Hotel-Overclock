@@ -1,0 +1,412 @@
+{% extends 'base/base.html'%}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+{% endblock extra_css %}
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+
+
+<!--  ####################### TARJETAS DEL SIDE BAR #######################-->
+
+
+{% block tarjeta1 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:vistaHotel' hotel.pk %}'"
+            class="btn btn-link btn-block text-white">
+            <center>
+                <h5> Paquete / Habitacion</h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta1 %}
+
+{% block tarjeta2 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:temporadaHotel' hotel.pk %}'"
+            class="btn btn-link btn-block text-white">
+            <center>
+                <h5> Temporada </h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta2 %}
+
+{% block tarjeta3 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:vendedoresHotel' hotel.pk %}'"
+            class="btn btn-link btn-block text-white">
+            <center>
+                <h5>Vendedor </h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta3 %}
+{% block tarjeta5 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:tipoHabitacionHotel' hotel.pk %}'"
+            class="btn btn-link btn-block text-white">
+            <center>
+                <h5>Tipo de Habitacion </h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta5 %}
+
+{% block tarjeta6 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:serviciosHotel' hotel.pk %}'" class="btn btn-link btn-block text-white">
+            <center>
+                <h5> Servicios</h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta6 %}
+
+<!--  ####################### FIN TARJETAS DEL SIDE BAR #######################-->
+
+
+{% block content %}
+
+<!--  #######################  DATOS DEL HOTEL  #######################-->
+
+<div class="titulo">
+    <h1>
+        <center> <u> {%if hotel.es_hospedaje%} HOSPEDAJE {%else%} HOTEL {% endif %} {{hotel.nombre.upper}}</u> </center>
+    </h1>
+</div>
+<div class="datosHotel">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 lugarImagen">
+                <img class="imagen" src="{% static '/media/hoteles/1.jpg' %}">
+            </div>
+            <div class="col-sm-7">
+                <center>
+                    <table class="table table-responsive tablaDatos">
+                        <tr>
+                            <th>Direccion:</th>
+                            <td>{{hotel.direccion}}</td>
+                        </tr>
+                        <tr>
+                            <th>E-mail:</th>
+                            <td>{{hotel.email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono:</th>
+                            <td>{{hotel.telefono}}</td>
+                        </tr>
+                        <tr>
+                            <th>Localidad:</th>
+                            <td>{{hotel.localidad}}</td>
+                        </tr>
+                        <tr>
+                            <th>Categoria:</th>
+                            <td>{{hotel.categoria}}</td>
+                        </tr>
+                    </table>
+                </center>
+
+            </div>
+            <div class="col-sm-2">
+                <center>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarHotel"
+                        onclick="abrir_modal('{% url 'hotel:modalModificarHotel' hotel.pk %}','#modificarHotel');">
+                        <i class="fas fa-edit"></i>
+                        MODIFICAR</button>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade-scale" id="modificarHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+</div>
+
+<!--  ####################### FIN DATOS DEL HOTEL  #######################-->
+
+
+<!--  #######################  TABLA LISTADO HABITACIONES/PAQUETES  #######################-->
+
+<!--  #######################  BOTON DE CAMBIO LISTADO HABITACIONES/PAQUETES  #######################-->
+{% block datosVista %}
+<div class="abajo">
+
+    <div id="container">
+        <input class="boton-Habitaciones-Paquetes" type="radio" id="habitaciones" name="material" value="habitaciones">
+        <label class="etiqueta-boton" for="habitaciones" id="label-1" onclick='seleccionarEstado("habitaciones")'>
+            <span class="glyphicon glyphicon-user"><i class="fas fa-bed"></i></span></label>
+        <input class="boton-Habitaciones-Paquetes" type="radio" id="paquetes" name="material" value="paquetes">
+        <label class="etiqueta-boton" for="paquetes" id="label-2" onclick='seleccionarEstado("paquetes")'>
+            <span class="glyphicon glyphicon-bell"><i class=" fas fa-box"></i></span></label>
+        <div id="effect"></div>
+    </div>
+
+    <!--  #######################  FIN BOTON DE CAMBIO LISTADO HABITACIONES/PAQUETES  #######################-->
+
+    <!--  #######################  INICIO DATA TABLE LISTADO HABITACIONES/PAQUETES  #######################-->
+
+    <div class="formularioHotel1" id="vistaHabitaciones">
+        <center>
+            <h3 class="mb-5">HABITACIONES</h3>
+        </center>
+        <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
+            <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
+                data-target="#crearHabitacion" onclick="
+            {% if hotel.tengo_tipos %} abrir_modal('{% url 'hotel:modalCrearHabitacion' hotel.pk %}','#crearHabitacion');
+            {% else %}
+                   Swal.fire({
+                    icon: 'error',
+                    title: 'No hay tipos de habitaciones...',
+                    text: 'Primero tenes que cargar tipos de habitacion en la opcion TIPO DE HABITACION',
+                    
+                  });
+            {% endif %}">
+
+
+                <i class="fas fa-plus-circle"></i>
+                AÑADIR</button>
+            <thead>
+
+                <tr>
+                    <th></th>
+                    <th>tipo</th>
+                    <th>numero</th>
+                    <th>pasajeros</th>
+                    <th>$ temp. alta</th>
+                    <th>$ temp. baja</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {% if not hotel.get_habitaciones %}
+                <td valign="top" colspan="7" class="dataTables_empty"> NO HAY HABITACIONES CREADAS EN ESTE HOTEL !!!!
+                </td>
+                {% endif %}
+                {% for habitacion in hotel.get_habitaciones %}
+
+
+                <tr>
+                    <td></td>
+                    <td>{{habitacion.tipo}}</td>
+                    <td>{{habitacion.numero}}</td>
+                    <td>{{habitacion.tipo.pasajeros}}</td>
+
+                    <td>${{habitacion.precio_temp_alta }}</td>
+
+                    <td>${{habitacion.precio_temp_baja }}</td>
+                    <td>
+                        <center>
+                            {% if habitacion.baja %}
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#reciclarHabitacion"
+                                onclick="abrir_modal('{% url 'hotel:modalReciclarHabitacion' hotel.pk habitacion.pk%}','#reciclarHabitacion');"
+                                title="Reciclar">
+                                <i class="fas fa-recycle"></i>
+                            </button>
+                            {% else %}
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                data-target="#eliminarHabitacion"
+                                onclick="abrir_modal('{% url 'hotel:modalEliminarHabitacion' hotel.pk habitacion.pk%}','#eliminarHabitacion');"
+                                title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            {% endif %}
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!--Modal crear Habitacion en otro html-->
+
+    <div class="modal fade-scale" id="crearHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!--Modal reciclar Habitacion en otro html-->
+
+    <div class="modal fade-scale" id="reciclarHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!--Modal eliminar Habitacion en otro html-->
+
+    <div class="modal fade-scale" id="eliminarHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+
+
+    <div class="formularioHotel2" id="vistaPaquetes">
+        <center>
+            <h3 class="mb-5">PAQUETES</h3>
+        </center>
+        <table id="example2" class="table table-striped table-bordered tablaListaHabitacion">
+            <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
+                data-target="#crearPaqueteTuristicoHotel" onclick="
+            {% if hotel.get_habitaciones %} abrir_modal('{% url 'hotel:modalCrearPaqueteTuristicoHotel' hotel.pk %}', '#crearPaqueteTuristicoHotel');
+            {% else %}
+                   Swal.fire({
+                    icon: 'error',
+                    title: 'No hay habitaciones...',
+                    text: 'Primero tenes que cargar habitaciones',
+                    
+                  });
+            {% endif %}">
+                <i class="fas fa-plus-circle"></i>
+                AÑADIR</button>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha inicio</th>
+                    <th>Fecha fin</th>
+                    <th>Costo</th>
+                    <th>habitaciones</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+
+            </thead>
+            <tbody>
+
+                {% if not hotel.get_paquetes %}
+                <td valign="top" colspan="7" class="dataTables_empty text-center"> NO HAY PAQUETES CREADOS EN ESTE HOTEL
+                    !!!!
+                </td>
+                {% endif %}
+                {% for paquete in hotel.get_paquetes %}
+
+                <tr class="{% if paquete.estoy_vigente%}
+                comercializable manito
+                {% else %}
+                noComercializable manito
+                {% endif%}
+                ">
+                    <td>{{paquete.nombre}}</td>
+                    <td>{{paquete.inicio}}</td>
+                    <td>{{paquete.fin}}</td>
+                    <td>${{paquete.get_costo}}</td>
+                    <td> {% for habitacion in paquete.get_habitaciones %}
+                        <p>habitacion: {{habitacion.numero}} tipo: {{habitacion.tipo}}</p>
+                        {% endfor %}
+                    </td>
+                    <td>{% if paquete.estoy_vendido %} VENDIDO
+                        {% elif paquete.estoy_vencido %} VENCIDO
+                        {% else %} VIGENTE
+                        {% endif %}</td>
+                    <td>
+                        <center>
+                            {% if paquete.estoy_vigente %}
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#modificarPaqueteTuristicoHotel"
+                                    onclick="abrir_modal('{% url 'hotel:modalModificarPaqueteTuristicoHotel' hotel.pk paquete.pk%}', '#modificarPaqueteTuristicoHotel');"
+                                    title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#eliminarPaqueteTuristicoHotel"
+                                    onclick="abrir_modal('{% url 'hotel:modalEliminarPaqueteTuristicoHotel' hotel.pk paquete.pk%}', '#eliminarPaqueteTuristicoHotel');"
+                                    title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            {% elif paquete.estoy_vencido %}
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#eliminarPaqueteTuristicoHotel"
+                                    onclick="abrir_modal('{% url 'hotel:modalEliminarPaqueteTuristicoHotel' hotel.pk paquete.pk%}', '#eliminarPaqueteTuristicoHotel');"
+                                    title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            {% elif paquete.estoy_vendido %}
+
+                            {% endif %}
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!--Modal crear Paquete Turistico en otro html-->
+
+    <div class="modal fade-scale" id="crearPaqueteTuristicoHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!--Modal modificar Paquete Turistico en otro html-->
+
+    <div class="modal fade-scale" id="modificarPaqueteTuristicoHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!--Modal eliminar Paquete Turistico en otro html-->
+
+    <div class="modal fade-scale" id="eliminarPaqueteTuristicoHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+
+
+    {% endblock datosVista %}
+    
+    {% endblock content %}
+
+
+    {% block extrajs %}
+
+    <script type="text/javascript">
+        //SCRIPT DE DATATABLE
+
+        $(document).ready(function () {
+            $('#example1').DataTable();
+            $('#example2').DataTable();
+        });</script>
+
+
+    <script>
+        let state = sessionStorage.getItem("eleccion") || "habitaciones";
+        document.getElementById(state).setAttribute("checked" , "")
+        mostrarListado(state)
+        
+        function seleccionarEstado(estado){
+            sessionStorage.setItem("eleccion" , estado)
+            document.getElementById(estado).setAttribute("checked" , "")
+            mostrarListado(estado)
+        }
+    
+    
+        function mostrarListado(state){
+            switch (state) {
+                case "habitaciones":
+                    document.getElementById("vistaPaquetes").style.display = "none";
+                    document.getElementById("vistaHabitaciones").style.display = "block";
+                    break;
+                case "paquetes":
+                    document.getElementById("vistaPaquetes").style.display = "block";
+                    document.getElementById("vistaHabitaciones").style.display = "none";
+                    break;
+            }
+        }
+    </script>
+    <script src="{% static 'js/dd8c49730d.js' %}"></script>#
+
+    {% endblock extrajs%}

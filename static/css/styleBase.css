@@ -1,0 +1,94 @@
+.mainHeader {
+    background-color: #18121E;
+    width: 100%;
+    top: 0;
+}
+
+.miEstiloPiola {
+    margin-top: 10vh;
+    overflow: auto;
+   /*margin-bottom: 0px;
+   position: fixed;*/
+}
+
+.pre-scrollable{
+    max-height: 77vh; 
+}
+
+.card {
+    background-color: #085153;
+    height: 11%;
+}
+.card-sub{
+    background-color: #41aea9;
+}
+
+.bodyComplete {
+    background-color: #eeeeee;
+    width: 100%;
+    height: 100%;
+}
+
+.gestion {
+    background-color: #38ffef;
+}
+
+.footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0;
+    background-color: #18121E;
+    width: 100%;
+    height: 10%;
+}
+
+#sticky-sidebar{
+    min-height: 100vh;
+    background-color: #0d7377;
+}
+
+#content{
+    overflow-y: auto;
+    padding-bottom: 5rem;
+    height: 100vh;
+
+}
+a:link, a:visited, a:active a{
+    text-decoration:none;
+    color: #212121;
+}
+.comercializable{
+    border-left-style: solid  !important;
+    border-left-width: 3px !important;
+    border-left-color: green !important;
+    border-right-style: solid  !important;
+    border-right-width: 3px !important;
+    border-right-color: green !important;
+    border-bottom-style: solid  !important;
+    border-bottom-width: 3px !important;
+    border-bottom-color: green !important;
+    background-color: lightgrey !important;
+    border-collapse: collapse !important;
+ 
+    
+}
+.noComercializable{
+    border-left-style: solid  !important;
+    border-left-width: 3px !important;
+    border-left-color: red !important;
+    border-right-style: solid  !important;
+    border-right-width: 3px !important;
+    border-right-color: red !important;
+    border-bottom-style: solid  !important;
+    border-bottom-width: 3px !important;
+    border-bottom-color: red !important;
+    background-color: lightgrey !important;
+    border-collapse: collapse !important;
+ 
+   
+    
+}
+.manito{
+    cursor: pointer;
+}
+

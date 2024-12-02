@@ -1,0 +1,3 @@
+
+class MaxPasajerosException(Exception):
+    pass

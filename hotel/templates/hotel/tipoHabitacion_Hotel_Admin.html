@@ -1,0 +1,82 @@
+{% extends "hotel/vistaHotelAdmin.html" %}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block datosVista %}
+
+
+<div class="formularioHotel" id="vistaTipoHabitaciones">
+    <center>
+        <h3 class="mb-5" style="margin-top:5vh;">TIPO DE HABITACION CON COSTO POR TEMPORADA</h3>
+    </center>
+    <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
+        <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
+        data-target="#crearTipoHabitacion" onclick="abrir_modal('{% url 'hotel:modalCrearTipoHabitacion' hotel.pk %}','#crearTipoHabitacion');">
+            <i class="fas fa-plus-circle"></i>
+            AÑADIR</button>
+        <thead>
+
+            <tr>
+                <th></th>
+                <th>Tipo</th>
+                <th>$ Temp. alta</th>
+                <th>$ Temp. baja</th>
+                <th>Acciones</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if not hotel.tengo_tipos %}
+            <td valign="top" colspan="7" class="dataTables_empty"> NO HAY TIPOS DE HABITACION EN ESTE HOTEL !!!!
+            </td>
+            {% endif %}
+
+
+
+            {% for item in tarifas %}
+            <tr>
+                <td></td>
+                <td>{{item.tipo}}</td>
+                <td>${{item.alta}}</td>
+                <td>${{item.baja}}</td>
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarTipoHabitacion" onclick="abrir_modal('{% url 'hotel:modalModificarTipoHabitacion' hotel.pk item.pk %}','#modificarTipoHabitacion');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarTipoHabitacion" onclick="abrir_modal('{% url 'hotel:modalEliminarTipoHabitacion' hotel.pk item.pk %}','#eliminarTipoHabitacion');">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </center>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+
+ <!--Modal crear Tipo Habitacion en otro html-->
+
+ <div class="modal fade-scale" id="crearTipoHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+</div>
+
+<!-- Modal modificar Tipo Habitacion en otro html-->
+<div class="modal fade-scale" id="modificarTipoHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+</div>
+
+ <!--Modal eliminar Tipo Habitacion en otro html-->
+
+ <div class="modal fade-scale" id="eliminarTipoHabitacion" tabindex="-1" aria-labelledby="exampleModalLabel">
+</div>
+
+{% endblock datosVista %}

@@ -1,0 +1,47 @@
+<div class="modal-xl modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                AÑADIR HOTEL
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'hotel:modalCrearHotel' %}" method="POST">
+            <div class="modal-body">
+
+                {% csrf_token %}
+
+                {% for field in formulario %}
+                <div>
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                </div>
+                {% endfor %}
+               <!--{{formulario}} --> 
+
+                <style>
+                    .laSeleccionBox {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr 1fr 1fr;
+
+                    }
+
+                    .laSeleccionBox li {
+                        list-style-type: none;
+                        margin: 0px 3vh 0px 3vh;
+                    }
+
+            
+                </style>
+
+            </div>
+            <div class="modal-footer">
+                <button type="dismiss" class="cerrar" data-dismiss="modal">Cerrar</button>
+                <button type="submit" name="accion" class="guardar" value="hotel">Guardar</button>
+
+            </div>
+        </form>
+    </div>
+</div>

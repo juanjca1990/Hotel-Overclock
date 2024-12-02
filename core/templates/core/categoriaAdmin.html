@@ -1,0 +1,109 @@
+{% extends 'base/base_administrador.html'%}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+{% endblock headerContenido %}
+
+
+{% block content %}
+<div class="formularioRegion" id="vistaLocalidades">
+
+<center><h1 class="my-4">LISTADO DE CATEGORIAS</h1></center>
+
+
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+
+        <thead>
+
+            <tr>
+
+                <button type="button" class="btn btn-success ml-4 float-right btn-sm" data-toggle="modal"
+                    data-target="#crearCategoria"
+                    onclick="abrir_modal('{% url 'core:modalCrearCategoria' %}','#crearCategoria');">
+                    <i class="fas fa-plus-circle"></i>
+                    AÑADIR</button>
+                <th>Nombre</th>
+                <th>Estrellas</th>
+                <th>Servicios</th>
+                
+
+                <th>
+
+                    <Center>Modificar</Center>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for categoria in colCategorias %}
+
+
+            <tr>
+                <td>{{categoria.nombre}}</td>
+                <td>{{categoria.estrellasStr}}</td>
+                
+                <td> {% for servicioCat in categoria.servicios.all %}
+                    
+                    <p>{{servicioCat.nombre}}</p>
+                    
+                    {% endfor %}
+                </td>
+                <td>
+                    <center>
+                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                            data-target="#modificarCategoria"
+                            onclick="abrir_modal('{% url 'core:modalModificarCategoria' categoria %}','#modificarCategoria');">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </center>
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Nombre</th>
+                <th>Estrellas</th>
+                <th>Servicios</th>
+                <th>
+                    <Center>Modificar</Center>
+                </th>
+
+            </tr>
+        </tfoot>
+    </table>
+
+    <!--Modal crear Categoria en otro html-->
+
+    <div class="modal fade-scale" id="crearCategoria" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+    <!-- Modal modificar Categoria en otro html-->
+    <div class="modal fade-scale" id="modificarCategoria" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+
+</div>
+
+
+
+
+ 
+{% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    const $ = jQuery.noConflict();
+    $(document).ready(function () {
+        $('#example1').DataTable();
+    });</script>
+{% endblock extrajs%}

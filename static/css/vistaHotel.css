@@ -1,0 +1,315 @@
+.titulo{
+    margin-top: 3vh;
+}
+.lugarImagen{
+    padding: 3vh 0 0 0;
+    /*outline: 1px solid red;*/
+    margin-left: 0 ;
+}
+.imagen{
+     box-shadow: 1vh 1vh 0.5vh grey;
+     width: 100%;
+     height: auto;
+}
+
+.tablaDatos{
+     margin-left: 2vh;
+}
+
+
+
+/*------------------- ACA COMIENZA DATA TABLE ------------------*/
+
+.abajo{
+  /* outline: 1px solid red;*/
+}
+   
+.dataTables_filter{
+   /* outline: solid 1px green !important;*/
+    width: 50% !important;
+    
+}
+.dataTables_length{
+    /*outline: solid 1px red !important;*/
+    height: 10vh ;
+    width: 50% ;
+}
+
+
+
+/* ######################### COSAS BOTON TOOGLE #################################*/
+
+
+/* //////////////////////////////2 estados (vendedores encargados)//////////////// */
+
+#vendedor:checked~div#effecto {
+    visibility: visible;
+    animation: vendedor 1s;
+    animation-fill-mode: forwards; 
+}
+
+@keyframes vendedor {
+
+    from {
+      transform: scaleX(2);
+    }
+    to{
+        width: 27%;
+        transform: scaleX(1);
+        transform: translateX(-150px);
+    }
+      
+}
+
+#encargado:checked~div#effecto {
+    visibility: visible;
+    animation: encargado 1s;
+    animation-fill-mode: forwards; 
+}
+@keyframes encargado {
+
+    from {
+        transform: scaleX(2);
+    }
+    to{
+        width: 27%;
+        transform: scaleX(1);
+        transform: translateX(150px);
+  }
+      
+}
+
+
+
+ /* /////////////////////////  3 estados (localidad provincia pais) /////////////////////////////////////// */
+
+ #effecto{
+    position: absolute;
+    top: 5%;
+    width: 20%;
+    height: 10%;
+    box-shadow: 0px 2px 2px grey;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: orange
+    
+}
+
+
+#ciudad:checked~div#effecto {
+    visibility: visible;
+    animation: izquierda 1s;
+    animation-fill-mode: forwards; 
+}
+
+@keyframes izquierda {
+
+    from {
+      transform: scaleX(2);
+    }
+    to{
+        width: 22%;
+        transform: scaleX(1);
+        transform: translateX(-189px);
+    }
+      
+}
+
+#provincia:checked~div#effecto {
+    visibility: visible;
+    animation: centro 1s;
+    animation-fill-mode: forwards;
+   
+}
+
+@keyframes centro {
+
+      from {
+        transform: scaleX(3);
+    }
+    to{
+        transform: scaleX(1);
+        transform: translateX(50px);
+    }
+        
+}
+
+#pais:checked~div#effecto {
+    visibility: visible;
+    animation: derecha 1s;
+    animation-fill-mode: forwards; 
+}
+
+@keyframes derecha {
+
+    from {
+        transform: scaleX(2);
+    }
+    to{
+        width: 14%;
+        transform: scaleX(1);
+        transform: translateX(250px);
+  }
+      
+}
+
+ /* /////////////////////////  2 estados /////////////////////////////////////// */
+.boton-Habitaciones-Paquetes {
+        display: none;
+}
+   
+    div#container  {
+    height: 5vh;
+    width: 15vh;
+    box-shadow: 0px 1px 5px black;
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+    top: 25%;
+    left: 89.5%;
+    transform: translate(-50%, -50%);
+}
+    
+    .etiqueta-boton {
+    position: absolute;
+    top: 1vh;
+    color: gray;
+    width: 1%;
+    height: 1%;
+    text-align: center;
+    font-size: 150%;
+    color: black;
+    cursor: pointer;
+    }
+    
+    .etiqueta-boton#label-1 {
+    left: 5%;
+    }
+    
+    .etiqueta-boton#label-2{
+    right: 26.5%;
+    }
+
+
+    div#effect {
+    position: absolute;
+    top: 5%;
+    width: 50%;
+    right: 4%;
+    height: 90%;
+    box-shadow: 0px 2px 2px grey;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: orange;
+    }
+
+
+    #habitaciones:checked~div#effect {
+    animation: goLeft 1s;
+    visibility: visible;
+    animation-fill-mode: forwards;
+    }
+    
+    @keyframes goLeft {
+    0% {
+    width: 50%;
+    right: 1vh;
+    }
+    
+    40% {
+    width: 70%;
+    right: 2vh;
+    }
+    
+    50% {
+    width: 50%;
+    right: 3vh;
+    transform: translateX(0px)
+    }
+    
+    65% {
+    width: 50%;
+    right: 4vh;
+    transform: translateX(2px);
+    }
+    
+    70% {
+    transform: translateX(0px);
+    width: 50%;
+    right: 5vh;
+    }
+    
+    85% {
+    transform: translateX(2px);
+    right: 6vh;
+    width: 50%;
+    }
+    
+    100% {
+    width: 50%;
+    right: 7.6vh;
+    transform: translateX(0px)
+    }
+    
+    }
+    
+    #paquetes:checked~div#effect {
+    visibility: visible;
+    animation: goRight 0.5s;
+    animation-fill-mode: forwards;
+    }
+
+    
+    
+    @keyframes goRight {
+    0% {
+    width: 50%;
+    left: 1vh;
+    }
+    
+    40% {
+    width: 70%;
+    left: 2vh;
+    }
+    
+    50% {
+    width: 50%;
+    left: 3vh;
+    transform: translateX(0px)
+    }
+    
+    65% {
+    width: 50%;
+    left: 4vh;
+    transform: translateX(-2px);
+    }
+    
+    70% {
+    transform: translateX(0px);
+    width: 50%;
+    left: 5vh;
+    }
+    
+    85% {
+    transform: translateX(-2px);
+    left: 6vh;
+    width: 50%;
+    }
+    
+    100% {
+    width: 50%;
+    left: 7.6vh;
+    transform: translateX(0px)
+    }
+    
+    }
+    
+    span {
+    color: #111111;
+    transition: color 2s;
+    }
+    
+    input:checked+label span {
+    color: #111;
+    }
+    

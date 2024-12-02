@@ -1,0 +1,14 @@
+.cerrar{
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    width: 80px;
+    height:35px;
+}
+.guardar{
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+    width: 80px;
+    height:35px;
+}

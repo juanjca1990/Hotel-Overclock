@@ -1,0 +1,104 @@
+{% extends 'base/vendedor.html'%}
+{% load static %}
+
+{% block header %}
+<button onclick="location.href='/venta/vendedor'" style="text-decoration:none"
+    class="rounded-1 btn btn-sm btn-outline-secondary text-white ml-4 mt-1"> VENDEDOR: {{vendedor.persona.nombre.upper}}
+    {{vendedor.persona.apellido.upper}} </button>
+{% endblock header %}
+
+{% block carrito %}
+<!--VACIO PARA QUE NO APAREZCA EL CARRITO, DADO QUE ESTAMOS EN LA VISTA CARRITO-->
+{% endblock carrito %}
+
+
+{% block content %}
+{% if not contador %}
+<br><br><br><br><br>
+<center>
+    <h1 class="mt-5" style="color:#666;">Tu carrito está vacío</h1>
+</center>
+<center>
+    <h5 style="color:#666;">¿No sabés qué comprar? ¡Miles de habitaciones y paquetes te esperan! </h5>
+</center>
+{%else%}
+
+<div class="formularioCarrito" id="vistaCarrito">
+    <center>
+        <h1 class="my-4">LISTADO ITEMS CARRITO</h1>
+    </center>
+    <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
+
+        <thead>
+            <tr>
+                <th><center>Hotel</center></th>
+                <th><center>Descripcion</center></th>
+                <!--CASO HAB HABITACION N°: , CASO PAQ PAQUETE: NOMBRE-->
+                <th><center>Fecha inicio</center></th>
+                <th><center>Fecha fin</center></th>
+                <th><center>Costo Unitario</center></th>
+                <!--CASO HAB COSTO POR NOCHE , CASO PAQ COSTO SUBTOTAL REPETIDO-->
+                <th><center>SubTotal</center></th>
+                <th><center>Quitar</center></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            {% for key,value in coleccion_ventas.items%}
+            {% if "total" not in key%}
+            <tr>
+
+                <td>{{value.hotel}}</td>
+                <td>{{value.descripcion}}</td>
+                <td>{{value.fecha_inicio}}</td>
+                <td>{{value.fecha_fin}}</td>
+                <td>{{value.costo_unitario}}</td>
+                <td>{{value.subtotal}}</td>
+
+                <td>
+                    <center>
+
+                        <button type="button" class="btn btn-danger" {% if "p" in key %} onclick="location.href='{% url 'venta:quitarPaqueteCarrito' key %}' " {% else %} onclick="location.href='{% url 'venta:quitarHabitacionCarrito' key value.fecha_inicio value.fecha_fin %}' "{% endif %} title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+
+                    </center>
+                </td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+    <div class="row mt-2">
+        <div class="col-10 ml-4" style="background-color:rgb(185, 182, 182);"> <h3>TOTAL: ${{total}}</h3></div>
+        <div class="col-1"><button class="btn btn-success" {% if cliente is None %} onclick="Swal.fire({
+            icon: 'error',
+            title: 'No se puede facturar sin seleccionar un Cliente',
+            text: 'Ingrese a menu cliente y seleccione uno...',
+        });" {% else %} onClick="location.href='{% url 'venta:facturarCarrito' %}'" {% endif %}>FACTURAR</button> </div>
+    </div>
+    
+
+</div>
+
+{% endif %}
+
+
+
+{% endblock content %}
+
+{% block extrajs %}
+
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    const $ = jQuery.noConflict();
+    $(document).ready(function () {
+        $('#example1').DataTable();
+    });
+</script>
+
+
+{% endblock extrajs %}

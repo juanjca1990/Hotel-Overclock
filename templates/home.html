@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    {% load static %}
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buena Vista</title>
+    <link rel="icon" type="image/png" href="/static/icons/hotelIco.png">
+    <!--BOOTSTRAP CSS-->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    <!-- FONTAWESOME -->
+    <script src="{% static '/js/d91d4c71ff.js' %}"></script>
+    <!--CUSTOM CSS-->
+    <link rel="stylesheet" href="{% static 'css/stylelog.css' %}">
+</head>
+
+<body>
+    <!--HEADER-->
+    <header class="main-header">
+        <div class="background-overlay text-white py-5">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-6 text-center justify-content-center align-self-center">
+                        <h1>
+                            Centro hotelero Buena Vista
+                        </h1>
+
+                        <form method="POST">
+                        
+                           {% csrf_token %}
+                           {{ form.as_p }}
+
+                            <input type="submit" class="btm btn-primary btn-lg btn-block" value="Ingresar">
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{% static 'media/log/Hotel.jpg' %}" alt="Hotel" class="img-fluid d-none d-sm-block">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <footer>
+    </footer>
+    <!-- Bootstrap 4.5-->
+    <script src="{% static '/js/jquery-3.5.1.js' %}"></script>
+    <script src="{% static '/js/bootstrap.bundle.js' %}"></script>
+</body>
+
+
+
+
+
+</html>

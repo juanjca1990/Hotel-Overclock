@@ -1,0 +1,24 @@
+<div class="modal-xl modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+                MODIFICAR ENCARGADO: {{encargado.upper}}
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+            </button>
+        </div>
+         <form action="{% url 'core:modalModificarEncargado' encargado.pk%}" method="POST">
+            <div class="modal-body">
+
+                {% csrf_token %}
+                {{ formulario.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="dismiss" class="Cerrar" data-dismiss="modal">Cerrar</button>
+                <button type="submit" name="accion" class="Guardar" value="servicio">Guardar</button>
+
+            </div>
+        </form>
+    </div>
+</div>
