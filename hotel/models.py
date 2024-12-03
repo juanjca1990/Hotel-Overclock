@@ -180,8 +180,7 @@ class Habitacion(models.Model):
     def disponible(self ,desde, hasta):
         print(self.numero)
         alquileres = self.alquileres.all()
-        desicion = False
-        print(alquileres)
+        desicion = True
         for alquiler in alquileres:
             if ((str(alquiler.inicio) > str(hasta) ) and (self.baja == False)):
                 desicion = True

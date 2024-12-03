@@ -21,7 +21,6 @@ def vendedor(request):
     else:
         print("Aun no se ha seleccionado Cliente")
     contador=carrito.get_cantidad()
-    print("contenido de mi carrito antes: ",request.session['carrito'])
     personaInstancia = request.user.persona
     vendedorInstancia = get_object_or_404(Vendedor, persona = personaInstancia.id)
     colHoteles= Hotel.objects.filter(vendedores__persona=vendedorInstancia.persona)
@@ -34,7 +33,6 @@ def vendedor(request):
         hoteles_finales = preparar_hoteles(colHoteles,fecha_inicio,fecha_fin,pasajeros)
     else:
         formulario_enviado="no_enviado"
-    
     return render(request, "venta/vendedor.html", {"colHoteles": hoteles_finales,"vendedor":vendedorInstancia,
         "pasajeros": pasajeros,
         "fecha_inicio": fecha_inicio,
@@ -49,15 +47,13 @@ def buscarHabitaciones(request,hotel):
     personaInstancia = request.user.persona
     vendedorInstancia = get_object_or_404(Vendedor, persona = personaInstancia.id)
     carrito = Carrito(request)
-    contador=carrito.get_cantidad()
-    print("contenido de mi carrito antes: ",request.session['carrito'])   
+    contador=carrito.get_cantidad() 
     fecha_inicio=  datetime.strptime(request.session['fecha_inicio'], '%Y-%m-%d').date() if "fecha_inicio" in request.session else None
     fecha_fin=  datetime.strptime(request.session['fecha_fin'], '%Y-%m-%d').date() if "fecha_fin" in request.session else None
     pasajeros = int(request.session['pasajeros']) if "pasajeros" in request.session else None
     hotelInstancia = get_object_or_404(Hotel, pk=hotel)
     coleccionHabitaciones = hotelInstancia.get_habitaciones_busqueda(fecha_inicio,fecha_fin,pasajeros)
     colHabitaciones = [habitacion for habitacion in coleccionHabitaciones if habitacion.baja == False]
-    print("habitaciones hoteeeeel" , colHabitaciones)
     ventas_habitaciones_en_carrito=carrito.get_alquileres_habitaciones()
     for venta in ventas_habitaciones_en_carrito:
         fecha_inicio_venta=datetime.strptime(venta.fecha_inicio, '%Y-%m-%d').date()
@@ -69,16 +65,32 @@ def buscarHabitaciones(request,hotel):
             contenido_fechas=(fecha_inicio_venta<=fecha_inicio and fecha_fin_venta>=fecha_fin)
             if (pksiguales and (inicio_alquiler_en_fechas_ingresadas or fin_alquiler_en_fechas_ingresadas or contenido_fechas)):
                 colHabitaciones.remove(habitacion)
-    print(colHabitaciones)
     ventas_paquetes_en_carrito=carrito.get_alquileres_paquetes()
     colPaquetes = hotelInstancia.get_paquetes_busqueda(fecha_inicio,fecha_fin,pasajeros)
-    print("col paquetes" , colPaquetes)
     for venta in ventas_paquetes_en_carrito:
         paquete=get_object_or_404(PaqueteTuristico,pk=venta.paquete)
         if paquete in colPaquetes:
             colPaquetes.remove(paquete)
-    habitaciones_filtradas = filtrar_habitaciones(colHabitaciones , colPaquetes)
-    print("habitaciones : " , habitaciones_filtradas)
+            
+    # elimino las habitaciones que estan en un paquete del carrito para que no se puedan alquilar
+    for paquete in ventas_paquetes_en_carrito:
+        #obtengo el paquete del hotel
+        paquete_hotel = get_object_or_404(PaqueteTuristico, pk=paquete.paquete)
+        # busco el paquete con sus habitaciones
+        habitaciones_en_paquete = paquete_hotel.get_habitaciones()
+        for habitacion in habitaciones_en_paquete:
+            if habitacion in colHabitaciones:
+                colHabitaciones.remove(habitacion)
+    
+    # elimino los paquetes donde una habitacion este en el carrito para q no se pueda alquilar
+    for habitacion in ventas_habitaciones_en_carrito:
+        habitacion_hotel = get_object_or_404(Habitacion, pk=habitacion.habitacion)
+        for paquete in colPaquetes:
+            habitaciones_en_paquete = paquete.get_habitaciones()
+            # for habitacion_en_paquete in habitaciones_en_paquete:
+            if habitacion_hotel in habitaciones_en_paquete:
+                colPaquetes.remove(paquete)
+    
     habitaciones_con_precio_final = cargar_precio_habitacion_por_temporada(colHabitaciones, hotelInstancia.pk, fecha_inicio, fecha_fin )
     return render(request, "venta/buscarHabitaciones.html", {"hotel":hotelInstancia,
         "habitaciones_disponibles": habitaciones_con_precio_final,
@@ -88,7 +100,6 @@ def buscarHabitaciones(request,hotel):
         "vendedor":vendedorInstancia,
         "contador":contador
         })
-
 
 
 

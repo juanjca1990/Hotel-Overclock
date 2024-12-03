@@ -92,52 +92,53 @@ def devolver_temporadas_en_fechas(temporadas, fecha_inicio, fecha_fin):
 
 def asignar_precio_por_temporada(fecha_inicio, fecha_fin, id_hotel, tipo_habitacion):
     temporadas = TemporadaAlta.objects.filter(hotel = id_hotel)
-    precio_Hotel_temporadas = PrecioPorTipo.objects.get( hotel_id = id_hotel, tipo_id = tipo_habitacion)
+    precio_Hotel_temporadas = PrecioPorTipo.objects.filter( hotel_id = id_hotel, tipo_id = tipo_habitacion)
     dias_promocion = 0
     dias_sin_promocion = 0
     total = 0
     resultado = 0
+    precio = precio_Hotel_temporadas.first()
     if (temporadas):
         temporadas = devolver_temporadas_en_fechas(temporadas, fecha_inicio, fecha_fin)
         if (temporadas):
             for temporada in temporadas:
                 if (fecha_inicio <= fecha_fin <= temporada.inicio) or (temporada.fin <= fecha_inicio <= fecha_fin):
                     dias_sin_promocion = fecha_fin - fecha_inicio
-                    dias_sin_promocion = dias_sin_promocion.days * precio_Hotel_temporadas.baja
+                    dias_sin_promocion = dias_sin_promocion.days * precio.baja
                     total =  dias_sin_promocion
                 
                 if((fecha_inicio < temporada.inicio) and (temporada.inicio <= fecha_fin <= temporada.fin)):
                     dias_promocion = fecha_fin - temporada.inicio
-                    dias_promocion = dias_promocion.days * precio_Hotel_temporadas.alta
+                    dias_promocion = dias_promocion.days * precio.alta
                     dias_sin_promocion = temporada.inicio - fecha_inicio
-                    dias_sin_promocion = dias_sin_promocion.days * precio_Hotel_temporadas.baja
+                    dias_sin_promocion = dias_sin_promocion.days * precio.baja
                     total = dias_promocion + dias_sin_promocion
                 
                 if((temporada.inicio <= fecha_inicio <= temporada.fin) and (temporada.fin <= fecha_fin)):
                     dias_promocion = temporada.fin - fecha_inicio
-                    dias_promocion = dias_promocion.days * precio_Hotel_temporadas.alta
+                    dias_promocion = dias_promocion.days * precio.alta
                     dias_sin_promocion = fecha_fin - temporada.fin
-                    dias_sin_promocion = dias_sin_promocion.days * precio_Hotel_temporadas.baja
+                    dias_sin_promocion = dias_sin_promocion.days * precio.baja
                     total = dias_promocion + dias_sin_promocion
                 
                 if (temporada.inicio <= fecha_inicio) and (temporada.fin >= fecha_fin):
                     dias_promocion = fecha_fin - fecha_inicio
-                    dias_promocion = dias_promocion.days * precio_Hotel_temporadas.alta
+                    dias_promocion = dias_promocion.days * precio.alta
                     total = dias_promocion
                 
                 if ((fecha_inicio <= temporada.inicio <= temporada.fin) and (temporada.fin <= fecha_fin)):
                     dias_sin_promocion = (fecha_fin - temporada.fin ) + ( temporada.inicio - fecha_inicio)
-                    dias_sin_promocion = dias_sin_promocion.days * precio_Hotel_temporadas.baja
+                    dias_sin_promocion = dias_sin_promocion.days * precio.baja
                     dias_promocion = temporada.fin - temporada.inicio
-                    dias_promocion = dias_promocion.days * precio_Hotel_temporadas.alta
+                    dias_promocion = dias_promocion.days * precio.alta
                     total =  dias_promocion + dias_sin_promocion
                 resultado = resultado + total
                 fecha_inicio = temporada.fin
             return resultado
         else:
-            return (fecha_fin - fecha_inicio).days * precio_Hotel_temporadas.baja
+            return (fecha_fin - fecha_inicio).days * precio.baja
     else:   
-        return (fecha_fin - fecha_inicio).days * precio_Hotel_temporadas.baja
+        return (fecha_fin - fecha_inicio).days * precio.baja
 
 
 def cargar_precio_habitacion_por_temporada(habitaciones, id_hotel, fecha_inicio, fecha_fin):

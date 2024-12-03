@@ -1,3 +1,7 @@
-ADMIN123
-ADMIN123
+administradores
+
+ADMIN123 ADMIN123
 =================================
+vendedores
+
+juan1 juan1
