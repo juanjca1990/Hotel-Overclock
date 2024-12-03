@@ -12,7 +12,7 @@
 
 {% block content %}
 
-<center><h1 class="my-4">LIQUIDACIONES</h1></center>
+<center><h1 class="my-4">LIQUIDACIONES PENDIENTES</h1></center>
 
 <div class="formularioRegion" id="vistaLiquidacion">
 
@@ -21,10 +21,11 @@
         <form action="{% url 'venta:listado_liquidaciones' %}" method="post" id="formulario">
             {% csrf_token %}
             <label for="fecha1"> fecha inicio : </label>
-            <input type="date" name="fecha_inicio" id="fecha_inicio" required>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
             <label for="fecha2"> fecha fin : </label>
-            <input type="date" name="fecha_fin" id="fecha_fin" required>
+            <input type="date" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}" required>
             <input type="submit" name="cargar"  id="cargar" value="Cargar liquidaciones pendientes">
+            <button><a href="{%url 'venta:limpiar_preferencias_liquidaciones'%}"> limpiar Preferencias</a></button>
         </form>
 
         <div class="formularioRegion" id="vistaClientes">

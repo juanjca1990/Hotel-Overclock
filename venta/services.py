@@ -5,12 +5,22 @@ from venta.models import Alquiler, Factura, Liquidacion
 from venta.helpers import cliente_existe
 
 def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor):
-    facturas = Factura.objects.filter(
+    if fecha_inicio is None or fecha_fin is None:
+        facturas = Factura.objects.filter(
         liquidacion__isnull=True,
-        vendedor=vendedor,
-        fecha__range=(fecha_inicio, fecha_fin)
+        vendedor=vendedor
     )
-    total = sum([f.total() for f in facturas]) * vendedor.coeficiente
+    else:
+        facturas = Factura.objects.filter(
+            liquidacion__isnull=True,
+            vendedor=vendedor,
+            fecha__range=(fecha_inicio, fecha_fin)
+        )
+    total = 0
+    for factura in facturas:
+        liquidaciones = Alquiler.objects.filter(factura_id=factura.pk)
+        resultado_liquidado = (liquidaciones[0].total * 2) / 100
+        total += resultado_liquidado
     return total
 
 def cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin):
@@ -29,10 +39,6 @@ def cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin):
     return facturas_pendientes
 
 def buscar_facturas_pendiente_de_liquidar(fecha_inicio, fecha_fin, vendedor):
-    print("===========================")
-    print(fecha_fin)
-    print(fecha_inicio)
-    print(vendedor)
     facturas = Factura.objects.filter(
         liquidacion__isnull=True,
         vendedor=vendedor,
