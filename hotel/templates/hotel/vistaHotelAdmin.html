@@ -77,6 +77,18 @@
 </div>
 {% endblock tarjeta6 %}
 
+{% block tarjeta7 %}
+<div class="card rounded-0">
+    <div class="card-header" id="headingOne">
+        <button onclick="location.href='{% url 'hotel:vistaVentasHotel' hotel.pk %}'" class="btn btn-link btn-block text-white">
+            <center>
+                <h5> Ventas</h5>
+            </center>
+        </button>
+    </div>
+</div>
+{% endblock tarjeta7 %}
+
 <!--  ####################### FIN TARJETAS DEL SIDE BAR #######################-->
 
 

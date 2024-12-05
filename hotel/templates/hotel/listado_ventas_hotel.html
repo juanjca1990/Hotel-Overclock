@@ -1,0 +1,152 @@
+{% extends "hotel/vistaHotelAdmin.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+{% endblock extra_css %}
+{% block header %}
+<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
+    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+{% endblock header %}
+
+{% block headerContenido %}
+{% endblock headerContenido %}
+
+
+{% block content %}
+
+
+<div id="container">
+    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-dia" name="material" value="ventas-por-dia">
+    <label class="etiqueta-boton" for="ventas-por-dia" id="label-1" onclick="seleccionarEstado('ventas-por-dia'); location.href='{% url 'hotel:ventasHotelPorDia' hotel.pk %}'">
+        <span class="glyphicon glyphicon-user"><i class="fas fa-bed"></i></span>
+    </label>
+    
+    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-mes" name="material" value="ventas-por-mes">
+    <label class="etiqueta-boton" for="ventas-por-mes" id="label-2" onclick="seleccionarEstado('ventas-por-mes'); location.href='{% url 'hotel:ventasHotelPorMes' hotel.pk %}'">
+        <span class="glyphicon glyphicon-bell"><i class="fas fa-box"></i></span>
+    </label>
+    
+    <div id="effect"></div>
+</div>
+
+<center><h1 class="my-4">VENTAS DEL HOTEL {{hotel.nombre.upper}}</h1></center>
+
+
+{% if ventasDias %}
+<div class="ventashoteldias" id="ventas-dias">
+    
+    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+        
+        <form action="{% url 'hotel:ventasHotelPorDia' hotel.pk %}" method="post" id="formulario">
+            {% csrf_token %}
+            <label for="fecha1"> fecha inicio : </label>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
+            <label for="fecha2"> fecha fin : </label>
+            <input type="date" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}" required>
+            <input type="submit" name="cargar"  id="cargar" value="Generar grafico de ventas">
+            <button><a href="{%url 'hotel:limpiar_preferencias_ventas_dias' hotel.pk %}"> limpiar Preferencias</a></button>
+        </form>
+    </table>
+    <div>
+        <h2>Gráfico de Ventas Diarias</h2>
+        <canvas id="ventasChart" style="width: 800px; height: 400px;"></canvas>
+    </div>
+</div>
+{% else %}
+    {% if not ventasMes %}
+    <form action="{% url 'hotel:ventasHotelPorDia' hotel.pk %}" method="post" id="formulario">
+        {% csrf_token %}
+        <label for="fecha1"> fecha inicio : </label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
+        <label for="fecha2"> fecha fin : </label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}" required>
+        <input type="submit" name="cargar"  id="cargar" value="Generar grafico de ventas">
+        <button><a href="{%url 'hotel:limpiar_preferencias_ventas_dias' hotel.pk %}"> limpiar Preferencias</a></button>
+    </form>
+    <h1>INTRODUZCA UN RANGO DE FECHAS</h1>
+    {% endif %}
+{% endif %}
+
+
+{% if ventasMes %}
+<div class="ventashotelmes" id="ventas-mes">
+    <h2>Gráfico de Ventas Mensuales</h2>
+    <canvas id="ventasChart" style="width: 800px; height: 400px;"></canvas>
+</div>
+{% endif %}
+<!-- Gráfico -->
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    
+    $(document).ready(function () {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+    });</script>
+
+    <script>
+        let state = sessionStorage.getItem("eleccion") || "ventas-por-dia";
+        document.getElementById(state).setAttribute("checked" , "")
+        
+        function seleccionarEstado(estado){
+            sessionStorage.setItem("eleccion" , estado)
+            document.getElementById(estado).setAttribute("checked" , "")
+        }
+    </script>
+    
+
+<script>
+
+    function valoresCargados(){
+        var fechaInicio = document.getElementById("fecha_inicio").value;
+        var fechaFin = document.getElementById("fecha_fin").value;
+        if((fechaFin == '') || (fechaInicio == '')){
+            return false
+        }
+        return true
+    }
+
+</script>
+
+<!-- Incluir Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Suponiendo que las fechas vienen en formato DD/MM/YYYY
+    const fechas = JSON.parse('{{ fechas|safe|escapejs }}');
+    const totales = JSON.parse('{{ totales|safe|escapejs }}');
+
+    // Crear el gráfico con las fechas formateadas
+    const ctx = document.getElementById('ventasChart').getContext('2d');
+    const ventasChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: fechas,
+            datasets: [{
+                label: 'Ventas totales',
+                data: totales,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                barThickness: 30, // Espesor fijo de las barras
+                maxBarThickness: 50 // Espesor máximo de las barras
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    categoryPercentage: 0.8, // Espaciado entre categorías
+                    barPercentage: 0.9 // Espaciado entre barras dentro de una categoría
+                },
+                y: { 
+                    beginAtZero: true 
+                }
+            }
+        }
+    });
+</script>
+{% endblock extrajs %}

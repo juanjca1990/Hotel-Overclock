@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import json
 from django.contrib.auth.decorators import login_required
 from django.db.models import fields
 from django.db.models.fields import DateField
@@ -12,6 +13,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from hotel.helpers import habitacion_duplicada, hay_fechas_superpuestas
 from hotel.models import Habitacion, Hotel, PrecioPorTipo, TemporadaAlta, PaqueteTuristico
+from venta.models import Factura
 from .forms import  HabitacionForm, HotelForm, ServicioForm, TemporadaHotelForm, AgregarTipoAHotelForm, HabitacionForm, PaqueteTuristicoForm, VendedorHotelForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
@@ -21,6 +23,7 @@ from django.contrib.auth.models import Group, User
 from django.utils import timezone
 from django.views.generic.edit import CreateView
 from core.models import Persona, Vendedor, Categoria, TipoHabitacion, Servicio
+from collections import defaultdict
 
 
 # Create your views here.
@@ -445,3 +448,186 @@ def eliminarServicioHotel(request,hotel,servicio):
         return redirect('hotel:serviciosHotel', hotel)
     return render(request, "hotel/modals/modal_servicio_Hotel_eliminar.html",{"hotel":hotelInstancia,"servicio":servicioInstancia})
 
+
+def vistaVentasHotel(request, hotel):
+    if 'ventas_mes' in request.session:
+        return ventasHotelPorMes(request, hotel)
+    else:
+        return ventasHotelPorDia(request, hotel)
+    
+    
+def limpiar_preferencias_ventas_dias(request,hotel):
+    if 'fecha_inicio_ventas-dias' in request.session:
+        del request.session['fecha_inicio_ventas-dias']
+    if 'fecha_fin_ventas-dias' in request.session:
+        del request.session['fecha_fin_ventas-dias']
+    return redirect("hotel:ventasHotelPorDia",hotel)
+
+# ventas del hotel por dia total
+def ventasHotelPorDia(request, hotel):
+    if 'ventas_mes' in request.session:
+        del request.session['ventas_mes']
+    ventasDias="ventas-dias"
+    personaInstancia = request.user.persona
+    hotelInstancia = get_object_or_404(Hotel, pk=hotel)
+    
+    
+    if request.method == "POST":
+        fecha_inicio = request.POST['fecha_inicio']
+        fecha_fin = request.POST['fecha_fin']
+        request.session['fecha_inicio_ventas-dias']=fecha_inicio
+        request.session['fecha_fin_ventas-dias']=fecha_fin
+        # Convertir las fechas de inicio y fin a objetos datetime
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, '%Y-%m-%d')
+        fecha_fin_dt = datetime.strptime(fecha_fin, '%Y-%m-%d')
+        request.session['ventas_dias']= "ventas_dias"
+
+        colHabitaciones = hotelInstancia.get_habitaciones()
+        
+        ventas = []
+        fechas = []
+        totales = []
+        
+        ventas_por_fecha = defaultdict(float)  # Diccionario para acumular las ventas por fecha
+        
+        for habitacion in colHabitaciones:
+            alquileres = habitacion.alquileres.all()
+            for alquiler in alquileres:
+                factura = Factura.objects.get(id=alquiler.factura_id)
+                fecha = factura.fecha.strftime('%Y-%m-%d')
+                fecha = datetime.strptime(fecha, '%Y-%m-%d')
+                
+                # Verificar si la factura está dentro del rango de fechas          
+                if fecha_inicio_dt <= fecha <= fecha_fin_dt:
+                    fecha = factura.fecha.strftime('%Y-%m-%d')  # Formato de fecha
+                    ventas_por_fecha[fecha] += float(alquiler.total)  # Sumar al total de la fecha
+                
+        # Ordenamos las fechas y preparamos los datos para la respuesta
+        for fecha, total in ventas_por_fecha.items():
+            ventas.append({
+                "fecha": fecha,
+                "total": total,
+            })
+            fechas.append(fecha)
+            totales.append(total)
+        
+        ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
+        print("las ventas",ventas)
+        context = {
+            "ventas": ventas,
+            'fechas': json.dumps(fechas), 
+            "totales": json.dumps(totales), 
+            "hotel": hotelInstancia,
+            "administrador": personaInstancia,
+            "ventasDias":ventasDias,
+            "fecha_inicio": fecha_inicio,
+            "fecha_fin": fecha_fin,
+        }
+        return render(request, "hotel/listado_ventas_hotel.html", context)
+    else:
+        
+        
+        fecha_inicio=  request.session['fecha_inicio_ventas-dias'] if "fecha_inicio_ventas-dias" in request.session else None
+        fecha_fin=  request.session['fecha_fin_ventas-dias'] if "fecha_fin_ventas-dias" in request.session else None
+        
+        if fecha_inicio is None:
+            context = {
+                "hotel": hotelInstancia,
+                "administrador": personaInstancia,
+        }
+            return render(request, "hotel/listado_ventas_hotel.html", context)
+        
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, '%Y-%m-%d')
+        fecha_fin_dt = datetime.strptime(fecha_fin, '%Y-%m-%d')
+        request.session['ventas_dias']= "ventas_dias"
+
+        colHabitaciones = hotelInstancia.get_habitaciones()
+        
+        ventas = []
+        fechas = []
+        totales = []
+        
+        ventas_por_fecha = defaultdict(float)  # Diccionario para acumular las ventas por fecha
+        
+        for habitacion in colHabitaciones:
+            alquileres = habitacion.alquileres.all()
+            for alquiler in alquileres:
+                factura = Factura.objects.get(id=alquiler.factura_id)
+                fecha = factura.fecha.strftime('%Y-%m-%d')
+                fecha = datetime.strptime(fecha, '%Y-%m-%d')
+                
+                # Verificar si la factura está dentro del rango de fechas          
+                if fecha_inicio_dt <= fecha <= fecha_fin_dt:
+                    fecha = factura.fecha.strftime('%Y-%m-%d')  # Formato de fecha
+                    ventas_por_fecha[fecha] += float(alquiler.total)  # Sumar al total de la fecha
+                
+        # Ordenamos las fechas y preparamos los datos para la respuesta
+        for fecha, total in ventas_por_fecha.items():
+            ventas.append({
+                "fecha": fecha,
+                "total": total,
+            })
+            fechas.append(fecha)
+            totales.append(total)
+        
+        ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
+        
+        
+        context = {
+            "ventas": ventas,
+            'fechas': json.dumps(fechas), 
+            "totales": json.dumps(totales), 
+            "hotel": hotelInstancia,
+            "administrador": personaInstancia,
+            "ventasDias":ventasDias,
+            "fecha_inicio": fecha_inicio,
+            "fecha_fin": fecha_fin,
+        }
+        return render(request, "hotel/listado_ventas_hotel.html", context)
+
+
+def ventasHotelPorMes(request, hotel):
+    request.session['ventas_mes']= "ventas_mes"
+    if 'ventas_dias' in request.session:
+        del request.session['ventas_dias']
+    ventasMes="ventas-mes"
+    personaInstancia = request.user.persona
+    hotelInstancia = get_object_or_404(Hotel, pk=hotel)
+    colHabitaciones = hotelInstancia.get_habitaciones()
+    
+    ventas = []
+    fechas = []
+    totales = []
+    
+    ventas_por_mes = defaultdict(float)  # Diccionario para acumular las ventas por mes
+    
+    for habitacion in colHabitaciones:
+        alquileres = habitacion.alquileres.all()
+        for alquiler in alquileres:
+            factura = Factura.objects.get(id=alquiler.factura_id)
+            
+            # Extraemos el mes y año (formato 'YYYY-MM')
+            mes = factura.fecha.strftime('%Y-%m')
+            
+            ventas_por_mes[mes] += float(alquiler.total)  # Sumar al total del mes
+            
+    # Ordenamos los meses y preparamos los datos para la respuesta
+    for mes, total in ventas_por_mes.items():
+        ventas.append({
+            "fecha": mes,
+            "total": total,
+        })
+        fechas.append(mes)
+        totales.append(total)
+    
+    ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
+    
+    context = {
+        "ventas": ventas,
+        'fechas': json.dumps(fechas), 
+        "totales": json.dumps(totales), 
+        "hotel": hotelInstancia,
+        "administrador": personaInstancia,
+        "ventasMes":ventasMes,
+    }
+    return render(request, "hotel/listado_ventas_hotel.html", context)

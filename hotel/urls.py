@@ -60,4 +60,10 @@ urlpatterns = [
     path('vendedoresHotel/<hotel>', hviews.vendedoresHotel, name="vendedoresHotel"),
     path('aniadirVendedorHotel/<hotel>',hviews.aniadirVendedorHotel, name="modalAniadirVendedorHotel"),
     path('eliminarVendedorHotel/<int:hotel>/<int:vendedor>',hviews.vendedorHotelEliminar, name="modalEliminarVendedorHotel"),
+    
+    #Path GESTION VENTAS HOTEL
+    path('ventasHotelPorDia/<hotel>', hviews.ventasHotelPorDia, name="ventasHotelPorDia"),
+    path('ventasHotelPorMes/<hotel>', hviews.ventasHotelPorMes, name="ventasHotelPorMes"),
+    path('vistaVentasHotel/<hotel>', hviews.vistaVentasHotel, name="vistaVentasHotel"),
+    path('limpiar_preferencias_ventas_dias/<hotel>', hviews.limpiar_preferencias_ventas_dias, name="limpiar_preferencias_ventas_dias"),
 ]
