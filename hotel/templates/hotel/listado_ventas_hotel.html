@@ -39,27 +39,31 @@
         
         <form action="{% url 'hotel:ventasHotelPorDia' hotel.pk %}" method="post" id="formulario">
             {% csrf_token %}
-            <label for="fecha1"> fecha inicio : </label>
-            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
-            <label for="fecha2"> fecha fin : </label>
-            <input type="date" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}" required>
+            <label for="fecha_inicio">Fecha inicio:</label>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>      
+            <label for="fecha_fin">Fecha fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required> 
             <input type="submit" name="cargar"  id="cargar" value="Generar grafico de ventas">
             <button><a href="{%url 'hotel:limpiar_preferencias_ventas_dias' hotel.pk %}"> limpiar Preferencias</a></button>
         </form>
     </table>
+    {% if ventas %}
     <div>
         <h2>Gráfico de Ventas Diarias</h2>
         <canvas id="ventasChart" style="width: 800px; height: 400px;"></canvas>
     </div>
+    {% else %}
+        <h1>NO HAY VENTAS EN ESTE RANGO DE FECHAS</h1>
+    {% endif %}
 </div>
 {% else %}
     {% if not ventasMes %}
     <form action="{% url 'hotel:ventasHotelPorDia' hotel.pk %}" method="post" id="formulario">
         {% csrf_token %}
-        <label for="fecha1"> fecha inicio : </label>
+        <label for="fecha_inicio">Fecha inicio:</label>
         <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
-        <label for="fecha2"> fecha fin : </label>
-        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ fecha_fin }}" required>
+        <label for="fecha_fin">Fecha fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required> 
         <input type="submit" name="cargar"  id="cargar" value="Generar grafico de ventas">
         <button><a href="{%url 'hotel:limpiar_preferencias_ventas_dias' hotel.pk %}"> limpiar Preferencias</a></button>
     </form>
@@ -148,5 +152,56 @@
             }
         }
     });
+</script>
+
+<script type="text/javascript">
+
+    // Escuchar cambios en el campo de fecha de inicio
+    document.getElementById('fecha_inicio').addEventListener('input', function () {
+        const fechaInicio = this.value; // Obtener el valor de fecha_inicio
+        if (fechaInicio) {
+            document.getElementById('fecha_fin').setAttribute('min', fechaInicio);
+            document.getElementById('fecha_fin').value = fechaInicio; // Asignar el mismo valor a fecha_fin
+        }
+    });
+
+    document.getElementById('fecha_fin').addEventListener('click', function (e) {
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        const fechaFin = document.getElementById('fecha_fin').value;
+    
+        if (fechaInicio === '') {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe seleccionar primero una fecha inicio',
+                footer: 'Por favor complete los campos para continuar'
+            });
+        }
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    document.getElementById('cargar').addEventListener('click', function (e) {
+        const fechaFin = document.getElementById('fecha_fin').value;
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+            document.getElementById('fecha_fin').value = '';
+        }
+    });
+
 </script>
 {% endblock extrajs %}

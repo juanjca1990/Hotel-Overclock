@@ -37,10 +37,11 @@
         <form id="form_preferencias_cliente" onsubmit="return evitar_envio(event)"
             action="{%url 'venta:iniciar_venta'%} " method="POST">
             {% csrf_token %}
-            <label for="fecha1"> fecha inicio: </label>
-            <input type="date" id="fecha1" name="fecha_inicio" value="{{ fecha_inicio }}" min="" max="" onclick="fecha_actual();">
-            <label for="fecha2"> fecha fin: </label>
-            <input type="date" id="fecha2" name="fecha_fin" value= "{{ fecha_fin }}" min=" max=" onclick="fecha_minima();">
+            <label for="fecha_inicio">Fecha inicio:</label>
+            <input type="date" name="fecha_inicio" id="fecha1" value="{{ fecha_inicio }}" required>
+            
+            <label for="fecha_fin">Fecha fin:</label>
+            <input type="date" id="fecha2" name="fecha_fin" value="{{ fecha_fin }}" required>
             <label for="pasajeros"> Nª Pasajeros: </label>
             <input type="number" id="pasajeros" name="pasajeros" value="{{ pasajeros }}" min=1>
             <input type="submit" id="filtrar" name="filtrar">
@@ -173,6 +174,57 @@
         }
 
     };
+</script>
+
+<script type="text/javascript">
+
+    // Escuchar cambios en el campo de fecha de inicio
+    document.getElementById('fecha1').addEventListener('input', function () {
+        const fechaInicio = this.value; // Obtener el valor de fecha_inicio
+        if (fechaInicio) {
+            document.getElementById('fecha2').setAttribute('min', fechaInicio);
+            document.getElementById('fecha2').value = fechaInicio; // Asignar el mismo valor a fecha_fin
+        }
+    });
+
+    document.getElementById('fecha2').addEventListener('click', function (e) {
+        const fechaInicio = document.getElementById('fecha1').value;
+        const fechaFin = document.getElementById('fecha2').value;
+    
+        if (fechaInicio === '') {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe seleccionar primero una fecha inicio',
+                footer: 'Por favor complete los campos para continuar'
+            });
+        }
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    document.getElementById('filtrar').addEventListener('click', function (e) {
+        const fechaFin = document.getElementById('fecha2').value;
+        const fechaInicio = document.getElementById('fecha1').value;
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+            document.getElementById('fecha2').value = '';
+        }
+    });
+
 </script>
 
 {% endblock extrajs%}
