@@ -38,6 +38,7 @@
 
                 <thead>
                     <tr>
+                        <th>fecha</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Documento</th>
@@ -48,11 +49,12 @@
                 <tbody>
                     {% for liquidacion_pendiente in liquidaciones_pendientes %}
                     <tr>
+                        <td> {{liquidacion_pendiente.fecha_liquidacion}} </td>
                         <td> {{liquidacion_pendiente.nombre}}</td>
                         <td> {{liquidacion_pendiente.apellido}}</td>
                         <td> {{liquidacion_pendiente.documento}}</td>
                         <td> ${{liquidacion_pendiente.monto_total}}</td>
-                        <td><button class="btn btn-success"> <a href="{% url 'venta:liquidar' liquidacion_pendiente.documento fecha_inicio fecha_fin %}"> abonar </a> </button></td>
+                        <td><button class="btn btn-success"> <a href="{% url 'venta:liquidar' liquidacion_pendiente.documento liquidacion_pendiente.factura_id liquidacion_pendiente.monto_total %}"> abonar </a> </button></td>
                         
                     </tr>
                         {% empty %}
@@ -63,6 +65,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
+                    <th>fecha</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Documento</th>

@@ -1,5 +1,5 @@
 
-from venta.models import Alquiler, Factura, Tipo_pago
+from venta.models import Alquiler, Factura, Liquidacion, Tipo_pago
 from venta.forms import ClienteForm
 from django.shortcuts import render, redirect, get_object_or_404
 from hotel.models import Habitacion, Hotel, PaqueteTuristico
@@ -317,17 +317,25 @@ def listado_liquidaciones(request):
         }
         return render(request, "venta/listado_liquidaciones.html",context)
 
-def liquidar(request, documento, fecha_inicio, fecha_fin):
-    personaInstancia = request.user.persona
-    liquidaciones_pendientes = cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin)
 
-    context = {
-        "liquidaciones_pendientes": liquidaciones_pendientes,
-        "fecha_inicio": fecha_inicio,
-        "fecha_fin": fecha_fin,
-        "administrador":personaInstancia,
-    }
-    return render(request, 'venta/listado_liquidaciones.html', context)
+def liquidar(request,documento, id_factura,monto):
+    vendedor = Vendedor.objects.get(persona__documento = documento)
+    factura = Factura.objects.get(pk=id_factura)
+    fecha_actual = datetime.now()
+    
+    # Crear una nueva instancia de Liquidacion
+    liquidacion = Liquidacion.objects.create(
+        fecha = factura.fecha,
+        abonado= fecha_actual,
+        vendedor_id=vendedor.id,
+        total=monto
+    )
+    # Asigno la liquidacion a la factura
+    factura.liquidacion_id = liquidacion.id
+    factura.save()
+    liquidacion.save()
+    return redirect('venta:listado_liquidaciones')
+
 
 def lista_compras_cliente(request, id_cliente , id_persona):
     cliente = Persona.objects.get(id = id_persona)

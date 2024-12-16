@@ -5,6 +5,7 @@ from venta.models import Alquiler, Factura, Liquidacion
 from venta.helpers import cliente_existe
 
 def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor):
+    elementos = []
     if fecha_inicio is None or fecha_fin is None:
         facturas = Factura.objects.filter(
         liquidacion__isnull=True,
@@ -21,20 +22,25 @@ def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedo
         liquidaciones = Alquiler.objects.filter(factura_id=factura.pk)
         resultado_liquidado = (liquidaciones[0].total * 2) / 100
         total += resultado_liquidado
-    return total
+        fecha_liquidacion = factura.fecha
+        factura_id = factura.pk
+        elementos.append({'fecha': fecha_liquidacion, 'monto': total , 'factura_id': factura_id})
+    return elementos
 
 def cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin):
     vendedores = Vendedor.objects.all()
     facturas_pendientes = []
     for vendedor in vendedores:
-        monto_total_pendiente = buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor)
-        if monto_total_pendiente != 0:
+        montos_pendientes = buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor)
+        for pendiente in montos_pendientes:
             persona_dict = {
-                    'nombre': vendedor.persona.nombre,
-                    'apellido': vendedor.persona.apellido,
-                    'documento': vendedor.persona.documento,
-                    'monto_total': monto_total_pendiente,
-                }
+                'nombre': vendedor.persona.nombre,
+                'apellido': vendedor.persona.apellido,
+                'documento': vendedor.persona.documento,
+                'monto_total': pendiente['monto'],
+                'fecha_liquidacion': pendiente['fecha'],
+                'factura_id': pendiente['factura_id']
+            }
             facturas_pendientes.append(persona_dict)
     return facturas_pendientes
 

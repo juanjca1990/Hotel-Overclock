@@ -43,7 +43,7 @@ urlpatterns = [
     path('cancelarFactura/<factura>' , vviews.cancelar_venta, name="cancelarFactura"),
     path('limpiarPreferencias' , vviews.limpiar_preferencias, name="limpiar_preferencias"),
     path('listado_liquidaciones', vviews.listado_liquidaciones, name="listado_liquidaciones"),
-    path('liquidar/<documento>/<fecha_inicio>/<fecha_fin>', vviews.liquidar, name='liquidar'),
     path('listaComprasCliente/<id_cliente>/<id_persona>', vviews.lista_compras_cliente, name="listaComprasCliente"),
     path('limpiarPreferenciasLiquidaciones' , vviews.limpiar_preferencias_liquidaciones, name="limpiar_preferencias_liquidaciones"),
+    path('liquidar/<documento>/<id_factura>/<monto>', vviews.liquidar, name='liquidar'),
     ]
