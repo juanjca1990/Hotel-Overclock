@@ -263,6 +263,11 @@ def cancelarFactura(request,factura):
     carrito.vaciar_carrito()
     return redirect("venta:vendedor")
 
+def vaciar_carrito_completo(request):
+    carrito = Carrito(request)
+    carrito.vaciar_carrito()
+    return redirect("venta:vendedor")
+
 
 def limpiar_preferencias(request):
     carrito = Carrito(request)

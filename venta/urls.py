@@ -47,4 +47,5 @@ urlpatterns = [
     path('limpiarPreferenciasLiquidaciones' , vviews.limpiar_preferencias_liquidaciones, name="limpiar_preferencias_liquidaciones"),
     path('liquidar/<documento>/<id_factura>/<monto>', vviews.liquidar, name='liquidar'),
     path('limpiar_nombre_cliente' , vviews.limpiar_nombre_cliente, name="limpiar_nombre_cliente"),
+    path('vaciar_carrito_completo' , vviews.vaciar_carrito_completo, name="vaciar_carrito_completo"),
     ]
