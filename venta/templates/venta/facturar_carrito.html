@@ -159,11 +159,10 @@
   <input class="btn btn-success" type="submit" id="filtrar" name="filtrar" value="   PAGAR  " > 
 </form>
 
-
-  
-  <button class="btn btn-danger" style="margin-top: 15px;"  onClick="location.href='{%url 'venta:cancelarFactura' factura.pk %} '">
-    CANCELAR 
-  </button>
+<button type="button" class="btn btn-danger" style="margin-top: 15px;"  
+    onClick="location.href='{% url 'venta:cancelarFactura' factura.pk %}'">
+  CANCELAR 
+</button>
 </div>
   </div>
 </div>
