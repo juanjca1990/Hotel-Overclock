@@ -167,13 +167,19 @@ class Habitacion(models.Model):
         return precio_por_tipo.alta
 
     def precio_alquiler(self, desde, hasta):
-        if desde >= hasta:
+        if desde > hasta:
             #TODO: Custom exception
             raise Exception("No puedo calcular el precio ... precio_alquiler")
-        total = Decimal(0)
-        while desde < hasta:
-            total += self.precio_por_noche(desde)
-            desde += timedelta(days=1)
+        else:
+            total = Decimal(0)
+            if desde == hasta:
+                total += self.precio_por_noche(desde)
+                print("aplicando descuento")
+                total = total / 2
+            else:
+                while desde < hasta:
+                    total += self.precio_por_noche(desde)
+                    desde += timedelta(days=1)
         return total
 
 

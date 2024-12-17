@@ -148,15 +148,22 @@ def asignar_precio_por_temporada(fecha_inicio, fecha_fin, id_hotel, tipo_habitac
                 fecha_inicio = temporada.fin
             return resultado
         else:
+            if(fecha_inicio == fecha_fin):
+                return precio.baja / 2
+            else:
+                return (fecha_fin - fecha_inicio).days * precio.baja
+    else:  
+        if(fecha_inicio == fecha_fin):
+            return precio.baja / 2
+        else:
             return (fecha_fin - fecha_inicio).days * precio.baja
-    else:   
-        return (fecha_fin - fecha_inicio).days * precio.baja
 
 
 def cargar_precio_habitacion_por_temporada(habitaciones, id_hotel, fecha_inicio, fecha_fin):
     habitaciones_con_precios=[]
     for habitacion in habitaciones:
         precio = asignar_precio_por_temporada(fecha_inicio, fecha_fin, id_hotel, habitacion.tipo_id )
+        print("el precio" , precio)
         datos={
             "id": habitacion.id,
             "tipo": habitacion.tipo,
