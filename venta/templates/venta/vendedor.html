@@ -27,6 +27,8 @@
             <h5 class="my-4">PREFERENCIAS DEL CLIENTE : {%if request.session.nombre_cliente%}
                                                             {{ request.session.nombre_cliente }}
                                                             {{ request.session.apellido_cliente }}
+                                                             - DNI : {{ request.session.dni_cliente }}
+                                                             <button><a href="{%url 'venta:limpiar_nombre_cliente'%}"> limpiar Nombre</a></button>
                                                         {% else %}
                                                             No se selecciono cliente
                                                         {% endif %}

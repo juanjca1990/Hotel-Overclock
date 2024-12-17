@@ -199,9 +199,7 @@ def quitar_paquete_carrito(request, paquete):
 
 def quitar_habitacion_carrito(request, habitacion, desde, hasta):
     carrito=Carrito(request)
-    print("holaaaaaaaa ", habitacion)
     habitacion=habitacion.split("-")
-    print("holaaaaaaaaaa ", habitacion)
     fecha_desde=datetime.strptime(desde, '%Y-%m-%d').date()
     fecha_hasta=datetime.strptime(hasta, '%Y-%m-%d').date()
     carrito.quitar_habitacion(habitacion[1], fecha_desde, fecha_hasta)
@@ -212,6 +210,7 @@ def seleccionar_cliente(request, cliente):
     persona = Persona.objects.get(id = cliente)
     request.session['nombre_cliente']= persona.nombre
     request.session['apellido_cliente']=  persona.apellido
+    request.session['dni_cliente']=  persona.documento
     carrito=Carrito(request)
     carrito.set_cliente(cliente)
     return redirect("venta:vendedor")
@@ -274,11 +273,18 @@ def limpiar_preferencias(request):
         del request.session['fecha_fin']
     if 'pasajeros' in request.session:
         del request.session['pasajeros']
+    return redirect("venta:vendedor")
+
+
+def limpiar_nombre_cliente(request):
     if 'nombre_cliente' in request.session:
         del request.session['nombre_cliente']
     if 'apellido_cliente' in request.session:
         del request.session['apellido_cliente']
+    if 'dni_cliente' in request.session:
+        del request.session['dni_cliente']
     return redirect("venta:vendedor")
+    
 
 def limpiar_preferencias_liquidaciones(request):
     if 'fecha_inicio_liquidaciones' in request.session:
