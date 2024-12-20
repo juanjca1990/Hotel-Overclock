@@ -2,10 +2,16 @@
 {% load static %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+
+<style>
+    #vendedor {
+        color: aliceblue;
+    }
+</style>
 {% endblock extra_css %}
 
 {% block header %}
-<h5 style="color: aliceblue;">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
+<h5 id="vendedor">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
 {% endblock header %}
 
 {% block carritoz %}
