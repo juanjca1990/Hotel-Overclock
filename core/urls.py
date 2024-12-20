@@ -32,7 +32,7 @@ urlpatterns = [
     path('tipoHabitacion',views.tipoHabitacion, name="opcionTipoHabitacion"),
     path('servicio',views.servicio, name="servicio"),
     path('categoria',views.categoria, name="categoria"),
-    path('vendedor', views.vendedor, name='opcionVendedor'),
+    path('vendedores', views.vendedores, name='opcionVendedor'),
     path('clienteAdmin', views.cliente, name='cliente'),
 
     path('crearLocalidad',views.localidadCrear, name="modalCrearLocalidad"),

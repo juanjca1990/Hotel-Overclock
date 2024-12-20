@@ -312,7 +312,8 @@ def categoriaModificar(request, categoria):
 # GESTION VENDEDOR
 
 
-def vendedor(request):
+def vendedores(request):
+    print("entrandooiooooaosdosodfosdf")
     personaInstancia = request.user.persona
     colVendedores = Vendedor.objects.all()
     colEncargados = Encargado.objects.all()

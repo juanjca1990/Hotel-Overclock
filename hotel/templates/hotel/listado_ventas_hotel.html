@@ -1,11 +1,7 @@
 {% extends "hotel/vistaHotelAdmin.html" %}
 {% load static %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
-{% endblock extra_css %}
 {% block header %}
-<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
-    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+<h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
 {% endblock header %}
 
 {% block headerContenido %}
@@ -15,19 +11,68 @@
 {% block content %}
 
 
-<div id="container">
+<div id="container-opciones" >
     <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-dia" name="material" value="ventas-por-dia">
     <label class="etiqueta-boton" for="ventas-por-dia" id="label-1" onclick="seleccionarEstado('ventas-por-dia'); location.href='{% url 'hotel:ventasHotelPorDia' hotel.pk %}'">
-        <span class="glyphicon glyphicon-user"><i class="fas fa-bed"></i></span>
+        <h1>Ventas Diarias</h1>
     </label>
     
     <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-mes" name="material" value="ventas-por-mes">
     <label class="etiqueta-boton" for="ventas-por-mes" id="label-2" onclick="seleccionarEstado('ventas-por-mes'); location.href='{% url 'hotel:ventasHotelPorMes' hotel.pk %}'">
-        <span class="glyphicon glyphicon-bell"><i class="fas fa-box"></i></span>
+        <h1>Ventas Mensuales</h1>
     </label>
     
     <div id="effect"></div>
 </div>
+
+
+<style>
+    .boton-ventas-dias-mes {
+        display: none;
+    }
+
+    #ventas-por-dia:checked~div#effect {
+        animation: goLeft 1s;
+        visibility: visible;
+        animation-fill-mode: forwards;
+        }
+    
+    #ventas-por-mes:checked~div#effect {
+        visibility: visible;
+        animation: goRight 0.5s;
+        animation-fill-mode: forwards;
+        }
+
+    #container-opciones {
+        display: flex;
+        flex-direction: row;
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center;    /* Centra verticalmente */
+        gap: 10px;              /* Espacio entre elementos */
+    }
+
+    #container-opciones input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    #container-opciones input + label {
+        padding: 20px;
+        cursor: pointer;
+        text-align: center; /* Centra el texto dentro de cada opción */
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    #container-opciones input:checked + label {
+        background-color: #054f52; /* Cambia el color al estar seleccionado */
+        color: #ffffff;
+    }
+
+    #container-opciones label h1 {
+        margin: 0; /* Evita márgenes innecesarios */
+    }
+</style>
 
 <center><h1 class="my-4">VENTAS DEL HOTEL {{hotel.nombre.upper}}</h1></center>
 

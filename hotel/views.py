@@ -465,6 +465,7 @@ def limpiar_preferencias_ventas_dias(request,hotel):
 
 # ventas del hotel por dia total
 def ventasHotelPorDia(request, hotel):
+    print("todos putoss")
     if 'ventas_mes' in request.session:
         del request.session['ventas_mes']
     ventasDias="ventas-dias"
@@ -587,6 +588,7 @@ def ventasHotelPorDia(request, hotel):
 
 
 def ventasHotelPorMes(request, hotel):
+    print("entrandooooooooooooooooo")
     request.session['ventas_mes']= "ventas_mes"
     if 'ventas_dias' in request.session:
         del request.session['ventas_dias']
