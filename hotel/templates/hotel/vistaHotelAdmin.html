@@ -2,93 +2,94 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+<!-- <link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}"> -->
+<style>
+    a.active {
+        background-color: #054f52;
+        color: #fff;
+        font-weight: bold;
+    }
+    a.custom-btn:hover {
+        background-color: #054f52;
+    }
+</style>
 {% endblock extra_css %}
 {% block header %}
-<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
-    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+<h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
 {% endblock header %}
 
 
 
 <!--  ####################### TARJETAS DEL SIDE BAR #######################-->
-
-
 {% block tarjeta1 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:vistaHotel' hotel.pk %}'"
-            class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/hotel/hotel' %}active{% endif %}">
+        <a href="/hotel/hotel" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Paquete / Habitacion</h5>
+                <h5>Hoteles</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta1 %}
 
 {% block tarjeta2 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:temporadaHotel' hotel.pk %}'"
-            class="btn btn-link btn-block text-white">
-            <center>
-                <h5> Temporada </h5>
-            </center>
-        </button>
-    </div>
-</div>
+    {% url 'hotel:vistaHotel' hotel.pk as vista_hotel_url %}
+    <a href="{{ vista_hotel_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == vista_hotel_url %}active{% endif %}">
+        <center>
+            <h5>Paquete / Habitación</h5>
+        </center>
+    </a>
 {% endblock tarjeta2 %}
 
 {% block tarjeta3 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:vendedoresHotel' hotel.pk %}'"
-            class="btn btn-link btn-block text-white">
-            <center>
-                <h5>Vendedor </h5>
-            </center>
-        </button>
-    </div>
-</div>
+    {% url 'hotel:temporadaHotel' hotel.pk as temporada_hotel_url %}
+    <a href="{{ temporada_hotel_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == temporada_hotel_url %}active{% endif %}">
+        <center>
+            <h5>Temporada</h5>
+        </center>
+    </a>
 {% endblock tarjeta3 %}
+
+{% block tarjeta4 %}
+    {% url 'hotel:vendedoresHotel' hotel.pk as vendedores_hotel_url %}
+    <a href="{{ vendedores_hotel_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == vendedores_hotel_url %}active{% endif %}">
+        <center>
+            <h5>Vendedor</h5>
+        </center>
+    </a>
+{% endblock tarjeta4 %}
+
 {% block tarjeta5 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:tipoHabitacionHotel' hotel.pk %}'"
-            class="btn btn-link btn-block text-white">
-            <center>
-                <h5>Tipo de Habitacion </h5>
-            </center>
-        </button>
-    </div>
-</div>
+    {% url 'hotel:tipoHabitacionHotel' hotel.pk as tipo_habitacion_url %}
+    <a href="{{ tipo_habitacion_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == tipo_habitacion_url %}active{% endif %}">
+        <center>
+            <h5>Tipo de Habitación</h5>
+        </center>
+    </a>
 {% endblock tarjeta5 %}
 
 {% block tarjeta6 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:serviciosHotel' hotel.pk %}'" class="btn btn-link btn-block text-white">
-            <center>
-                <h5> Servicios</h5>
-            </center>
-        </button>
-    </div>
-</div>
+    {% url 'hotel:serviciosHotel' hotel.pk as servicios_hotel_url %}
+    <a href="{{ servicios_hotel_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == servicios_hotel_url %}active{% endif %}">
+        <center>
+            <h5>Servicios</h5>
+        </center>
+    </a>
 {% endblock tarjeta6 %}
 
 {% block tarjeta7 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href='{% url 'hotel:vistaVentasHotel' hotel.pk %}'" class="btn btn-link btn-block text-white">
-            <center>
-                <h5> Ventas</h5>
-            </center>
-        </button>
-    </div>
-</div>
+    {% url 'hotel:vistaVentasHotel' hotel.pk as ventas_hotel_url %}
+    <a href="{{ ventas_hotel_url }}" 
+       class="custom-btn btn btn-link btn-block text-white text-decoration-none {% if request.path == ventas_hotel_url %}active{% endif %}">
+        <center>
+            <h5>Ventas</h5>
+        </center>
+    </a>
 {% endblock tarjeta7 %}
-
 <!--  ####################### FIN TARJETAS DEL SIDE BAR #######################-->
 
 
@@ -155,26 +156,59 @@
 
 <!--  #######################  BOTON DE CAMBIO LISTADO HABITACIONES/PAQUETES  #######################-->
 {% block datosVista %}
-<div class="abajo">
 
-    <div id="container">
-        <input class="boton-Habitaciones-Paquetes" type="radio" id="habitaciones" name="material" value="habitaciones">
-        <label class="etiqueta-boton" for="habitaciones" id="label-1" onclick='seleccionarEstado("habitaciones")'>
-            <span class="glyphicon glyphicon-user"><i class="fas fa-bed"></i></span></label>
-        <input class="boton-Habitaciones-Paquetes" type="radio" id="paquetes" name="material" value="paquetes">
-        <label class="etiqueta-boton" for="paquetes" id="label-2" onclick='seleccionarEstado("paquetes")'>
-            <span class="glyphicon glyphicon-bell"><i class=" fas fa-box"></i></span></label>
-        <div id="effect"></div>
-    </div>
+
+<div id="container-opciones" class="switch-3 switch-candy sm row justify-content-center my-4">
+    <input type="radio" id="habitaciones" name="material" value="habitaciones">
+    <label for="habitaciones" onclick='seleccionarEstado("habitaciones")'>
+        <h1>habitaciones</h1>
+    </label>
+    <input type="radio" id="paquetes" name="material" value="paquetes">
+    <label for="paquetes" onclick='seleccionarEstado("paquetes")'>
+        <h1>paquetes</h1>
+    </label>
+    <div id="effect"></div>
+</div>
+
+<style>
+    #container-opciones {
+        display: flex;
+        flex-direction: row;
+        justify-content: center; /* Centra horizontalmente */
+        align-items: center;    /* Centra verticalmente */
+        gap: 10px;              /* Espacio entre elementos */
+    }
+
+    #container-opciones input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    #container-opciones input + label {
+        padding: 20px;
+        cursor: pointer;
+        text-align: center; /* Centra el texto dentro de cada opción */
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    #container-opciones input:checked + label {
+        background-color: #054f52; /* Cambia el color al estar seleccionado */
+        color: #ffffff;
+    }
+
+    #container-opciones label h1 {
+        margin: 0; /* Evita márgenes innecesarios */
+    }
+</style>
+<div class="abajo">
 
     <!--  #######################  FIN BOTON DE CAMBIO LISTADO HABITACIONES/PAQUETES  #######################-->
 
     <!--  #######################  INICIO DATA TABLE LISTADO HABITACIONES/PAQUETES  #######################-->
 
     <div class="formularioHotel1" id="vistaHabitaciones">
-        <center>
-            <h3 class="mb-5">HABITACIONES</h3>
-        </center>
+ 
         <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
             <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
                 data-target="#crearHabitacion" onclick="
@@ -269,9 +303,7 @@
 
 
     <div class="formularioHotel2" id="vistaPaquetes">
-        <center>
-            <h3 class="mb-5">PAQUETES</h3>
-        </center>
+
         <table id="example2" class="table table-striped table-bordered tablaListaHabitacion">
             <button type="button" class="btn btn-success mt-3 mr-4 float-right btn-sm" data-toggle="modal"
                 data-target="#crearPaqueteTuristicoHotel" onclick="
@@ -375,6 +407,7 @@
 
     <div class="modal fade-scale" id="eliminarPaqueteTuristicoHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
     </div>
+</div>
 
 
 

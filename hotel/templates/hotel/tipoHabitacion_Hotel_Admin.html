@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block header %}
-<button onclick="location.href='/core/homeAdministrador'" style="text-decoration:none"
-    class="rounded-1 btn  btn-outline-secondary text-white ">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</button>
+<h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
 {% endblock header %}
 
 {% block datosVista %}

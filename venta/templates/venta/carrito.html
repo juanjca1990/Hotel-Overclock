@@ -2,9 +2,7 @@
 {% load static %}
 
 {% block header %}
-<button onclick="location.href='/venta/vendedor'" style="text-decoration:none"
-    class="rounded-1 btn btn-sm btn-outline-secondary text-white ml-4 mt-1"> VENDEDOR: {{vendedor.persona.nombre.upper}}
-    {{vendedor.persona.apellido.upper}} </button>
+<h5 style="color: aliceblue;">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
 {% endblock header %}
 
 {% block carrito %}

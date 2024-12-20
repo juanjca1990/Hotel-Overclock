@@ -1,97 +1,111 @@
 {% extends 'base/base.html'%}
 {% load static %}
+{% block extra_css %}
 
+<style>
 
+    li a.custom-btn:hover {
+        background-color: #054f52;
+    }
 
-
-
+    .active {
+        background-color: #054f52; /* Cambia el color de fondo */
+        color: rgb(19, 18, 18); /* Asegúrate de que el texto sea legible */
+        font-weight: bold;
+    }
+</style>
+      
+{% endblock extra_css %}
 
 {% block tarjeta1 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href = '/venta/listado_liquidaciones'"  class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/hotel/hotel' %}active{% endif %}">
+        <a href="/hotel/hotel" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Liquidacion / Abonar</h5>
+                <h5>Hoteles</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta1 %}
+
 {% block tarjeta2 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button  onclick="location.href = '/core/servicio'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/venta/listado_liquidaciones' %}active{% endif %}">
+        <a href="/venta/listado_liquidaciones" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Servicios</h5>
+                <h5>Liquidación / Abonar</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta2 %}
+
 {% block tarjeta3 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href = '/core/vendedor'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/core/servicio' %}active{% endif %}">
+        <a href="/core/servicio" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Vendedores/
-                    Encargados
-                </h5>
+                <h5>Servicios</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta3 %}
+
 {% block tarjeta4 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button  onclick="location.href = '/core/tipoHabitacion'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/core/vendedores' %}active{% endif %}">
+        <a href="/core/vendedores" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Tipos Habitaciones</h5>
+                <h5>Vendedores / Encargados</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta4 %}
+
 {% block tarjeta5 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button  onclick="location.href = '/core/categoria'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/core/tipoHabitacion' %}active{% endif %}">
+        <a href="/core/tipoHabitacion" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Categorias</h5>
+                <h5>Tipos Habitaciones</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta5 %}
+
 {% block tarjeta6 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href = '/core/region'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/core/categoria' %}active{% endif %}">
+        <a href="/core/categoria" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Regiones</h5>
+                <h5>Categorías</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta6 %}
 
 {% block tarjeta7 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href = '/core/clienteAdmin'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/core/region' %}active{% endif %}">
+        <a href="/core/region" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Clientes</h5>
+                <h5>Regiones</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta7 %}
+
+{% block tarjeta8 %}
+    <li class="{% if request.path == '/core/clienteAdmin' %}active{% endif %}">
+        <a href="/core/clienteAdmin" class="custom-btn btn btn-block text-white text-decoration-none">
+            <center>
+                <h5>Clientes</h5>
+            </center>
+        </a>
+    </li>
+{% endblock tarjeta8 %}
+
+
+
 
 {% block content %}
     
 {% endblock content %}
 
 {% block extrajs %}
+
 {% endblock %}
 
 {% block footer %}

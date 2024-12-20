@@ -41,7 +41,7 @@
 
 
 /* //////////////////////////////2 estados (vendedores encargados)//////////////// */
-
+/*
 #vendedor:checked~div#effecto {
     visibility: visible;
     animation: vendedor 1s;
@@ -79,10 +79,10 @@
       
 }
 
-
+*/
 
  /* /////////////////////////  3 estados (localidad provincia pais) /////////////////////////////////////// */
-
+/*
  #effecto{
     position: absolute;
     top: 5%;
@@ -152,8 +152,9 @@
   }
       
 }
-
+ */
  /* /////////////////////////  2 estados habitaciones - paquetes /////////////////////////////////////// */
+ /*
 .boton-Habitaciones-Paquetes {
         display: none;
 }
@@ -313,9 +314,9 @@
     color: #111;
     }
     
-
+*/
 /* ///////////// 2 estados ventasdias - ventas mes ///////////////////// */
-
+/*
 .boton-ventas-dias-mes {
     display: none;
 }
@@ -474,3 +475,4 @@ transition: color 2s;
 input:checked+label span {
 color: #111;
 }
+*/

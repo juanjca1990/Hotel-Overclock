@@ -5,9 +5,7 @@
 {% endblock extra_css %}
 
 {% block header %}
-<button onclick="location.href='/venta/vendedor'" style="text-decoration:none"
-    class="rounded-1 btn btn-sm btn-outline-secondary text-white ml-4 mt-1"> VENDEDOR: {{vendedor.persona.nombre.upper}}
-    {{vendedor.persona.apellido.upper}} </button>
+<h5 style="color: aliceblue;">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
 {% endblock header %}
 
 {% block carritoz %}
@@ -83,16 +81,49 @@
 {% block datosVista %}
 <div class="abajo">
 
-    <div id="container">
-        <input class="boton-Habitaciones-Paquetes" type="radio" id="habitaciones" name="material" value="habitaciones">
-        <label class="etiqueta-boton" for="habitaciones" id="label-1" onclick='seleccionarEstado("habitaciones")'>
-            <span class="glyphicon glyphicon-user"><i class="fas fa-bed"></i></span></label>
-        <input class="boton-Habitaciones-Paquetes" type="radio" id="paquetes" name="material" value="paquetes">
-        <label class="etiqueta-boton" for="paquetes" id="label-2" onclick='seleccionarEstado("paquetes")'>
-            <span class="glyphicon glyphicon-bell"><i class=" fas fa-box"></i></span></label>
-   
+    <div id="container-opciones" class="switch-3 switch-candy sm row justify-content-center my-4">
+        <input type="radio" id="habitaciones" name="material" value="habitaciones">
+        <label for="habitaciones" onclick='seleccionarEstado("habitaciones")'>
+            <h1>habitaciones</h1>
+        </label>
+        <input type="radio" id="paquetes" name="material" value="paquetes">
+        <label for="paquetes" onclick='seleccionarEstado("paquetes")'>
+            <h1>paquetes</h1>
+        </label>
         <div id="effect"></div>
     </div>
+    
+    <style>
+        #container-opciones {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center;    /* Centra verticalmente */
+            gap: 10px;              /* Espacio entre elementos */
+        }
+    
+        #container-opciones input {
+            position: absolute;
+            opacity: 0;
+        }
+    
+        #container-opciones input + label {
+            padding: 20px;
+            cursor: pointer;
+            text-align: center; /* Centra el texto dentro de cada opción */
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+    
+        #container-opciones input:checked + label {
+            background-color: #054f52; /* Cambia el color al estar seleccionado */
+            color: #ffffff;
+        }
+    
+        #container-opciones label h1 {
+            margin: 0; /* Evita márgenes innecesarios */
+        }
+    </style>
 
     <!--  #######################  FIN BOTON DE CAMBIO LISTADO HABITACIONES/PAQUETES  #######################-->
 

@@ -1,20 +1,45 @@
 {% extends 'base/base.html'%}
 {% load static %}
 
+{% block extra_css %}
 
+<style>
 
+    li a.custom-btn:hover {
+        background-color: #054f52;
+    }
+
+    .active {
+        background-color: #054f52;
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
+      
+{% endblock extra_css %}
 
 {% block tarjeta1 %}
-<div class="card rounded-0">
-    <div class="card-header" id="headingOne">
-        <button onclick="location.href = '/venta/vistaCliente'" class="btn btn-link btn-block text-white">
+    <li class="{% if request.path == '/venta/vendedor' %}active{% endif %}">
+        <a href="/venta/vendedor" class="custom-btn btn btn-block text-white text-decoration-none">
             <center>
-                <h5> Clientes</h5>
+                <h5>Hoteles</h5>
             </center>
-        </button>
-    </div>
-</div>
+        </a>
+    </li>
 {% endblock tarjeta1 %}
+
+{% block tarjeta2 %}
+    <li class="{% if request.path == '/venta/vistaCliente/' %}active{% endif %}">
+        <a href="/venta/vistaCliente/" class="custom-btn btn btn-block text-white text-decoration-none">
+            <center>
+                <h5>Clientes</h5>
+            </center>
+        </a>
+    </li>
+{% endblock tarjeta2 %}
+
+
+
 
 {% block extrajs %}
 {% endblock %}
