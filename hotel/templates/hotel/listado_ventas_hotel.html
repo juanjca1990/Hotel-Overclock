@@ -11,21 +11,6 @@
 {% block content %}
 
 
-<div id="container-opciones" >
-    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-dia" name="material" value="ventas-por-dia">
-    <label class="etiqueta-boton" for="ventas-por-dia" id="label-1" onclick="seleccionarEstado('ventas-por-dia'); location.href='{% url 'hotel:ventasHotelPorDia' hotel.pk %}'">
-        <h1>Ventas Diarias</h1>
-    </label>
-    
-    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-mes" name="material" value="ventas-por-mes">
-    <label class="etiqueta-boton" for="ventas-por-mes" id="label-2" onclick="seleccionarEstado('ventas-por-mes'); location.href='{% url 'hotel:ventasHotelPorMes' hotel.pk %}'">
-        <h1>Ventas Mensuales</h1>
-    </label>
-    
-    <div id="effect"></div>
-</div>
-
-
 <style>
     .boton-ventas-dias-mes {
         display: none;
@@ -68,14 +53,80 @@
         background-color: #054f52; /* Cambia el color al estar seleccionado */
         color: #ffffff;
     }
+    #container-opciones input + label:hover {
+        background-color: #0d7377; /* Cambia el color al pasar el mouse */
+        color: #ffffff;
+    }
 
     #container-opciones label h1 {
         margin: 0; /* Evita márgenes innecesarios */
     }
 </style>
 
-<center><h1 class="my-4">VENTAS DEL HOTEL {{hotel.nombre.upper}}</h1></center>
+<div class="titulo">
+    <h1>
+        <center> <u> {%if hotel.es_hospedaje%} HOSPEDAJE {%else%} HOTEL {% endif %} {{hotel.nombre.upper}}</u> </center>
+    </h1>
+</div>
+<div class="datosHotel">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 lugarImagen">
+                <img class="imagen" src="{% static '/media/hoteles/1.jpg' %}">
+            </div>
+            <div class="col-sm-7">
+                <center>
+                    <table class="table table-responsive tablaDatos">
+                        <tr>
+                            <th>Direccion:</th>
+                            <td>{{hotel.direccion}}</td>
+                        </tr>
+                        <tr>
+                            <th>E-mail:</th>
+                            <td>{{hotel.email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono:</th>
+                            <td>{{hotel.telefono}}</td>
+                        </tr>
+                        <tr>
+                            <th>Localidad:</th>
+                            <td>{{hotel.localidad}}</td>
+                        </tr>
+                        <tr>
+                            <th>Categoria:</th>
+                            <td>{{hotel.categoria}}</td>
+                        </tr>
+                    </table>
+                </center>
 
+            </div>
+            <div class="col-sm-2">
+                <center>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarHotel"
+                        onclick="abrir_modal('{% url 'hotel:modalModificarHotel' hotel.pk %}','#modificarHotel');">
+                        <i class="fas fa-edit"></i>
+                        MODIFICAR</button>
+                </center>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade-scale" id="modificarHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
+    </div>
+</div>
+<div id="container-opciones" >
+    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-dia" name="material" value="ventas-por-dia">
+    <label class="etiqueta-boton" for="ventas-por-dia" id="label-1" onclick="seleccionarEstado('ventas-por-dia'); location.href='{% url 'hotel:ventasHotelPorDia' hotel.pk %}'">
+        <h1>Ventas Diarias</h1>
+    </label>
+    
+    <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-mes" name="material" value="ventas-por-mes">
+    <label class="etiqueta-boton" for="ventas-por-mes" id="label-2" onclick="seleccionarEstado('ventas-por-mes'); location.href='{% url 'hotel:ventasHotelPorMes' hotel.pk %}'">
+        <h1>Ventas Mensuales</h1>
+    </label>
+    
+    <div id="effect"></div>
+</div>
 
 {% if ventasDias %}
 <div class="ventashoteldias" id="ventas-dias">

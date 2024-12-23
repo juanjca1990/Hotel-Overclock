@@ -15,6 +15,41 @@
     <link rel="stylesheet" href="{% static 'css/stylelog.css' %}">
 </head>
 
+<style>
+    .form-field {
+        margin-bottom: 20px;
+    }
+    
+    .form-field label {
+        font-weight: bold;
+        display: block;
+    }
+    
+    .form-field input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    
+    .form-action {
+        text-align: center;
+    }
+    
+    .form-action input {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
+    .form-action input:hover {
+        background-color: #0056b3;
+    }
+</style>
+
 <body>
     <!--HEADER-->
     <header class="main-header">
@@ -25,13 +60,34 @@
                         <h1>
                             Centro hotelero Buena Vista
                         </h1>
-
-                        <form method="POST">
+                        {% if "mensaje_error" %}
+                            <p class="text-danger">{{ mensaje_error }}</p>
+                        {% endif %}
+                        <form method="POST" action="{% url 'home' %}">
+                            {% csrf_token %}
+                            
+                            <!-- Username Field -->
+                            <p class="form-field">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <span class="text-danger">{{ form.username.errors }}</span>
+                                {% endif %}
+                            </p>
                         
-                           {% csrf_token %}
-                           {{ form.as_p }}
-
-                            <input type="submit" class="btm btn-primary btn-lg btn-block" value="Ingresar">
+                            <!-- Password Field -->
+                            <p class="form-field">
+                                {{ form.password.label_tag }}
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <span class="text-danger">{{ form.password.errors }}</span>
+                                {% endif %}
+                            </p>
+                        
+                            <!-- Submit Button -->
+                            <p class="form-action">
+                                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Ingresar">
+                            </p>
                         </form>
                     </div>
                     <div class="col-md-6">

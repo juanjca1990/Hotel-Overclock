@@ -32,6 +32,7 @@ from django.views.generic.edit import CreateView
 
 
 def home(request):
+    print("holiiiis")
     form = AutenticacionForm()
     if request.method == "POST":
         # Añadimos los datos recibidos al formulario
@@ -56,7 +57,11 @@ def home(request):
                     # Y le redireccionamos a la portada
                     return redirect("core:vendedor")
             else:
-                return render(request, "home.html", {'form': form})
+                    mensaje = "Error al iniciar sesion , verifique su usuario y contraseña"
+                    return render(request, "home.html", {'form': form , "mensaje_error":mensaje})
+        else:
+                mensaje = "Error al iniciar sesion , verifique su usuario y contraseña"
+                return render(request, "home.html", {'form': form , "mensaje_error":mensaje})
 
     # Si llegamos al final renderizamos el formulario
     return render(request, "home.html", {'form': form})
