@@ -36,36 +36,42 @@
     <!-- HEADER -->
     <div class="container-fluid mainHeader p-3 fixed-top">
         <div class="row">
-            <div class="col-5">
-                {% block header %}
-
-                {% endblock header %}
-
+            <div>
+                <button id="hamburger-menu" class="btn btn-primary d-none menu position-absolute dis" style="z-index: 100;">
+                    ☰
+                </button>
             </div>
-            <div class="col-5">
+            <div class="col-8">
+                {% block header %}
+                
+                {% endblock header %}
+                
+            </div>
+            <div class="col-2">
                 {% block headerContenido %}
+                
                 {% endblock headerContenido %}
 
              {% block carrito %}
              {% endblock carrito %}
             </div>
             <div class="col-2">
-
+         
                 {% block cerrarSecion %}
                     <button onclick="location.href='/core/logout'" style="text-decoration:none; align-items:right;"
-                    class="rounded-1 btn btn-lg btn-outline-secondary text-white float-center mt-1  "> Cerrar Sesion
+                    class="botonCerrarSesion rounded-1 btn btn-lg btn-outline-secondary text-white float-center mt-1  "> Cerrar Sesion
                     </button>
                 {% endblock cerrarSecion %}
-               
-             
-                
+  
             </div>
         </div>
     </div>
+    
 
     <!-- opciones + contenido -->
     <div class="container-fluid position-fixed  miEstiloPiola">
         <div class="row">
+            
             <!-- SIDEBAR -->
             <div class="col-2 px-1" id="sticky-sidebar">
                 <div class="nav flex-column flex-nowrap vh-100 overflow-auto text-white p-2 pt-4 ">
@@ -83,14 +89,73 @@
             </div>
             <!-- CONTENIDO -->
             <div class="col-10 position-relative pre-scrollable" id="main">
-
+                
                 {% block content %}
                 {% endblock content %}
-
+                
             </div>
         </div>
+
     </div>
 
+
+
+
+    <style>
+
+        
+        @media (max-width: 1100px) {
+            #hamburger-menu {
+                display: block;
+                margin-top: 30px;
+            }
+
+
+            .botonCerrarSesion{
+                width: 100px;
+                height: 50px;
+                font-size: small;
+            }
+
+        }
+
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sticky-sidebar');
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const body = document.getElementById('main');
+            
+            // Función para controlar el estado del sidebar
+            const checkSidebar = () => {
+                if (window.innerWidth > 1100) {
+                    sidebar.classList.remove('active'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    sidebar.classList.remove('col-3'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    sidebar.classList.add('col-2'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    body.classList.remove('col-9'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    body.classList.add('col-10'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                }
+                if (window.innerWidth < 1100) {
+                    sidebar.classList.remove('col-2'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    sidebar.classList.add('col-3'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    body.classList.remove('col-10'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    body.classList.add('col-9'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                }
+            };
+    
+            // Evento de clic en el menú hamburguesa
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+    
+            // Detectar cambios en el tamaño de la pantalla
+            window.addEventListener('resize', checkSidebar);
+    
+            // Llamar la función al cargar la página para establecer el estado inicial
+            checkSidebar();
+        });
+    </script>
 
 
 
