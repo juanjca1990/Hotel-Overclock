@@ -116,7 +116,15 @@ class VendedorHotelForm(forms.Form):
         self.fields['vendedores'].queryset = Vendedor.objects.all().exclude(hotel=hotel)
         self.fields['vendedores'].widget.attrs.update({'class': 'form-control'})
 
+# class ServicioForm(forms.Form):
+#     SERVICIO_CHOICES=(Servicio.objects.all())
+#     servicio = MultipleChoiceField(choices = SERVICIO_CHOICES)
+
 class ServicioForm(forms.Form):
-    SERVICIO_CHOICES=(Servicio.objects.all())
-    servicio = MultipleChoiceField(choices = SERVICIO_CHOICES)
+    servicio = forms.MultipleChoiceField(choices=[])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Cargar las opciones dinámicamente desde la base de datos
+        self.fields['servicio'].choices = [(s.id, s.nombre) for s in Servicio.objects.all()]
 
