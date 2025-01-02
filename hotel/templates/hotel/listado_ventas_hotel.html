@@ -61,6 +61,12 @@
     #container-opciones label h1 {
         margin: 0; /* Evita márgenes innecesarios */
     }
+
+    .imagen {
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+    }
 </style>
 
 <div class="titulo">
@@ -71,8 +77,12 @@
 <div class="datosHotel">
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 lugarImagen">
-                <img class="imagen" src="{% static '/media/hoteles/1.jpg' %}">
+            <div class="col-sm-4 lugarImagen">
+                {% if hotel.imagen %}
+                    <img class="imagen" src="{{ hotel.imagen.url }}" alt="Imagen del hotel">
+                {% else %}
+                    <img class="imagen" src="{% static '/media/hoteles/default.jpg' %}" alt="Imagen predeterminada">
+                {% endif %}
             </div>
             <div class="col-sm-7">
                 <center>
@@ -97,11 +107,14 @@
                             <th>Categoria:</th>
                             <td>{{hotel.categoria}}</td>
                         </tr>
+                        <tr>
+                            <th>Encargado:</th>
+                            <td>{{hotel.encargado.persona.nombre}} {{hotel.encargado.persona.apellido}}</td>
                     </table>
                 </center>
 
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1">
                 <center>
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarHotel"
                         onclick="abrir_modal('{% url 'hotel:modalModificarHotel' hotel.pk %}','#modificarHotel');">
@@ -114,6 +127,7 @@
     <div class="modal fade-scale" id="modificarHotel" tabindex="-1" aria-labelledby="exampleModalLabel">
     </div>
 </div>
+<p></p>
 <div id="container-opciones" >
     <input class="boton-ventas-dias-mes" type="radio" id="ventas-por-dia" name="material" value="ventas-por-dia">
     <label class="etiqueta-boton" for="ventas-por-dia" id="label-1" onclick="seleccionarEstado('ventas-por-dia'); location.href='{% url 'hotel:ventasHotelPorDia' hotel.pk %}'">

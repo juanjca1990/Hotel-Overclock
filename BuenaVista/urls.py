@@ -19,6 +19,8 @@ from django.urls import path, include
 from core import views
 from hotel import views as hviews
 from venta import views as vviews
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -31,3 +33,6 @@ urlpatterns = [
     path('venta/', include('venta.urls', namespace="venta")),
     path('', views.home, name="home" ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

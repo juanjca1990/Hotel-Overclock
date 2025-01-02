@@ -27,6 +27,7 @@ class HotelForm(ModelForm):
         self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
         self.fields['encargado'].widget.attrs.update({'class': 'form-control'})
         self.fields['categoria'].widget.attrs.update({'class': 'form-control'})
+        self.fields['imagen'].widget.attrs.update({'class': 'form-control-file'})
 
 
 class TemporadaHotelForm(ModelForm):

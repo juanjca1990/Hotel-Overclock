@@ -34,19 +34,52 @@ def hotel(request):
     colHoteles=Hotel.objects.all()
     return render(request, "hotel/hotelAdmin.html",{"colHoteles": colHoteles, "administrador":personaInstancia})
 
+# def hotelCrear(request):
+#     colHoteles = Hotel.objects.all()
+#     form = HotelForm(request.POST, request.FILES)
+    
+#     if request.method == "POST":
+#             if form.is_valid():
+#                 hotelInstancia=form.save()
+#                 for servicio in hotelInstancia.categoria.servicios.all():
+#                     hotelInstancia.servicios.add(servicio)
+#                 hotelInstancia.save()
+#                 return redirect('hotel:hotel')
+#     return render(request, "hotel/modals/modal_hotel_crear.html", {"colHoteles": colHoteles, "formulario": form})
+
+
 def hotelCrear(request):
     colHoteles = Hotel.objects.all()
-    form = HotelForm(request.POST)
     
+    # Solo se debe instanciar el formulario con POST y FILES si el método es POST
     if request.method == "POST":
-            if form.is_valid():
-                hotelInstancia=form.save()
-                for servicio in hotelInstancia.categoria.servicios.all():
-                    hotelInstancia.servicios.add(servicio)
-                hotelInstancia.save()
-                return redirect('hotel:hotel')
-    return render(request, "hotel/modals/modal_hotel_crear.html", {"colHoteles": colHoteles, "formulario": form})
+        form = HotelForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Mostrar los archivos subidos
+            print("request.FILES:", request.FILES)
+            
+            # Guardamos la instancia del hotel
+            hotelInstancia = form.save()
 
+            # Si se sube una imagen, se puede mostrar el nombre del archivo
+            if 'imagen' in request.FILES:
+                imagen = request.FILES['imagen']
+                print("Imagen cargada:", imagen.name)  # Muestra el nombre del archivo de la imagen
+            
+            # Añadimos los servicios de la categoría del hotel
+            for servicio in hotelInstancia.categoria.servicios.all():
+                hotelInstancia.servicios.add(servicio)
+            
+            hotelInstancia.save()
+            return redirect('hotel:hotel')  # Redirigir a la vista deseada
+    else:
+        form = HotelForm()  # Si no es POST, creamos un formulario vacío
+    
+    return render(request, "hotel/modals/modal_hotel_crear.html", {
+        "colHoteles": colHoteles,
+        "formulario": form
+    })
+    
 def hotelModificar(request, hotel):
     hotelInstancia = get_object_or_404(Hotel, pk= hotel )
     colHoteles = Hotel.objects.all()

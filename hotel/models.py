@@ -29,6 +29,7 @@ class Hotel(models.Model):
     servicios = models.ManyToManyField(Servicio)
     tipos = models.ManyToManyField(TipoHabitacion, through='PrecioPorTipo', through_fields=('hotel', 'tipo'))
     vendedores = models.ManyToManyField(Vendedor)#, related_name="hoteles")
+    imagen = models.ImageField(upload_to='media/hoteles/', blank=True, null=True)  # Agrega este campo
    
     def disponible(self, inicio, fin, pasajeros):
         habitaciones= self.habitaciones.filter(tipo__pasajeros__gte=pasajeros)
