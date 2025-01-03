@@ -23,6 +23,9 @@
         border-radius: 50%;
         margin-left: 50px;
     }
+    .titulos{
+        margin-top: 50px;
+    }
 
 </style>
 {% endblock extra_css %}
@@ -116,7 +119,7 @@
 <!--  #######################  DATOS DEL HOTEL  #######################-->
 
 <div class="titulo">
-    <h1>
+    <h1 class="titulos">
         <center> <u> {%if hotel.es_hospedaje%} HOSPEDAJE {%else%} HOTEL {% endif %} {{hotel.nombre.upper}}</u> </center>
     </h1>
 </div>

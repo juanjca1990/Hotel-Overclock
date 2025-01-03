@@ -30,26 +30,8 @@ from collections import defaultdict
 @login_required
 def hotel(request):
     personaInstancia = request.user.persona
-    print("persona")
-    print(personaInstancia.documento)
-    print("personaInstancia",personaInstancia.imagen)
-    #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",personaInstancia)
     colHoteles=Hotel.objects.all()
     return render(request, "hotel/hotelAdmin.html",{"colHoteles": colHoteles, "administrador":personaInstancia})
-
-# def hotelCrear(request):
-#     colHoteles = Hotel.objects.all()
-#     form = HotelForm(request.POST, request.FILES)
-    
-#     if request.method == "POST":
-#             if form.is_valid():
-#                 hotelInstancia=form.save()
-#                 for servicio in hotelInstancia.categoria.servicios.all():
-#                     hotelInstancia.servicios.add(servicio)
-#                 hotelInstancia.save()
-#                 return redirect('hotel:hotel')
-#     return render(request, "hotel/modals/modal_hotel_crear.html", {"colHoteles": colHoteles, "formulario": form})
-
 
 def hotelCrear(request):
     colHoteles = Hotel.objects.all()

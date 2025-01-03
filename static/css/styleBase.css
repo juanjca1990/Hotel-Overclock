@@ -43,6 +43,7 @@
 }
 
 #sticky-sidebar{
+    margin-top: 10px;
     min-height: 100vh;
     background-color: #0d7377;
 }
