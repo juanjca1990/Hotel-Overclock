@@ -3,6 +3,15 @@
 {% block tarjeta1 %}
 {% endblock tarjeta1 %}
 {% block header %}
+
+{% block header %}
+ <h5 style="color: aliceblue;">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
+    {% if vendedor.persona.imagen %}
+        <img class="imagen-perfil" src="{{ vendedor.persona.imagen.url }}" alt="Imagen del personal">
+    {% else %}
+    <img class="imagen-perfil" src="{% static '/media/perfiles/default.jpg' %}" alt="Imagen predeterminada">
+    {% endif %}
+{% endblock header %}
 <button
   onclick="Swal.fire({
     icon: 'error',

@@ -327,11 +327,15 @@ def vendedores(request):
 
 def vendedorCrear(request):
     colVendedores = Vendedor.objects.all()
-    form = VendedorForm(request.POST)
+    form = VendedorForm(request.POST, request.FILES)  # Asegúrate de incluir request.FILES
     if request.method == "POST":
         dni_nuevo_cliente = request.POST['documento']
-        if documento_valido(dni_nuevo_cliente , form):
+        if documento_valido(dni_nuevo_cliente, form):
             if form.is_valid():
+                if 'imagen' in request.FILES:
+                    imagen = request.FILES['imagen']
+                    print("Imagen cargada:", imagen.name)  #
+                form.imagen = imagen 
                 form.save()
                 form.instance.hacer_vendedor(
                     form.cleaned_data['usuario'], form.cleaned_data['email'], form.cleaned_data['contrasenia'])

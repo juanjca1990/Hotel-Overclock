@@ -17,10 +17,23 @@
         height: 300px;
         object-fit: cover;
     }
+    .imagen-perfil {
+        width: 60px;
+        height: 50px;
+        border-radius: 50%;
+        margin-left: 50px;
+    }
+
 </style>
 {% endblock extra_css %}
+
 {% block header %}
 <h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
+    {% if administrador.imagen %}
+        <img class="imagen-perfil" src="{% static '/media/perfiles/foto-admin.jpg' %}" alt="Imagen del personal">
+    {% else %}
+        <img class="imagen-perfil" src="{% static '/media/perfiles/perfil1.png' %}" alt="Imagen predeterminada">
+    {% endif %}
 {% endblock header %}
 
 

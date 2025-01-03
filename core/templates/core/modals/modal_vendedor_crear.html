@@ -77,7 +77,7 @@
                             <span aria-hidden="true">&times;</span>
                         </a>
                     </div>
-                     <form action="{% url 'core:modalCrearVendedor' %}" method="POST">
+                     <form action="{% url 'core:modalCrearVendedor' %}" method="POST" enctype="multipart/form-data">
                         <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
             
                             {% csrf_token %}

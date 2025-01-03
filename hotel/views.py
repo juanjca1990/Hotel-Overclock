@@ -30,6 +30,9 @@ from collections import defaultdict
 @login_required
 def hotel(request):
     personaInstancia = request.user.persona
+    print("persona")
+    print(personaInstancia.documento)
+    print("personaInstancia",personaInstancia.imagen)
     #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>",personaInstancia)
     colHoteles=Hotel.objects.all()
     return render(request, "hotel/hotelAdmin.html",{"colHoteles": colHoteles, "administrador":personaInstancia})

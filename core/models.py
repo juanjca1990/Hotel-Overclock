@@ -129,6 +129,7 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=200)
     apellido = models.CharField(max_length=200)
     usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
+    imagen = models.ImageField(upload_to='media/perfiles/', blank=True, null=True)  # Agrega este campo
 
     def __str__(self):
         return f"{self.apellido}, {self.nombre}"

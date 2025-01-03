@@ -3,6 +3,11 @@
 
 {% block header %}
 <h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
+    {% if administrador.imagen %}
+        <img class="imagen-perfil" src="{% static '/media/perfiles/foto-admin.jpg' %}" alt="Imagen del personal">
+    {% else %}
+        <img class="imagen-perfil" src="{% static '/media/perfiles/perfil1.png' %}" alt="Imagen predeterminada">
+    {% endif %}
 {% endblock header %}
 
 {% block headerContenido %}

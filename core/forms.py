@@ -3,6 +3,7 @@ from django.forms import widgets, MultipleChoiceField, CheckboxSelectMultiple
 from core.models import Localidad, Pais, Provincia, Persona, TipoHabitacion, Servicio, Categoria, Vendedor, Encargado
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.fields import CharField, EmailField
+from django import forms
 
 # 
 class PaisForm(ModelForm):
@@ -100,14 +101,16 @@ class VendedorForm(ModelForm):
     email = EmailField(label='email')
     usuario = CharField(label='nombre de usuario')
     contrasenia = CharField(label='contraseña')
+    
     email.widget.attrs.update({'class': 'form-control'})
     usuario.widget.attrs.update({'class': 'form-control'})
     contrasenia.widget.attrs.update({'class': 'form-control'})
+
     
     class Meta: 
         model = Persona
         fields = '__all__'
-        exclude = [ 'usuario' ]
+        exclude = ['usuario']
     
     def __init__(self, *args, **kwargs):
         super(VendedorForm, self).__init__(*args, **kwargs)
@@ -115,6 +118,7 @@ class VendedorForm(ModelForm):
         self.fields['apellido'].widget.attrs.update({'class': 'form-control'})
         self.fields['documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_documento'].widget.attrs.update({'class': 'form-control'})
+
 
 #user_name, email, password
 
