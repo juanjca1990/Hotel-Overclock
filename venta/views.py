@@ -15,6 +15,7 @@ from venta.services import cargar_liquidaciones_pendientes, cargar_precio_habita
 
 @login_required
 def vendedor(request):
+    tengo_hoteles=True
     carrito = Carrito(request)
     if carrito.get_cliente()!=None: 
         print(carrito.get_cliente().persona.nombre)
@@ -24,6 +25,8 @@ def vendedor(request):
     personaInstancia = request.user.persona
     vendedorInstancia = get_object_or_404(Vendedor, persona = personaInstancia.id)
     colHoteles= Hotel.objects.filter(vendedores__persona=vendedorInstancia.persona)
+    if colHoteles.count()==0:
+        tengo_hoteles=False
     fecha_inicio=  request.session['fecha_inicio'] if "fecha_inicio" in request.session else None
     fecha_fin=  request.session['fecha_fin'] if "fecha_fin" in request.session else None
     pasajeros =  int(request.session['pasajeros']) if "pasajeros" in request.session else None
@@ -38,7 +41,8 @@ def vendedor(request):
         "fecha_inicio": fecha_inicio,
         "fecha_fin": fecha_fin,
         "formulario_enviado":formulario_enviado,
-        "contador":contador
+        "contador":contador,
+        "tengo_hoteles" : tengo_hoteles
          })
 
 

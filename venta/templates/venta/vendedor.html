@@ -24,87 +24,94 @@
         <h1 class="my-4">LISTADO DE HOTELES</h1>
     </center>
 
-    <div>
-        <center>
-            <h5 class="my-4">PREFERENCIAS DEL CLIENTE : {%if request.session.nombre_cliente%}
-                                                            {{ request.session.nombre_cliente }}
-                                                            {{ request.session.apellido_cliente }}
-                                                             - DNI : {{ request.session.dni_cliente }}
-                                                             <button><a href="{%url 'venta:limpiar_nombre_cliente'%}"> limpiar Nombre</a></button>
-                                                        {% else %}
-                                                            No se selecciono cliente
-                                                        {% endif %}
-                                                            
-            </h5>
-        </center>
-        
-        <form id="form_preferencias_cliente" onsubmit="return evitar_envio(event)"
-            action="{%url 'venta:iniciar_venta'%} " method="POST">
-            {% csrf_token %}
-            <label for="fecha_inicio">Fecha inicio:</label>
-            <input type="date" name="fecha_inicio" id="fecha1" value="{{ fecha_inicio }}" required>
+    {% if tengo_hoteles %}
+
+        <div>
+            <center>
+                <h5 class="my-4">PREFERENCIAS DEL CLIENTE : {%if request.session.nombre_cliente%}
+                                                                {{ request.session.nombre_cliente }}
+                                                                {{ request.session.apellido_cliente }}
+                                                                - DNI : {{ request.session.dni_cliente }}
+                                                                <button><a href="{%url 'venta:limpiar_nombre_cliente'%}"> limpiar Nombre</a></button>
+                                                            {% else %}
+                                                                No se selecciono cliente
+                                                            {% endif %}
+                                                                
+                </h5>
+            </center>
             
-            <label for="fecha_fin">Fecha fin:</label>
-            <input type="date" id="fecha2" name="fecha_fin" value="{{ fecha_fin }}" required>
-            <label for="pasajeros"> Nª Pasajeros: </label>
-            <input type="number" id="pasajeros" name="pasajeros" value="{{ pasajeros }}" min=1>
-            <input type="submit" id="filtrar" name="filtrar">
-            <button><a href="{%url 'venta:limpiar_preferencias'%}"> limpiar Preferencias</a></button>
-            
+            <form id="form_preferencias_cliente" onsubmit="return evitar_envio(event)"
+                action="{%url 'venta:iniciar_venta'%} " method="POST">
+                {% csrf_token %}
+                <label for="fecha_inicio">Fecha inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha1" value="{{ fecha_inicio }}" required>
+                
+                <label for="fecha_fin">Fecha fin:</label>
+                <input type="date" id="fecha2" name="fecha_fin" value="{{ fecha_fin }}" required>
+                <label for="pasajeros"> Nª Pasajeros: </label>
+                <input type="number" id="pasajeros" name="pasajeros" value="{{ pasajeros }}" min=1>
+                <input type="submit" id="filtrar" name="filtrar">
+                <button><a href="{%url 'venta:limpiar_preferencias'%}"> limpiar Preferencias</a></button>
+                
 
-        </form>
+            </form>
 
-    </div>
+        </div>
 
-    <table id="example1" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Localidad</th>
-                <th>Direccion</th>
-                <th>Email</th>
-                <th>Telefono</th>
-                <th>Encargado</th>
-                <th>Categoria</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for hotel in colHoteles %}
-            <tr class="{% if hotel.dispuesto %}
-                    comercializable manito
-                    {% else %}
-                    noComercializable manito
-                    {% endif%}" {% if hotel.dispuesto %} onclick="evitar_ingreso({{hotel.id}});" {% else %} onclick="Swal.fire({ icon: 'error',
-                        title: 'Preferencias no arroja resultados',
-                        text: 'La busqueda no arroja resultados en este Hotel',
-                        });" {% endif %}>
-
-                        <div class="pepito">
-                            <td>{{hotel.nombre}}</td>
-                            <td>{{hotel.localidad}}</td>
-                            <td>{{hotel.direccion}}</td>
-                            <td>{{hotel.email}}</td>
-                            <td>{{hotel.telefono}}</td>
-                            <td>{{hotel.encargadoNombre}} {{hotel.encargadoApellido}}</td>
-                            <td>{{hotel.categoria.nombre}}</td>
-
-                        </div>
+        <table id="example1" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Localidad</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Encargado</th>
+                    <th>Categoria</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>Nombre</th>
-                <th>Localidad</th>
-                <th>Direccion</th>
-                <th>Email</th>
-                <th>Telefono</th>
-                <th>Encargado</th>
-                <th>Categoria</th>
+            </thead>
+            <tbody>
+                {% for hotel in colHoteles %}
+                <tr class="{% if hotel.dispuesto %}
+                        comercializable manito
+                        {% else %}
+                        noComercializable manito
+                        {% endif%}" {% if hotel.dispuesto %} onclick="evitar_ingreso({{hotel.id}});" {% else %} onclick="Swal.fire({ icon: 'error',
+                            title: 'Preferencias no arroja resultados',
+                            text: 'La busqueda no arroja resultados en este Hotel',
+                            });" {% endif %}>
 
-            </tr>
-        </tfoot>
-    </table>
+                            <div class="pepito">
+                                <td>{{hotel.nombre}}</td>
+                                <td>{{hotel.localidad}}</td>
+                                <td>{{hotel.direccion}}</td>
+                                <td>{{hotel.email}}</td>
+                                <td>{{hotel.telefono}}</td>
+                                <td>{{hotel.encargadoNombre}} {{hotel.encargadoApellido}}</td>
+                                <td>{{hotel.categoria.nombre}}</td>
+
+                            </div>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Localidad</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Encargado</th>
+                    <th>Categoria</th>
+
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <center>
+            <h3>Este vendedor no esta asociado a ningun hotel</h3>
+        </center>
+    {% endif %}
 </div>
 
 {% endblock content %}
