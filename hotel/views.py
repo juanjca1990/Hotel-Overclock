@@ -76,6 +76,7 @@ def hotelModificar(request, hotel):
             hotelInstancia.direccion=request.POST['direccion']
             hotelInstancia.email=request.POST['email']
             categoria = get_object_or_404( Categoria , pk=request.POST['categoria'])
+            hotelInstancia.imagen="static/media/hoteles/"+request.POST['imagen']
             
             hotelInstancia.categoria=categoria
             for servicio in hotelInstancia.categoria.servicios.all():

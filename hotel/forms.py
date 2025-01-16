@@ -64,7 +64,7 @@ class PaqueteTuristicoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PaqueteTuristicoForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].widget.attrs.update({'class': 'form-control'})
-        self.fields['coeficiente'].widget.attrs.update({'class': 'form-control', 'min':'0', 'max':'1'})
+        self.fields['coeficiente'].widget.attrs.update({'class': 'form-control', 'min':'0', 'max':'0.90'})
         self.fields['inicio'].widget.attrs.update({'class': 'form-control'})
         self.fields['fin'].widget.attrs.update({'class': 'form-control'})
         self.fields['habitaciones'].widget.attrs.update({'class': 'form-control'})
