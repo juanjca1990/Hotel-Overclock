@@ -236,7 +236,7 @@ def facturar_carrito(request):
     total_carrito=float(str(coleccion_ventas['total']).strip("['|{|}]"))
 
     alcanzanPuntos= factura.cliente.puntos>= int(factura.total())+1
-    return render(request,"venta/facturar_carrito.html",{"factura":factura, "alcanzanPuntos": alcanzanPuntos })
+    return render(request,"venta/facturar_carrito.html",{"factura":factura, "alcanzanPuntos": alcanzanPuntos ,"vendedor":vendedorInstancia})
 
 def pagar_factura(request, factura):
     print("APRETASTE EN PAGAAAAAAAAR")

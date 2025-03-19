@@ -28,7 +28,7 @@
 
 <!--  #######################  DATOS DEL HOTEL  #######################-->
 
-<div class="titulo">
+<div class="titulo" style="margin-top: 24px;">
     <h1>
         <center> <u> {%if hotel.es_hospedaje%} HOSPEDAJE {%else%} HOTEL {% endif %} {{hotel.nombre.upper}}</u> </center>
     </h1>
@@ -36,8 +36,12 @@
 <div class="datosHotel">
     <div class="container">
         <div class="row">
-            <div class="col-sm-3 lugarImagen">
-                <img class="imagen" src="{% static '/media/hoteles/1.jpg' %}">
+            <div class="col-sm-4 lugarImagen">
+                {% if hotel.imagen %}
+                    <img class="imagen" src="{{ hotel.imagen.url }}" alt="Imagen del hotel">
+                {% else %}
+                <img class="imagen" src="{% static '/media/hoteles/default.jpg' %}" alt="Imagen predeterminada">
+                {% endif %}
             </div>
             <div class="col-sm-7">
                 <center>
@@ -62,6 +66,9 @@
                             <th>Categoria:</th>
                             <td>{{hotel.categoria}}</td>
                         </tr>
+                        <tr>
+                            <th>Encargado:</th>
+                            <td>{{hotel.encargado.persona.nombre}} {{hotel.encargado.persona.apellido}}</td>
                     </table>
                 </center>
 
