@@ -7,6 +7,7 @@ from venta.helpers import cliente_existe
 def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor):
     elementos = []
     if fecha_inicio is None or fecha_fin is None:
+        print("por acaaaaaaa")
         facturas = Factura.objects.filter(
         liquidacion__isnull=True,
         vendedor=vendedor
@@ -19,7 +20,10 @@ def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedo
         )
     total = 0
     for factura in facturas:
+        print("pasando")
+        print("factura id", factura.pk)
         liquidaciones = Alquiler.objects.filter(factura_id=factura.pk)
+        print(liquidaciones[0].total)
         resultado_liquidado = (liquidaciones[0].total * 2) / 100
         total += resultado_liquidado
         fecha_liquidacion = factura.fecha

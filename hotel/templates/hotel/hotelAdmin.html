@@ -36,6 +36,7 @@
                     <th>Telefono</th>
                     <th>Encargado</th>
                     <th>Categoria</th>
+                    <th>Estado</th>
 
             </tr>
         </thead>
@@ -56,6 +57,15 @@
                     <td>{{hotel.telefono}}</td>
                     <td>{{hotel.encargado.persona.nombre}} {{hotel.encargado.persona.apellido}}</td>
                     <td>{{hotel.categoria.nombre}}</td>
+                    {% if hotel.es_comercializable %}
+                        <td>
+                            <button type="button">
+                                <a href="{% url 'hotel:desafiliar_hotel' hotel.pk %}">desafiliar</a>
+                            </button>
+                        </td>
+                    {% else %}
+                        <td></td>
+                    {% endif%}
 
                 </div>
             </tr>
@@ -70,6 +80,7 @@
                 <th>Telefono</th>
                 <th>Encargado</th>
                 <th>Categoria</th>
+                <th>Estado</th>
 
             </tr>
         </tfoot>

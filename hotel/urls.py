@@ -66,4 +66,5 @@ urlpatterns = [
     path('ventasHotelPorMes/<hotel>', hviews.ventasHotelPorMes, name="ventasHotelPorMes"),
     path('vistaVentasHotel/<hotel>', hviews.vistaVentasHotel, name="vistaVentasHotel"),
     path('limpiar_preferencias_ventas_dias/<hotel>', hviews.limpiar_preferencias_ventas_dias, name="limpiar_preferencias_ventas_dias"),
+    path('desafiliar_hotel/<int:hotel>', hviews.desafiliar_hotel, name='desafiliar_hotel'),
 ]

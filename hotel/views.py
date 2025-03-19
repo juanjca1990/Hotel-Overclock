@@ -652,3 +652,12 @@ def ventasHotelPorMes(request, hotel):
         "ventasMes":ventasMes,
     }
     return render(request, "hotel/listado_ventas_hotel.html", context)
+
+
+def desafiliar_hotel(request, hotel):
+    print("Desafiliando hotel")
+    hotel = get_object_or_404(Hotel, pk=hotel)
+    print(hotel)
+    hotel.vendedores.clear()  # Vacía la relación de vendedores
+    print("Desafiado")
+    return redirect('hotel:hotel')

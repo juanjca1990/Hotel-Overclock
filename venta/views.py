@@ -241,6 +241,7 @@ def facturar_carrito(request):
 def pagar_factura(request, factura):
     print("APRETASTE EN PAGAAAAAAAAR")
     seleccionTipoPago=request.POST.get('opcionTipoPago')
+    print("tipo de pago", seleccionTipoPago)
     facturita= get_object_or_404(Factura, pk=factura)
     if seleccionTipoPago=="Puntos":   
         facturita.cliente.quitar_puntos(facturita)  

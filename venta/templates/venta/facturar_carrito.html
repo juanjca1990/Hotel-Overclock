@@ -3,8 +3,6 @@
 {% block tarjeta1 %}
 {% endblock tarjeta1 %}
 {% block header %}
-
-{% block header %}
  <h5 style="color: aliceblue;">VENDEDOR: {{vendedor.persona.nombre.upper}} , {{vendedor.persona.apellido.upper}}</h5>
     {% if vendedor.persona.imagen %}
         <img class="imagen-perfil" src="{{ vendedor.persona.imagen.url }}" alt="Imagen del personal">
@@ -27,7 +25,7 @@
 
 
 
-{% endblock header %} {% block carrito %}
+{% block carrito %}
 <!--VACIO PARA QUE NO APAREZCA EL CARRITO, DADO QUE ESTAMOS EN LA VISTA CARRITO-->
 {% endblock carrito %}
 
