@@ -12,13 +12,10 @@ class Carrito:
         self.request=request
         self.session=request.session
         carrito=self.session.get("carrito")
-        #print(carrito)
         if carrito==None:
-            print("SE CREA CARRITO!!!!!!!!")
             carrito=self.session["carrito"]={}
             self.carrito=carrito
         else:
-            print("SE REUSA CARRITO!!!!!!!!")
             self.carrito=carrito
             
         self.cliente=self.session.get("cliente")
@@ -56,24 +53,19 @@ class Carrito:
     def agregar_habitacion(self,habitacion,desde,hasta,pasajeros):
         claves=list(self.carrito.keys())
         if str(habitacion) not in claves:
-            print("entre a crear un alquiler nuevo de otra habitacion")
             self.carrito[habitacion]={
                 "alquiler":[]                
                 }
             self.carrito[habitacion]["alquiler"].append([str(desde),str(hasta),str(pasajeros)])
             
         else:
-            print("reuso la habitacion")
             periodoDisponible=True
             alquileres = list(self.carrito[str(habitacion)]["alquiler"])
             for index in alquileres:
-                print(index)
                 desde_contenido = (str(desde)>=index[0] and str(desde)<=index[1])
                 hasta_contenido = (str(hasta)>=index[0] and str(hasta)<=index[1])
                 esta_contenido = (str(desde)<=index[0] and str(hasta)>=index[1])
-                print(desde_contenido," ",hasta_contenido," ",esta_contenido)
                 if (desde_contenido or hasta_contenido or esta_contenido):
-                    print("no puedo alquilar")
                     periodoDisponible=False
                     break
             if periodoDisponible:
@@ -86,14 +78,11 @@ class Carrito:
         claves=list(self.carrito.keys())
         if str(habitacion) in claves:
             if len(self.carrito[str(habitacion)]["alquiler"])==1:
-                print("borro Habitacion")
                 del self.carrito[str(habitacion)]
             else:
-                print("busco alquiler")
                 alquileres = list(self.carrito[str(habitacion)]["alquiler"])
                 for index in alquileres:
                     if str(desde) and str(hasta) in index:
-                        print("borro lo que encontre")
                         self.carrito[str(habitacion)]["alquiler"].remove(index)
         self.save()
 
@@ -104,7 +93,6 @@ class Carrito:
         clave_instancia="p"+str(paqueteInstancia.pk)
         claves=list(self.carrito.keys())
         if clave_instancia not in claves:
-            print("entre a crear un alquiler nuevo de otro paquete")
             self.carrito[clave_instancia]={
                 "fecha_inicio":str(paqueteInstancia.inicio),
                 "fecha_fin":str(paqueteInstancia.fin),
@@ -144,7 +132,6 @@ class Carrito:
     def get_alquileres_habitaciones(self):
         col_habitaciones=[]
         for key,value in self.carrito.items():
-            print(key)
             if "p" not in str(key):
                 alquileres = value['alquiler']
                 for alquiler in alquileres:

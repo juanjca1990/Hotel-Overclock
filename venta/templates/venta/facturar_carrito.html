@@ -45,7 +45,7 @@
 {% block content %}
 
 <div class="formularioCarrito" id="vistaCarrito">
-  <center>
+  <div style="margin-top: 35px;" class="container-fluid text-center">
     <h1 class="my-4">FACTURA N° {{factura.pk}}</h1>
     <h4>FECHA: {{factura.fecha}}</h4>
     <h4>
@@ -58,7 +58,7 @@
       {{factura.vendedor.persona.apellido}}
       - DNI {{factura.vendedor.persona.documento}}
     </h4>
-  </center>
+  </div>
   <table
     id="example1"
     class="table table-striped table-bordered tablaListaHabitacion"

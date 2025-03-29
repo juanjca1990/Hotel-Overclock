@@ -27,7 +27,7 @@
 {%else%}
 
 <div class="formularioCarrito" id="vistaCarrito">
-    <center>
+    <div style="margin-top: 35px;" class="container-fluid text-center">
         <h1 class="my-4">LISTADO ITEMS CARRITO</h1>
         {% if cliente %}
             <h4>
@@ -38,7 +38,7 @@
             {% else %}
             <h4>CLIENTE: NO SELECCIONADO</h4>
         {% endif %}
-    </center>
+    </div>
     <table id="example1" class="table table-striped table-bordered tablaListaHabitacion">
 
         <thead>

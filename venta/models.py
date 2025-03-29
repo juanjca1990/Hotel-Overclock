@@ -111,7 +111,7 @@ class Alquiler(models.Model):
     #PaqueteTuristico.objects.filter(alquiler__isnull=True) para obtener paquetes no vendidos!
 
     def get_hotel(self):
-        print("HOTEL DE M:", self.habitaciones.all().first().hotel)
+        self.habitaciones.all().first().hotel
         return self.habitaciones.all().first().hotel
 
     def get_habitaciones(self):

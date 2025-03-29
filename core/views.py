@@ -32,7 +32,6 @@ from django.views.generic.edit import CreateView
 
 
 def home(request):
-    print("holiiiis")
     form = AutenticacionForm()
     if request.method == "POST":
         # Añadimos los datos recibidos al formulario
@@ -130,7 +129,6 @@ def paisCrear(request):
         else:
             formPais = PaisForm(data=request.POST)
             erroresDelFormulario = formPais.errors
-            print(erroresDelFormulario)
             return render(request, "core/modals/modal_pais_crear.html", {"paises": paises, "formulario": formPais, "errores": erroresDelFormulario})
     return render(request, "core/modals/modal_pais_crear.html", {"paises": paises, "formulario": formPais})
 
@@ -318,7 +316,6 @@ def categoriaModificar(request, categoria):
 
 
 def vendedores(request):
-    print("entrandooiooooaosdosodfosdf")
     personaInstancia = request.user.persona
     colVendedores = Vendedor.objects.all()
     colEncargados = Encargado.objects.all()
@@ -334,7 +331,6 @@ def vendedorCrear(request):
             if form.is_valid():
                 if 'imagen' in request.FILES:
                     imagen = request.FILES['imagen']
-                    print("Imagen cargada:", imagen.name)  #
                 form.imagen = imagen 
                 form.save()
                 form.instance.hacer_vendedor(
@@ -361,14 +357,11 @@ def vendedorModificar(request, vendedor):
             vendedorInstancia.persona.usuario.save()
             vendedorInstancia.persona.save()
             vendedorInstancia.save()
-            print(vendedorInstancia.persona.nombre)
             return redirect('core:opcionVendedor')
         else:
             form = VendedorForm(request.POST, instance=vendedorInstancia)
     else:
-        #print(vendedorInstancia)
         form = VendedorForm(instance=vendedorInstancia)
-        #print(vendedorInstancia.persona.nombre)
         form.fields["nombre"].initial = vendedorInstancia.persona.nombre
         form.fields["apellido"].initial = vendedorInstancia.persona.apellido
         form.fields["documento"].initial = vendedorInstancia.persona.documento

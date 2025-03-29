@@ -24,15 +24,16 @@
 
         <form action="{% url 'venta:listado_liquidaciones' %}" method="post" id="formulario">
             {% csrf_token %}
-            <label for="fecha_inicio">Fecha inicio:</label>
-            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required>
+            <label for="fecha_inicio" style="margin-left: 10px;">Fecha inicio:</label>
+            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required style="margin-left: 10px;">
             
-            <label for="fecha_fin">Fecha fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required>
+            <label for="fecha_fin" style="margin-left: 10px;">Fecha fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required style="margin-left: 10px;">
             
-            <input type="submit" name="cargar" id="cargar" value="Cargar liquidaciones pendientes">
-            <button type="button">
-                <a href="{% url 'venta:limpiar_preferencias_liquidaciones' %}">Limpiar Preferencias</a>
+            <input type="submit" name="cargar" id="cargar" value="Cargar liquidaciones pendientes" class="btn btn-success" style="margin-left: 10px;">
+            
+            <button type="button" class="btn btn-success" style="margin-left: 10px;">
+                <a href="{% url 'venta:limpiar_preferencias_liquidaciones' %}" class="text-white" style="text-decoration: none;">Limpiar Preferencias</a>
             </button>
         </form>
 
@@ -58,7 +59,7 @@
                         <td> {{liquidacion_pendiente.apellido}}</td>
                         <td> {{liquidacion_pendiente.documento}}</td>
                         <td> ${{liquidacion_pendiente.monto_total}}</td>
-                        <td><button class="btn btn-success"> <a href="{% url 'venta:liquidar' liquidacion_pendiente.documento liquidacion_pendiente.factura_id liquidacion_pendiente.monto_total %}"> abonar </a> </button></td>
+                        <td><button class="btn btn-success"> <a href="{% url 'venta:liquidar' liquidacion_pendiente.documento liquidacion_pendiente.factura_id liquidacion_pendiente.monto_total %}" class="text-white"> abonar </a> </button></td>
                         
                     </tr>
                         {% empty %}

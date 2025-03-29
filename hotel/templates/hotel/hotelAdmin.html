@@ -59,8 +59,8 @@
                     <td>{{hotel.categoria.nombre}}</td>
                     {% if hotel.es_comercializable %}
                         <td>
-                            <button type="button">
-                                <a href="{% url 'hotel:desafiliar_hotel' hotel.pk %}">desafiliar</a>
+                            <button type="button" class="btn btn-success ml-4 float-right btn-sm">
+                                <a href="{% url 'hotel:desafiliar_hotel' hotel.pk %}" class="text-white" style="text-decoration: none;">Desafiliar</a>
                             </button>
                         </td>
                     {% else %}

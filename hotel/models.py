@@ -78,10 +78,8 @@ class Hotel(models.Model):
     
     def get_paquetes_busqueda(self,fechai,fechaf,cantPasajeros):
         paquetesEnHotel = self.get_paquetes()
-        print("paquetes en hoteldasdasdasd", paquetesEnHotel)
         paquetesSegunBusqueda=[]
         for paquete in paquetesEnHotel:
-            print("dasdasdasdasda" , paquete.nombre)
             if (paquete.inicio <= fechai <=paquete.fin) and (paquete.fin<=fechaf) and (paquete.get_pasajeros()>=cantPasajeros) and (paquete.estoy_vigente()):
                 paquetesSegunBusqueda.append(paquete)
             if ( paquete.inicio <= fechai <= fechaf) and (fechaf <= paquete.fin) and (paquete.get_pasajeros()>=cantPasajeros) and (paquete.estoy_vigente()):    
@@ -148,9 +146,7 @@ class Habitacion(models.Model):
             #TODO: Custom exception
             raise Exception("No puedo calcular el precio")
         if self.hotel.temporadas.filter(inicio__lte=fecha, fin__gte=fecha).exists():
-            #print("es temp alta" + str(self.numero))
             return precio_por_tipo.alta
-        #print("es temp baja" + str(self.numero))
         return precio_por_tipo.baja
 
     def precio_temp_baja(self):
@@ -175,7 +171,6 @@ class Habitacion(models.Model):
             total = Decimal(0)
             if desde == hasta:
                 total += self.precio_por_noche(desde)
-                print("aplicando descuento")
                 total = total / 2
             else:
                 while desde < hasta:
@@ -185,7 +180,6 @@ class Habitacion(models.Model):
 
 
     def disponible(self ,desde, hasta):
-        print(self.numero)
         alquileres = self.alquileres.all()
         desicion = True
         for alquiler in alquileres:
@@ -243,10 +237,8 @@ class PaqueteTuristico(models.Model):
 
     def actualizar_precio(self):
         self.precio=0
-        #print(">>>>>>>>>>>>>>>>>>> calculando precio paquete: "+self.nombre+" >>>>>>>>>>>>>>>>>>>")
         habitaciones = Habitacion.objects.filter(paqueteturistico = self)
         for habitacion in habitaciones:
-            #print("habitacion: " + str(habitacion.numero) +"precio: $"+ str(habitacion.precio_por_noche(self.inicio)) )
             self.precio += habitacion.precio_por_noche(self.inicio)
 
     def cantidad_dias(self):

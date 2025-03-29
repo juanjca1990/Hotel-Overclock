@@ -20,9 +20,9 @@
 
 
 <div class="ventaVendedor" id="vendedor">
-    <center>
+    <div style="margin-top: 35px;" class="container-fluid text-center">
         <h1 class="my-4">LISTADO DE HOTELES</h1>
-    </center>
+    </div>
 
     {% if tengo_hoteles %}
 
@@ -43,15 +43,15 @@
             <form id="form_preferencias_cliente" onsubmit="return evitar_envio(event)"
                 action="{%url 'venta:iniciar_venta'%} " method="POST">
                 {% csrf_token %}
-                <label for="fecha_inicio">Fecha inicio:</label>
-                <input type="date" name="fecha_inicio" id="fecha1" value="{{ fecha_inicio }}" required>
+                <label for="fecha_inicio" style="margin-left: 10px;">Fecha inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha1" value="{{ fecha_inicio }}" required style="margin-left: 10px;">
                 
-                <label for="fecha_fin">Fecha fin:</label>
-                <input type="date" id="fecha2" name="fecha_fin" value="{{ fecha_fin }}" required>
-                <label for="pasajeros"> Nª Pasajeros: </label>
-                <input type="number" id="pasajeros" name="pasajeros" value="{{ pasajeros }}" min=1>
-                <input type="submit" id="filtrar" name="filtrar">
-                <button><a href="{%url 'venta:limpiar_preferencias'%}"> limpiar Preferencias</a></button>
+                <label for="fecha_fin" style="margin-left: 10px;">Fecha fin:</label>
+                <input type="date" id="fecha2" name="fecha_fin" value="{{ fecha_fin }}" required style="margin-left: 10px;">
+                <label for="pasajeros" style="margin-left: 10px;"> Nª Pasajeros: </label>
+                <input type="number" id="pasajeros" name="pasajeros" value="{{ pasajeros }}" min=1 style="margin-left: 10px;">
+                <input type="submit" id="filtrar" name="filtrar" style="margin-left: 10px;" class="btn btn-success">
+                <button class="btn btn-success"><a href="{%url 'venta:limpiar_preferencias'%}" class="text-white"> limpiar Preferencias</a></button>
                 
 
             </form>

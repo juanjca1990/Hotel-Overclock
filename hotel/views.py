@@ -40,9 +40,6 @@ def hotelCrear(request):
     if request.method == "POST":
         form = HotelForm(request.POST, request.FILES)
         if form.is_valid():
-            # Mostrar los archivos subidos
-            print("request.FILES:", request.FILES)
-            
             # Guardamos la instancia del hotel
             hotelInstancia = form.save()
 
@@ -135,9 +132,6 @@ def tipoHabitacionCrear(request, hotel):
                 tipoHabitacionRecibido.save()
                 return redirect('hotel:tipoHabitacionHotel', hotel)
         else:
-            print("dasdasdasdasdasdasdasdasdasdasdasd")
-            print(formulario.errors)
-            print("poirtpyoierptyoipretiypoeritp")
             return render(request, "hotel/modals/modal_tipoHabitacionHotel_crear.html", {
                 "hotel": hotelInstancia,
                 "formulario": formulario,
@@ -360,7 +354,6 @@ def paqueteTuristicoHotelModificar(request,hotel,paquete):
             form.fields['habitaciones'].choices=[(c.pk,c.numero) for c in Habitacion.objects.filter(hotel=hotelInstancia)]
             
         if form.is_valid():
-            print(paqueteInstancia)
             paqueteInstancia.nombre = request.POST["nombre"]
             paqueteInstancia.coeficiente = request.POST["coeficiente"]
             paqueteInstancia.inicio = request.POST["inicio"]
@@ -453,8 +446,6 @@ def vendedorHotelEliminar(request,hotel,vendedor):
     vendedorInstancia=get_object_or_404(Vendedor, pk=vendedor)
     if request.method=='POST':
         hotelInstancia.vendedores.remove(vendedorInstancia)
-        #print(hotelInstancia.vendedores)
-        #form.save_m2m()
         hotelInstancia.save()
         return redirect('hotel:vendedoresHotel', hotel)
     return render(request, "hotel/modals/modal_vendedor_hotel_eliminar.html",{'hotel':hotelInstancia,'vendedor':vendedorInstancia})
@@ -484,7 +475,6 @@ def limpiar_preferencias_ventas_dias(request,hotel):
 
 # ventas del hotel por dia total
 def ventasHotelPorDia(request, hotel):
-    print("todos putoss")
     if 'ventas_mes' in request.session:
         del request.session['ventas_mes']
     ventasDias="ventas-dias"
@@ -532,7 +522,6 @@ def ventasHotelPorDia(request, hotel):
             totales.append(total)
         
         ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
-        print("las ventas",ventas)
         context = {
             "ventas": ventas,
             'fechas': json.dumps(fechas), 
@@ -607,7 +596,6 @@ def ventasHotelPorDia(request, hotel):
 
 
 def ventasHotelPorMes(request, hotel):
-    print("entrandooooooooooooooooo")
     request.session['ventas_mes']= "ventas_mes"
     if 'ventas_dias' in request.session:
         del request.session['ventas_dias']
@@ -655,9 +643,6 @@ def ventasHotelPorMes(request, hotel):
 
 
 def desafiliar_hotel(request, hotel):
-    print("Desafiliando hotel")
     hotel = get_object_or_404(Hotel, pk=hotel)
-    print(hotel)
     hotel.vendedores.clear()  # Vacía la relación de vendedores
-    print("Desafiado")
     return redirect('hotel:hotel')
