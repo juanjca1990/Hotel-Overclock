@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-<!-- <link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}"> -->
+<link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
 <style>
     a.active {
         background-color: #054f52;
@@ -22,9 +22,6 @@
         height: 50px;
         border-radius: 50%;
         margin-left: 50px;
-    }
-    .titulos{
-        margin-top: 50px;
     }
 
 </style>
@@ -189,11 +186,11 @@
 <div id="container-opciones" class="switch-3 switch-candy sm row justify-content-center my-4">
     <input type="radio" id="habitaciones" name="material" value="habitaciones">
     <label for="habitaciones" onclick='seleccionarEstado("habitaciones")'>
-        <h1>habitaciones</h1>
+        <h1 class="boton-habitaciones-paquete">habitaciones</h1>
     </label>
     <input type="radio" id="paquetes" name="material" value="paquetes">
     <label for="paquetes" onclick='seleccionarEstado("paquetes")'>
-        <h1>paquetes</h1>
+        <h1 class="boton-habitaciones-paquete">paquetes</h1>
     </label>
     <div id="effect"></div>
 </div>

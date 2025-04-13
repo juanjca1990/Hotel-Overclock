@@ -347,6 +347,8 @@ def liquidar(request,documento, id_factura,monto):
 
 
 def lista_compras_cliente(request, id_cliente , id_persona):
+    personaInstancia = request.user.persona
+    vendedorInstancia = get_object_or_404(Vendedor, persona = personaInstancia.id)
     cliente = Persona.objects.get(id = id_persona)
     print("id del cliente " , id_cliente)
     facturas = Factura.objects.filter(cliente_id = id_cliente)
@@ -415,7 +417,7 @@ def lista_compras_cliente(request, id_cliente , id_persona):
             context = {'cliente': cliente,
                     'lista_compras':lista_compras}
     else: #el cliente se inicio como tal pero no realizo todavia compras
-        context = {'cliente': cliente}
+        context = {'cliente': cliente,"vendedor":vendedorInstancia}
         return render(request, 'venta/lista_compras_cliente.html' , context)
     
     return render(request, 'venta/lista_compras_cliente.html', context)

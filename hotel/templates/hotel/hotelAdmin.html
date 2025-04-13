@@ -1,6 +1,7 @@
 {% extends 'base/base_administrador.html'%}
 {% load static %}
 
+
 {% block header %}
 <h5 style="color: #ffffff;">Administrador:{% if administrador %}{{administrador.nombre}} {{administrador.apellido}}{% endif %}</h5>
     {% if administrador.imagen %}

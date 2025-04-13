@@ -9,7 +9,9 @@
     {% endif %}
 {% endblock header %}
 
-<center>
+{% block content %}
+
+<center class="titulos">
     <h1 class="my-4">Lista de compras de :  {{ cliente}}</h1>
 </center>
 
@@ -72,9 +74,9 @@
 <div class="modal fade-scale" id="aniadirCliente" tabindex="-1" aria-labelledby="exampleModalLabel">
 </div>
 
-</div>
 
-{% endblock content %} {% block extrajs %}
+{% endblock content %}
+{% block extrajs %}
 
 <script type="text/javascript">
     //SCRIPT DE DATATABLE
