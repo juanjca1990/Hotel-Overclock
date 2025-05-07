@@ -226,6 +226,7 @@ def facturar_carrito(request):
     cliente=carrito.get_cliente()
     factura=Factura()
     factura.set_atributos(vendedorInstancia,cliente)
+    factura.fecha=date.today()
     factura.save()
     coleccion_alquileres_habitaciones=(carrito.get_alquileres_habitaciones())
     factura.alquilar_habitaciones(coleccion_alquileres_habitaciones)
@@ -416,7 +417,8 @@ def lista_compras_cliente(request, id_cliente , id_persona):
                 lista_compras.append(nueva_compra)
             
             context = {'cliente': cliente,
-                    'lista_compras':lista_compras}
+                    'lista_compras':lista_compras,
+                    "vendedor":vendedorInstancia}
     else: #el cliente se inicio como tal pero no realizo todavia compras
         context = {'cliente': cliente,"vendedor":vendedorInstancia}
         return render(request, 'venta/lista_compras_cliente.html' , context)
