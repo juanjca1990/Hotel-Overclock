@@ -248,6 +248,7 @@ def pagar_factura(request, factura):
             facturita.cliente.agregar_puntos(facturita)
     tipoPago= get_object_or_404(Tipo_pago, nombre=seleccionTipoPago)
     facturita.tipo_pago=tipoPago
+    facturita.fecha=date.today()
     facturita.save()
     carrito = Carrito(request)
     carrito.vaciar_carrito()

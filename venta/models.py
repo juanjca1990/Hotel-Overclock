@@ -48,7 +48,7 @@ class Factura(models.Model):
     vendedor = models.ForeignKey(Vendedor, on_delete=models.CASCADE)
     liquidacion = models.ForeignKey(Liquidacion, null=True, blank=True, on_delete=models.SET_NULL)
     tipo_pago=models.ForeignKey(Tipo_pago, null=True, blank=True, on_delete=models.SET_NULL)
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField()
 
     def set_atributos(self,vendedor,cliente):
         self.cliente=cliente

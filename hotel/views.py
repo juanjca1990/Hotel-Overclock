@@ -522,6 +522,8 @@ def ventasHotelPorDia(request, hotel):
             totales.append(total)
         
         ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
+        fechas = [venta["fecha"] for venta in ventas]  # Fechas ordenadas
+        totales = [venta["total"] for venta in ventas]  # Totales correspondientes
         context = {
             "ventas": ventas,
             'fechas': json.dumps(fechas), 
@@ -580,7 +582,9 @@ def ventasHotelPorDia(request, hotel):
             totales.append(total)
         
         ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
-        
+        fechas = [venta["fecha"] for venta in ventas]  # Fechas ordenadas
+        totales = [venta["total"] for venta in ventas]  # Totales correspondientes
+
         
         context = {
             "ventas": ventas,
@@ -603,6 +607,7 @@ def ventasHotelPorMes(request, hotel):
     personaInstancia = request.user.persona
     hotelInstancia = get_object_or_404(Hotel, pk=hotel)
     colHabitaciones = hotelInstancia.get_habitaciones()
+    print("colHabitaciones",colHabitaciones)
     
     ventas = []
     fechas = []
@@ -613,10 +618,13 @@ def ventasHotelPorMes(request, hotel):
     for habitacion in colHabitaciones:
         alquileres = habitacion.alquileres.all()
         for alquiler in alquileres:
+            print("alquiler",alquiler)
+            print("alquiler factura",alquiler.factura_id)
             factura = Factura.objects.get(id=alquiler.factura_id)
-            
+            print("factura",factura)
             # Extraemos el mes y año (formato 'YYYY-MM')
             mes = factura.fecha.strftime('%Y-%m')
+            print("el meees", mes)
             
             ventas_por_mes[mes] += float(alquiler.total)  # Sumar al total del mes
             
@@ -629,15 +637,14 @@ def ventasHotelPorMes(request, hotel):
         fechas.append(mes)
         totales.append(total)
     
-    ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenamos por fecha
-    
+    ventas = sorted(ventas, key=lambda venta: venta["fecha"])  # Ordenar por fecha ascendente
     context = {
         "ventas": ventas,
-        'fechas': json.dumps(fechas), 
-        "totales": json.dumps(totales), 
+        'fechas': json.dumps([venta["fecha"] for venta in ventas]),  # Fechas ordenadas
+        "totales": json.dumps([venta["total"] for venta in ventas]),  # Totales correspondientes
         "hotel": hotelInstancia,
         "administrador": personaInstancia,
-        "ventasMes":ventasMes,
+        "ventasMes": ventasMes,
     }
     return render(request, "hotel/listado_ventas_hotel.html", context)
 
