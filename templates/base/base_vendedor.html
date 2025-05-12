@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static '/css/vistaHotel.css' %}">
+<link rel="stylesheet" href="{% static '/css/styleBase.css' %}">
 <style>
 
     li a.custom-btn:hover {
@@ -24,6 +25,19 @@
 
       
 {% endblock extra_css %}
+
+
+{% block tarjeta1_responsive %} 
+        <a href="/venta/vendedor" id="#dropdown-content">
+            Hoteles
+        </a>
+{% endblock tarjeta1_responsive %}
+
+{% block tarjeta2_responsive %}
+        <a href="/venta/vistaCliente/" id="#dropdown-content">
+            Clientes
+        </a>
+{% endblock tarjeta2_responsive %}
 
 {% block tarjeta1 %}
     <li class="{% if request.path == '/venta/vendedor' %}active{% endif %}">

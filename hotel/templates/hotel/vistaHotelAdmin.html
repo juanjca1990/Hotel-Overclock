@@ -39,6 +39,54 @@
 
 
 <!--  ####################### TARJETAS DEL SIDE BAR #######################-->
+{% block tarjeta1_responsive %}
+    <a href="/hotel/hotel" id="#dropdown-content">
+        Hoteles
+    </a>
+{% endblock tarjeta1_responsive %}
+
+{% block tarjeta2_responsive %}
+    {% url 'hotel:vistaHotel' hotel.pk as vista_hotel_url %}
+    <a href="{{ vista_hotel_url }}" id="#dropdown-content">
+        Paquete / Habitacion
+    </a>
+{% endblock tarjeta2_responsive %}
+
+{% block tarjeta3_responsive %}
+    {% url 'hotel:temporadaHotel' hotel.pk as temporada_hotel_url %}
+    <a href="{{ temporada_hotel_url }}" id="#dropdown-content">
+        Temporada
+    </a>
+{% endblock tarjeta3_responsive %}
+
+{% block tarjeta4_responsive %}
+    {% url 'hotel:vendedoresHotel' hotel.pk as vendedores_hotel_url %}
+    <a href="{{ vendedores_hotel_url }}" id="#dropdown-content">
+        Vendedor
+    </a>
+{% endblock tarjeta4_responsive %}
+
+{% block tarjeta5_responsive %}
+    {% url 'hotel:tipoHabitacionHotel' hotel.pk as tipo_habitacion_url %}
+    <a href="{{ tipo_habitacion_url }}" id="#dropdown-content">
+        Tipo de Habitacion
+    </a>
+{% endblock tarjeta5_responsive %}
+
+{% block tarjeta6_responsive %}
+    {% url 'hotel:serviciosHotel' hotel.pk as servicios_hotel_url %}
+    <a href="{{ servicios_hotel_url }}" id="#dropdown-content">
+        Servicios
+    </a>
+{% endblock tarjeta6_responsive %}
+
+{% block tarjeta7_responsive %}
+    {% url 'hotel:vistaVentasHotel' hotel.pk as ventas_hotel_url %}
+    <a href="{{ ventas_hotel_url }}" id="#dropdown-content">
+        Ventas
+    </a>
+{% endblock tarjeta7_responsive %}
+
 {% block tarjeta1 %}
     <li class="{% if request.path == '/hotel/hotel' %}active{% endif %}">
         <a href="/hotel/hotel" class="custom-btn btn btn-block text-white text-decoration-none">
