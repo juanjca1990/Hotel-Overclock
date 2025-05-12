@@ -152,7 +152,7 @@ a:link, a:visited, a:active a{
     background-color: #054346;
 }
 
-@media (max-width: 990px) {
+@media (max-width: 992px) {
     #dropdown-menu {
         display: block;
     }
