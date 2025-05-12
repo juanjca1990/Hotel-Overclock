@@ -26,6 +26,54 @@
       
 {% endblock extra_css %}
 
+{% block tarjeta1_responsive %} 
+        <a href="/hotel/hotel" id="#dropdown-content">
+            Hoteles
+        </a>
+{% endblock tarjeta1_responsive %}
+
+{% block tarjeta2_responsive %}
+        <a href="/venta/listado_liquidaciones" id="#dropdown-content">
+            Liquidación / Abonar
+        </a>
+{% endblock tarjeta2_responsive %}
+
+{% block tarjeta3_responsive %}
+        <a href="/core/servicio" id="#dropdown-content">
+            Servicios
+        </a>
+{% endblock tarjeta3_responsive %}
+
+{% block tarjeta4_responsive %}
+        <a href="/core/vendedores" id="#dropdown-content">
+            Vendedores / Encargados
+        </a>
+{% endblock tarjeta4_responsive %}
+
+{% block tarjeta5_responsive %}
+        <a href="/core/tipoHabitacion" id="#dropdown-content">
+            Tipos Habitaciones
+        </a>
+{% endblock tarjeta5_responsive %}
+
+{% block tarjeta6_responsive %}
+        <a href="/core/categoria" id="#dropdown-content">
+            Categorías
+        </a>
+{% endblock tarjeta6_responsive %}
+
+{% block tarjeta7_responsive %}
+        <a href="/core/region" id="#dropdown-content">
+            Regiones
+        </a>
+{% endblock tarjeta7_responsive %}
+
+{% block tarjeta8_responsive %}
+        <a href="/core/clienteAdmin" id="#dropdown-content">
+            Clientes
+        </a>
+{% endblock tarjeta8_responsive %}
+
 {% block tarjeta1 %}
     <li class="{% if request.path == '/hotel/hotel' %}active{% endif %}">
         <a href="/hotel/hotel" class="custom-btn btn btn-block text-white text-decoration-none">

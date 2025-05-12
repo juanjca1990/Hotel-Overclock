@@ -48,6 +48,7 @@
     background-color: #0d7377;
 }
 
+
 .cartas{
     margin-top: 20px;
     margin-bottom: 0px;
@@ -104,5 +105,60 @@ a:link, a:visited, a:active a{
 }
 .manito{
     cursor: pointer;
+}
+
+
+
+.visible {
+    visibility: visible;
+}
+
+.oculto {
+    visibility: hidden;
+}
+
+
+
+#dropdown-menu {
+    margin-top: 100px;
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background-color: #0d7377;
+}
+
+#dropdown-content {
+    margin-top: 25px;
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #0d7377;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    width: 200px;
+}
+
+#dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: rgb(226, 232, 233);
+}
+
+#dropdown-content a:hover {
+    background-color: #054346;
+}
+
+@media (max-width: 990px) {
+    #dropdown-menu {
+        display: block;
+    }
+
+    #sticky-sidebar {
+        display: none;
+    }
 }
 

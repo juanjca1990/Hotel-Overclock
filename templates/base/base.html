@@ -76,34 +76,43 @@
     
 
     <!-- opciones + contenido -->
-    <div class="container-fluid position-fixed  miEstiloPiola">
-        <div class="row">
-            
-            <!-- SIDEBAR -->
-            <div class="col-2 px-1" id="sticky-sidebar">
-                <div class="nav flex-column flex-nowrap vh-100 overflow-auto text-white p-2 pt-4 cartas ">
-                    <!--TARJETAS SON LAS OPCIONES DEL SIDEBAR AL HEREDARLAS SE PUEDEN CAMBIAR-->
-                    {% block tarjeta1 %} {% endblock tarjeta1 %}
-                    {% block tarjeta2 %} {% endblock tarjeta2 %}
-                    {% block tarjeta3 %} {% endblock tarjeta3 %}
-                    {% block tarjeta4 %} {% endblock tarjeta4 %}
-                    {% block tarjeta5 %} {% endblock tarjeta5 %}
-                    {% block tarjeta6 %} {% endblock tarjeta6 %}
-                    {% block tarjeta7 %} {% endblock tarjeta7 %}
-                    {% block tarjeta8 %} {% endblock tarjeta8 %}
-                    
-                </div>
-            </div>
-            <!-- CONTENIDO -->
-            <div class="col-10 position-relative pre-scrollable" id="main">
-                
-                {% block content %}
-                {% endblock content %}
-                
+<div class="container-fluid position-fixed miEstiloPiola">
+    <div class="row">
+        <!-- Botón Dropdown -->
+        <button id="dropdown-menu" class="btn btn-primary">☰ Menú</button>
+        <div id="dropdown-content">
+                {% block tarjeta1_responsive %} {% endblock tarjeta1_responsive %}
+                {% block tarjeta2_responsive %} {% endblock tarjeta2_responsive %}
+                {% block tarjeta3_responsive %} {% endblock tarjeta3_responsive %}
+                {% block tarjeta4_responsive %} {% endblock tarjeta4_responsive %}
+                {% block tarjeta5_responsive %} {% endblock tarjeta5_responsive %}
+                {% block tarjeta6_responsive %} {% endblock tarjeta6_responsive %}
+                {% block tarjeta7_responsive %} {% endblock tarjeta7_responsive %}
+                {% block tarjeta8_responsive %} {% endblock tarjeta8_responsive %}
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-2 px-1 d-none d-lg-block" id="sticky-sidebar">
+            <div class="nav flex-column flex-nowrap vh-100 overflow-auto text-white p-2 pt-4 cartas">
+                {% block tarjeta1 %} {% endblock tarjeta1 %}
+                {% block tarjeta2 %} {% endblock tarjeta2 %}
+                {% block tarjeta3 %} {% endblock tarjeta3 %}
+                {% block tarjeta4 %} {% endblock tarjeta4 %}
+                {% block tarjeta5 %} {% endblock tarjeta5 %}
+                {% block tarjeta6 %} {% endblock tarjeta6 %}
+                {% block tarjeta7 %} {% endblock tarjeta7 %}
+                {% block tarjeta8 %} {% endblock tarjeta8 %}
             </div>
         </div>
 
+        <!-- CONTENIDO -->
+        <div class="col-lg-10 col-12 position-relative pre-scrollable" id="main">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </div>
+</div>
+
 
 
 
@@ -137,35 +146,60 @@
             // Función para controlar el estado del sidebar
             const checkSidebar = () => {
                 if (window.innerWidth > 1100) {
-                    sidebar.classList.remove('active'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    sidebar.classList.remove('col-3'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    sidebar.classList.add('col-2'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    body.classList.remove('col-9'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    body.classList.add('col-10'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                }
-                if (window.innerWidth < 1100) {
-                    sidebar.classList.remove('col-2'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    sidebar.classList.add('col-3'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    body.classList.remove('col-10'); // Desactiva el sidebar si el ancho es mayor a 1100px
-                    body.classList.add('col-9'); // Desactiva el sidebar si el ancho es mayor a 1100px
+                    sidebar.classList.remove('active');
+                    sidebar.classList.remove('col-3');
+                    sidebar.classList.add('col-2');
+                    body.classList.remove('col-9');
+                    body.classList.remove('col-12');
+                    body.classList.add('col-10');
+                } else if (window.innerWidth >= 990 && window.innerWidth <= 1100) {
+                    sidebar.classList.add('col-2');
+                    body.classList.remove('col-10');
+                    body.classList.remove('col-12');
+                    body.classList.add('col-8'); // Asegura que el body ocupe el espacio restante
+                } else if (window.innerWidth >= 900 && window.innerWidth <= 990) {
+                    sidebar.classList.add('col-2');
+                    body.classList.remove('col-10');
+                    body.classList.remove('col-8');
+                    body.classList.add('col-12'); // Asegura que el body ocupe el espacio restante
+                } else if (window.innerWidth < 900) {
+                    sidebar.classList.remove('col-2');
+                    sidebar.classList.remove('col-3');
+                    body.classList.remove('col-10');
+                    body.classList.remove('col-9');
+                    body.classList.add('col-12'); // El body ocupa todo el ancho
                 }
             };
-    
+
             // Evento de clic en el menú hamburguesa
             hamburgerMenu.addEventListener('click', () => {
                 sidebar.classList.toggle('active');
             });
-    
+
             // Detectar cambios en el tamaño de la pantalla
             window.addEventListener('resize', checkSidebar);
-    
+
             // Llamar la función al cargar la página para establecer el estado inicial
             checkSidebar();
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            const dropdownContent = document.getElementById('dropdown-content');
 
+            dropdownMenu.addEventListener('click', () => {
+                dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+            });
 
+            document.addEventListener('click', (event) => {
+                if (!dropdownMenu.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
     <!-- Footer -->
     <div class="footer text-center mb-0 fixed-bottom">
@@ -201,8 +235,8 @@
    
 
     <!--dataTable jquery + bootstrap + popper include-->
-    <script src="{% static '/js/jquery.dataTables.min.js'%}"></script>
-    <script src="{% static '/js/dataTables.bootstrap4.min.js'%}"></script>
+    <script src="{% static '/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static '/js/dataTables.bootstrap4.min.js' %}"></script>
   
 
     <!--scripts personalizados-->
