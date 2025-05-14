@@ -133,6 +133,8 @@
 <form id="form_pago_factura" onsubmit="return evitar_envio(event)"
             action="{%url 'venta:pagarFactura' factura.pk %} " method="POST">
   {% csrf_token %}
+  <input type="hidden" id="inputMontoTarjeta" name="montoTarjeta">
+  <input type="hidden" id="inputMontoEfectivo" name="montoEfectivo">
   <div class="ml-5 mb-5 mt-5">
 
 
@@ -156,6 +158,12 @@
         Puntos
       </label>
     </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="opcionTipoPago" id="exampleRadiosMixto" value="Mixto" onclick="mostrarModalMixto()">
+      <label class="form-check-label h5" for="exampleRadiosMixto">
+        Mixto
+      </label>
+    </div>
   </div>
   <div class="row mt-2">
       <div class="col-10 ml-4" style="background-color: rgb(185, 182, 182)">
@@ -175,4 +183,85 @@
   </div>
 </div>
 
-{% endblock content %} {% block extrajs %} {% endblock extrajs %}
+<!-- Modal para Pago Mixto -->
+<div class="modal fade" id="modalPagoMixto" tabindex="-1" aria-labelledby="modalPagoMixtoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPagoMixtoLabel">Asignar Montos para Pago Mixto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Total a pagar: ${{ factura.total }}</h5> <!-- Mostrar el total de la factura -->
+        <form id="formPagoMixto">
+          <div class="form-group">
+            <label for="montoTarjeta">Monto con Tarjeta</label>
+            <input type="number" class="form-control" id="montoTarjeta" name="montoTarjeta" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="montoEfectivo">Monto en Efectivo</label>
+            <input type="number" class="form-control" id="montoEfectivo" name="montoEfectivo" min="0" step="0.01" required>
+          </div>
+          <p id="errorMonto" class="text-danger" style="display: none;">La suma de los montos debe ser igual al total de la factura.</p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="validarPagoMixto()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block extrajs %} 
+<script>
+  function mostrarModalMixto() {
+    $('#modalPagoMixto').modal('show');
+  }
+
+  function validarPagoMixto() {
+    const totalFactura = parseFloat({{ factura.total|floatformat:2 }});
+    const montoTarjeta = parseFloat(document.getElementById('montoTarjeta').value) || 0;
+    const montoEfectivo = parseFloat(document.getElementById('montoEfectivo').value) || 0;
+
+    if (montoTarjeta + montoEfectivo === totalFactura) {
+      document.getElementById('inputMontoTarjeta').value = montoTarjeta;
+      document.getElementById('inputMontoEfectivo').value = montoEfectivo;
+      $('#modalPagoMixto').modal('hide');
+      console.log("Datos guardados: Tarjeta - " + montoTarjeta + ", Efectivo - " + montoEfectivo);
+    } else {
+      document.getElementById('errorMonto').style.display = 'block';
+    }
+  }
+
+    // Desmarcar el checkbox de "mixto" al cerrar el modal
+  //$('#modalPagoMixto').on('hidden.bs.modal', function () {
+    //document.getElementById('exampleRadiosMixto').checked = false;
+    //document.getElementById('exampleRadios1').checked = true;
+  //});
+
+  function verificarPago(event) {
+    const tipoPago = document.querySelector('input[name="opcionTipoPago"]:checked').value;
+    const montoTarjeta = document.getElementById('inputMontoTarjeta').value;
+    const montoEfectivo = document.getElementById('inputMontoEfectivo').value;
+
+    if (tipoPago === "Mixto" && (!montoTarjeta || !montoEfectivo)) {
+      event.preventDefault(); // Evita que el formulario se envíe
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el Pago Mixto',
+        text: 'Debe asignar valores a los campos de Tarjeta y Efectivo.',
+        confirmButtonText: 'Aceptar'
+      }).then(() => {
+        location.reload(); // Recarga la página
+      });
+    }
+  }
+
+  document.getElementById('form_pago_factura').addEventListener('submit', verificarPago);
+</script>
+{% endblock extrajs %}
+
+

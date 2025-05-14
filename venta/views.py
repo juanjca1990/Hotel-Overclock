@@ -240,20 +240,35 @@ def facturar_carrito(request):
     return render(request,"venta/facturar_carrito.html",{"factura":factura, "alcanzanPuntos": alcanzanPuntos ,"vendedor":vendedorInstancia})
 
 def pagar_factura(request, factura):
-    seleccionTipoPago=request.POST.get('opcionTipoPago')
-    facturita= get_object_or_404(Factura, pk=factura)
-    if seleccionTipoPago=="Puntos":   
-        facturita.cliente.quitar_puntos(facturita)  
-    else:
-        if seleccionTipoPago=="Efectivo":
-            facturita.cliente.agregar_puntos(facturita)
-    tipoPago= get_object_or_404(Tipo_pago, nombre=seleccionTipoPago)
-    facturita.tipo_pago=tipoPago
-    facturita.fecha=date.today()
+    seleccionTipoPago = request.POST.get('opcionTipoPago')
+    facturita = get_object_or_404(Factura, pk=factura)
+    print("tipo de pago seleccionado", seleccionTipoPago)
+
+    if seleccionTipoPago == "Mixto":
+        monto_tarjeta = float(request.POST.get('montoTarjeta', 0))
+        monto_efectivo = float(request.POST.get('montoEfectivo', 0))
+        puntosFactura= int(monto_efectivo/5)
+        cliente = get_object_or_404(Cliente, pk=facturita.cliente.pk)
+        print("el cliente es", cliente)
+        print("los puntos de la factura son", puntosFactura)
+        cliente.puntos+=puntosFactura
+        cliente.save()
+        # Procesar los montos según sea necesario
+    elif seleccionTipoPago == "Puntos":
+        facturita.cliente.quitar_puntos(facturita)
+    elif seleccionTipoPago == "Efectivo":
+        facturita.cliente.agregar_puntos(facturita)
+
+    tipoPago = get_object_or_404(Tipo_pago, nombre=seleccionTipoPago)
+    facturita.tipo_pago = tipoPago
+    facturita.fecha = date.today()
     facturita.save()
+
     carrito = Carrito(request)
     carrito.vaciar_carrito()
     return redirect("venta:vendedor")
+
+# def pagar_factura_con_mixto(request, factura):
 
 
 def cancelarFactura(request,factura):
