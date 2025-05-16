@@ -319,7 +319,45 @@ def vendedores(request):
     personaInstancia = request.user.persona
     colVendedores = Vendedor.objects.all()
     colEncargados = Encargado.objects.all()
-    return render(request, "core/vendedor.html", {"colVendedores": colVendedores, "colEncargados": colEncargados,"administrador":personaInstancia})
+
+    # Vendedores
+    vendedores_data = []
+    for vendedor in colVendedores:
+        hoteles = Hotel.objects.filter(vendedores=vendedor)
+        vendedores_data.append({
+            "id": vendedor.pk,
+            "nombre": vendedor.persona.nombre,
+            "apellido": vendedor.persona.apellido,
+            "tipo_documento": vendedor.persona.get_tipo_documento_display(),
+            "documento": vendedor.persona.documento,
+            "estoyHabilitado": vendedor.estoyHabilitado,
+            "hoteles": hoteles,
+        })
+
+    # Encargados
+    encargados_data = []
+    for encargado in colEncargados:
+        hoteles = Hotel.objects.filter(encargado=encargado)
+        encargados_data.append({
+            "id": encargado.pk,
+            "nombre": encargado.persona.nombre,
+            "apellido": encargado.persona.apellido,
+            "tipo_documento": encargado.persona.get_tipo_documento_display(),
+            "documento": encargado.persona.documento,
+            "clave": encargado.clave,
+            "bajaEncargado": encargado.bajaEncargado,
+            "hoteles": hoteles,
+        })
+
+    return render(
+        request,
+        "core/vendedor.html",
+        {
+            "vendedores_data": vendedores_data,
+            "encargados_data": encargados_data,
+            "administrador": personaInstancia,
+        }
+    )
 
 
 def vendedorCrear(request):

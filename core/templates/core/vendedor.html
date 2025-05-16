@@ -102,6 +102,7 @@
                 <th>Apellido</th>
                 <th>Tipo</th>
                 <th>Nro de Documento</th>
+                <th>hoteles</th>
                 <th>
                     <Center>ACCIONES</Center>
                 </th>
@@ -110,31 +111,35 @@
         <tbody>
 
 
-            {% for vendedor in colVendedores %}
-
-            
+            {% for vendedor in vendedores_data %}
             <tr>
-
-                <td> {{vendedor.persona.nombre}}</td>
-                <td> {{vendedor.persona.apellido}}</td>
-                <td> {{vendedor.persona.get_tipo_documento_display}}</td>
-                <td> {{vendedor.persona.documento}}</td>
-
+                <td>{{ vendedor.nombre }}</td>
+                <td>{{ vendedor.apellido }}</td>
+                <td>{{ vendedor.tipo_documento }}</td>
+                <td>{{ vendedor.documento }}</td>
+                <td>
+                    {% if vendedor.hoteles %}
+                        {% for hotel in vendedor.hoteles %}
+                            {{ hotel.nombre }}<br>
+                        {% endfor %}
+                    {% else %}
+                        No asignado a ningún hotel
+                    {% endif %}
+                </td>
                 <td>
                     <center>
                         {% if vendedor.estoyHabilitado %}
                         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modificarVendedor"
-                            onclick="abrir_modal('{% url 'core:modalModificarVendedor' vendedor.pk %}','#modificarVendedor');">
+                            onclick="abrir_modal('{% url 'core:modalModificarVendedor' vendedor.id %}','#modificarVendedor');">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminarVendedor"
-                            onclick="abrir_modal('{% url 'core:modalEliminarVendedor' vendedor.pk %}', '#eliminarVendedor');" title="Eliminar">
+                            onclick="abrir_modal('{% url 'core:modalEliminarVendedor' vendedor.id %}', '#eliminarVendedor');" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                         {% else %}
-                        
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#reciclarVendedor"
-                            onclick="abrir_modal('{% url 'core:modalReciclarVendedor' vendedor.pk %}','#reciclarVendedor');" title="Reciclar">
+                            onclick="abrir_modal('{% url 'core:modalReciclarVendedor' vendedor.id %}','#reciclarVendedor');" title="Reciclar">
                             <i class="fas fa-recycle"></i>
                         </button>
                         {% endif %}
@@ -143,7 +148,6 @@
                 </td>
 
             </tr>
-            
             {% endfor %}
 
         </tbody>
@@ -192,6 +196,7 @@
                 <th>Tipo</th>
                 <th>Nro de Documento</th>
                 <th>Clave</th>
+                <th>hoteles</th>
                 <th>
                     <Center>ACCIONES</Center>
                 </th>
@@ -200,35 +205,41 @@
         <tbody>
 
 
-            {% for encargado in colEncargados %}
-            
-            <tr>
-
-                <td> {{encargado.persona.nombre}}</td>
-                <td> {{encargado.persona.apellido}}</td>
-                <td> {{encargado.persona.get_tipo_documento_display}}</td>
-                <td> {{encargado.persona.documento}}</td>
-                <td> {{encargado.clave}}</td>
-
-                <td>
+                {% for encargado in encargados_data %}
+                <tr>
+                    <td>{{ encargado.nombre }}</td>
+                    <td>{{ encargado.apellido }}</td>
+                    <td>{{ encargado.tipo_documento }}</td>
+                    <td>{{ encargado.documento }}</td>
+                    <td>{{ encargado.clave }}</td>
+                    <td>
+                        {% if encargado.hoteles %}
+                            {% for hotel in encargado.hoteles %}
+                                {{ hotel.nombre }}<br>
+                            {% endfor %}
+                        {% else %}
+                            No asignado a ningún hotel
+                        {% endif %}
+                    </td>
+                    <td>
                     <center>
                     {% if encargado.bajaEncargado %}
                         <button type="button" class="btn btn-success" data-toggle="modal"
                                data-target="#reciclarEncargado"
-                               onclick="abrir_modal('{% url 'core:modalReciclarEncargado' encargado.pk %}','#reciclarEncargado');"
+                               onclick="abrir_modal('{% url 'core:modalReciclarEncargado' encargado.id %}','#reciclarEncargado');"
                                title="Reciclar">
                                <i class="fas fa-recycle"></i>
                         </button>
                     {% else %}
                             <button type="button" class="btn btn-danger" data-toggle="modal"
                             data-target="#eliminarEncargado"
-                            onclick="abrir_modal('{% url 'core:modalEliminarEncargado' encargado.pk %}','#eliminarEncargado');"
+                            onclick="abrir_modal('{% url 'core:modalEliminarEncargado' encargado.id %}','#eliminarEncargado');"
                             title="Eliminar">
                             <i class="fas fa-trash"></i>
                             </button>
                             <button type="button" class="btn btn-warning" data-toggle="modal"
                             data-target="#modificarEncargado"
-                            onclick="abrir_modal('{% url 'core:modalModificarEncargado' encargado.pk %}','#modificarEncargado');">
+                            onclick="abrir_modal('{% url 'core:modalModificarEncargado' encargado.id %}','#modificarEncargado');">
                             <i class="fas fa-edit"></i>
                             </button>
                     {% endif %}
