@@ -104,6 +104,9 @@
                 <th>Nro de Documento</th>
                 <th>hoteles</th>
                 <th>
+                    <center>Ventas</center>
+                </th>
+                <th>
                     <Center>ACCIONES</Center>
                 </th>
             </tr>
@@ -126,6 +129,13 @@
                         No asignado a ningún hotel
                     {% endif %}
                 </td>
+                    <td>
+                        <center>
+                            <a href="{% url 'core:ventasVendedor' vendedor.id %}" class="btn btn-info" title="Ver ventas">
+                                <i class="fas fa-chart-line"></i> Ventas
+                            </a>
+                        </center>
+                    </td>
                 <td>
                     <center>
                         {% if vendedor.estoyHabilitado %}
@@ -157,10 +167,13 @@
                 <th>Apellido</th>
                 <th>Tipo</th>
                 <th>Nro de Documento</th>
+                <th>hoteles</th>
                 <th>
-                    <Center>ACCIONES</Center>
+                    <center>Ventas</center>
                 </th>
-
+                <th>
+                    <center>ACCIONES</center>
+                </th>
             </tr>
         </tfoot>
     </table>

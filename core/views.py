@@ -21,6 +21,7 @@ from venta import views as vviews
 import json
 
 from django.views.generic.edit import CreateView
+from venta.models import Factura
 
 
 """def ingresoAdmin(request):
@@ -431,6 +432,56 @@ def vendedorReciclar(request, vendedor):
     return render(request, "core/modals/modal_vendedor_reciclar.html", {"vendedor": vendedorInstancia})
 
 #                    GESTION ENCARGADO
+
+
+def ventasVendedor(request, vendedor):
+    personaInstancia = request.user.persona
+    vendedorInstancia = get_object_or_404(Vendedor, pk=vendedor)
+    return render(request, "core/ventasVendedor.html", {"vendedor": vendedorInstancia ,"administrador": personaInstancia})
+
+
+def limpiar_preferencias_ventasVendedor(request,vendedor):
+    personaInstancia = request.user.persona
+    vendedorInstancia = get_object_or_404(Vendedor, pk=vendedor)
+    if 'fecha_inicio_ventaVendedor' in request.session:
+        del request.session['fecha_inicio_ventaVendedor']
+    if 'fecha_fin_ventaVendedor' in request.session:
+        del request.session['fecha_fin_ventaVendedor']
+    return render(request, "core/ventasVendedor.html", {"vendedor": vendedorInstancia ,"administrador": personaInstancia})
+
+def cargarVentasVendedor(request, vendedor):
+    vendedorInstancia = get_object_or_404(Vendedor, pk=vendedor)
+    ventas = []
+    fecha_inicio = fecha_fin = None
+
+    if request.method == "POST":
+        fecha_inicio = request.POST['fecha_inicio']
+        fecha_fin = request.POST['fecha_fin']
+        request.session['fecha_inicio_ventaVendedor'] = fecha_inicio
+        request.session['fecha_fin_ventaVendedor'] = fecha_fin
+
+        facturas = Factura.objects.filter(
+            vendedor=vendedorInstancia,
+            fecha__range=(fecha_inicio, fecha_fin)
+        ).select_related('cliente')
+
+        for factura in facturas:
+            cliente = factura.cliente.persona
+            ventas.append({
+                'fecha': factura.fecha,
+                'nombre': cliente.nombre,
+                'apellido': cliente.apellido,
+                'liquidacion': factura.liquidacion,  # Agrega el campo liquidacion
+            })
+
+    context = {
+        "vendedor": vendedorInstancia,
+        "ventas": ventas,
+        "fecha_inicio": fecha_inicio,
+        "fecha_fin": fecha_fin,
+        "administrador": request.user.persona,
+    }
+    return render(request, "core/ventasVendedor.html", context)
 
 
 def encargadoCrear(request):

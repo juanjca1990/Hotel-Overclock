@@ -54,6 +54,9 @@ urlpatterns = [
     path('modificarVendedor/<vendedor>',views.vendedorModificar, name="modalModificarVendedor"),
     path('eliminarVendedor/<vendedor>', views.vendedorEliminar, name="modalEliminarVendedor"),
     path('reciclarVendedor/<vendedor>', views.vendedorReciclar, name="modalReciclarVendedor"),
+    path('ventasVendedor/<vendedor>', views.ventasVendedor, name="ventasVendedor"),
+    path('cargarVentasVendedor/<vendedor>', views.cargarVentasVendedor, name="cargarVentasVendedor"),
+    path('limpiar_preferencias_ventasVendedor/<vendedor>', views.limpiar_preferencias_ventasVendedor, name="limpiar_preferencias_ventasVendedor"),
     
     path('crearEncargado',views.encargadoCrear, name="modalCrearEncargado"),
     path('modificarEncargado/<encargado>',views.encargadoModificar, name="modalModificarEncargado"),
