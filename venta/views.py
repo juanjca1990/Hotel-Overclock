@@ -1,4 +1,3 @@
-
 from venta.models import Alquiler, Factura, Liquidacion, Tipo_pago
 from venta.forms import ClienteForm
 from django.shortcuts import render, redirect, get_object_or_404
@@ -318,30 +317,33 @@ def limpiar_preferencias_liquidaciones(request):
 
 def listado_liquidaciones(request):
     personaInstancia = request.user.persona
+    vendedores = Vendedor.objects.all()
+    vendedor_seleccionado = None
+
     if request.method == "POST":
         fecha_inicio = request.POST['fecha_inicio']
         fecha_fin = request.POST['fecha_fin']
-        request.session['fecha_inicio_liquidaciones']=fecha_inicio
-        request.session['fecha_fin_liquidaciones']=fecha_fin
-        liquidaciones_pendientes = cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin)
-        context = {
-            "liquidaciones_pendientes": liquidaciones_pendientes,
-            "fecha_inicio": fecha_inicio,
-            "fecha_fin": fecha_fin,
-            "administrador":personaInstancia,
-        }
-        return render(request, "venta/listado_liquidaciones.html",context)
+        vendedor_seleccionado = request.POST.get('vendedor', '')
+        request.session['fecha_inicio_liquidaciones'] = fecha_inicio
+        request.session['fecha_fin_liquidaciones'] = fecha_fin
+        request.session['vendedor_liquidaciones'] = vendedor_seleccionado
+
+        liquidaciones_pendientes = cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor_seleccionado)
     else:
-        fecha_inicio=  request.session['fecha_inicio_liquidaciones'] if "fecha_inicio_liquidaciones" in request.session else None
-        fecha_fin=  request.session['fecha_fin_liquidaciones'] if "fecha_fin_liquidaciones" in request.session else None
-        liquidaciones_pendientes = cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin)
-        context = {
-            "liquidaciones_pendientes": liquidaciones_pendientes,
-            "fecha_inicio": fecha_inicio,
-            "fecha_fin": fecha_fin,
-            "administrador":personaInstancia,
-        }
-        return render(request, "venta/listado_liquidaciones.html",context)
+        fecha_inicio = request.session.get('fecha_inicio_liquidaciones')
+        fecha_fin = request.session.get('fecha_fin_liquidaciones')
+        vendedor_seleccionado = request.session.get('vendedor_liquidaciones', '')
+        liquidaciones_pendientes = cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor_seleccionado)
+
+    context = {
+        "liquidaciones_pendientes": liquidaciones_pendientes,
+        "fecha_inicio": fecha_inicio,
+        "fecha_fin": fecha_fin,
+        "administrador": personaInstancia,
+        "vendedores": vendedores,
+        "vendedor_seleccionado": vendedor_seleccionado,
+    }
+    return render(request, "venta/listado_liquidaciones.html", context)
 
 
 def liquidar(request,documento, id_factura,monto):

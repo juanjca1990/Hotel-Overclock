@@ -20,66 +20,139 @@
 
 <div class="formularioRegion" id="vistaLiquidacion">
 
-    <table id="example1" class="table table-striped table-bordered" style="width:100%">
+    <form action="{% url 'core:cargarVentasVendedor' vendedor.id %}" method="post" id="formulario">
+        {% csrf_token %}
+        <label for="fecha_inicio" style="margin-left: 10px;">Fecha inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required style="margin-left: 10px;">
+        
+        <label for="fecha_fin" style="margin-left: 10px;">Fecha fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required style="margin-left: 10px;">
+        
+        <input type="submit" name="cargar" id="cargar" value="Cargar ventas" class="btn btn-success" style="margin-left: 10px;">
+        
+        <button type="button" class="btn btn-success" style="margin-left: 10px;">
+            <a href="{% url 'core:limpiar_preferencias_ventasVendedor' vendedor.id %}" class="text-white" style="text-decoration: none;">Limpiar Preferencias</a>
+        </button>
+    </form>
 
-        <form action="{% url 'core:cargarVentasVendedor' vendedor.id %}" method="post" id="formulario">
-            {% csrf_token %}
-            <label for="fecha_inicio" style="margin-left: 10px;">Fecha inicio:</label>
-            <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ fecha_inicio }}" required style="margin-left: 10px;">
-            
-            <label for="fecha_fin" style="margin-left: 10px;">Fecha fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required style="margin-left: 10px;">
-            
-            <input type="submit" name="cargar" id="cargar" value="Cargar ventas" class="btn btn-success" style="margin-left: 10px;">
-            
-            <button type="button" class="btn btn-success" style="margin-left: 10px;">
-                <a href="{% url 'core:limpiar_preferencias_ventasVendedor' vendedor.id %}" class="text-white" style="text-decoration: none;">Limpiar Preferencias</a>
-            </button>
-        </form>
+    <div class="formularioRegion" id="vistaClientes">
 
-        <div class="formularioRegion" id="vistaClientes">
+        <table id="example1" class="table table-striped table-bordered" style="width:100%">
 
-            <table id="example1" class="table table-striped table-bordered" style="width:100%">
-
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Liquidación</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for venta in ventas %}
-                    <tr>
-                        <td>{{ venta.fecha }}</td>
-                        <td>{{ venta.nombre }}</td>
-                        <td>{{ venta.apellido }}</td>
-                        <td>
-                            {% if not venta.liquidacion %}
-                                <span class="text-danger">Todavía no se liquidó</span>
-                            {% else %}
-                                <span class="text-success">Liquidado</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4">No se encontraron resultados.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Liquidación</th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Liquidación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.fecha }}</td>
+                    <td>{{ venta.nombre }}</td>
+                    <td>{{ venta.apellido }}</td>
+                    <td>
+                        {% if not venta.liquidacion %}
+                            <span class="text-danger">Todavía no se liquidó</span>
+                        {% else %}
+                            <span class="text-success">Liquidado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No se encontraron resultados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Liquidación</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
 {% endblock content %}
+
+{% block extrajs %}
+
+<script type="text/javascript">
+    //SCRIPT DE DATATABLE
+    
+    $(document).ready(function () {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+    });</script>
+
+<script>
+
+    function valoresCargados(){
+        var fechaInicio = document.getElementById("fecha_inicio").value;
+        var fechaFin = document.getElementById("fecha_fin").value;
+        if((fechaFin == '') || (fechaInicio == '')){
+            return false
+        }
+        return true
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    // Escuchar cambios en el campo de fecha de inicio
+    document.getElementById('fecha_inicio').addEventListener('input', function () {
+        const fechaInicio = this.value; // Obtener el valor de fecha_inicio
+        if (fechaInicio) {
+            document.getElementById('fecha_fin').setAttribute('min', fechaInicio);
+            document.getElementById('fecha_fin').value = fechaInicio; // Asignar el mismo valor a fecha_fin
+        }
+    });
+
+    document.getElementById('fecha_fin').addEventListener('click', function (e) {
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        const fechaFin = document.getElementById('fecha_fin').value;
+    
+        if (fechaInicio === '') {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Debe seleccionar primero una fecha inicio',
+                footer: 'Por favor complete los campos para continuar'
+            });
+        }
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    document.getElementById('cargar').addEventListener('click', function (e) {
+        const fechaFin = document.getElementById('fecha_fin').value;
+        const fechaInicio = document.getElementById('fecha_inicio').value;
+        if (new Date(fechaFin) < new Date(fechaInicio)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'La fecha de finalización no puede ser menor que la fecha de inicio',
+                footer: 'Por favor corrija las fechas e inténtelo nuevamente'
+            });
+            document.getElementById('fecha_fin').value = '';
+        }
+    });
+
+</script>
+
+{% endblock extrajs%}
