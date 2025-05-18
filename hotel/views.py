@@ -166,13 +166,18 @@ def tipoHabitacionModificar(request,hotel,tipo):
     return render(request, "hotel/modals/modal_tipoHabitacionHotel_modificar.html",{"formulario":formulario, "hotel":hotelInstancia ,"tipo":tipoHabitacionInstancia})
 
 
-def tipoHabitacionEliminar(request,hotel,tipo): 
-    hotelInstancia =get_object_or_404(Hotel, pk=hotel)
-    tipoHabitacionInstancia=get_object_or_404(PrecioPorTipo,pk=tipo)
+def tipoHabitacionEliminar(request, hotel, tipo): 
+    hotelInstancia = get_object_or_404(Hotel, pk=hotel)
+    tipoHabitacionInstancia = get_object_or_404(PrecioPorTipo, pk=tipo)
     if request.method == 'POST':
+        # Eliminar todas las habitaciones de este hotel con este tipo
+        Habitacion.objects.filter(hotel=hotelInstancia, tipo=tipoHabitacionInstancia.tipo).delete()
         tipoHabitacionInstancia.delete()
         return redirect('hotel:tipoHabitacionHotel', hotel)
-    return render(request, "hotel/modals/modal_tipoHabitacionHotel_eliminar.html",{"hotel":hotelInstancia ,"tipo":tipoHabitacionInstancia})
+    return render(request, "hotel/modals/modal_tipoHabitacionHotel_eliminar.html", {
+        "hotel": hotelInstancia,
+        "tipo": tipoHabitacionInstancia
+    })
     
 
 
