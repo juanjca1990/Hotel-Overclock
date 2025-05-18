@@ -236,11 +236,11 @@
     }
   }
 
-    // Desmarcar el checkbox de "mixto" al cerrar el modal
-  //$('#modalPagoMixto').on('hidden.bs.modal', function () {
-    //document.getElementById('exampleRadiosMixto').checked = false;
-    //document.getElementById('exampleRadios1').checked = true;
-  //});
+  // Desmarcar el checkbox de "mixto" al cerrar el modal
+  $('#modalPagoMixto').on('hidden.bs.modal', function () {
+    document.getElementById('exampleRadiosMixto').checked = false;
+    document.getElementById('exampleRadios1').checked = true;
+  });
 
   function verificarPago(event) {
     const tipoPago = document.querySelector('input[name="opcionTipoPago"]:checked').value;
