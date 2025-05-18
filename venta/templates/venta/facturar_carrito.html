@@ -217,30 +217,41 @@
 
 {% endblock content %} {% block extrajs %} 
 <script>
-  function mostrarModalMixto() {
-    $('#modalPagoMixto').modal('show');
+let mixtoCancelado = true;
+
+function mostrarModalMixto() {
+  mixtoCancelado = true;
+  $('#modalPagoMixto').modal('show');
+}
+
+function validarPagoMixto() {
+  const totalFactura = parseFloat({{ factura.total|floatformat:2 }});
+  const montoTarjeta = parseFloat(document.getElementById('montoTarjeta').value) || 0;
+  const montoEfectivo = parseFloat(document.getElementById('montoEfectivo').value) || 0;
+
+  if (montoTarjeta + montoEfectivo === totalFactura) {
+    document.getElementById('inputMontoTarjeta').value = montoTarjeta;
+    document.getElementById('inputMontoEfectivo').value = montoEfectivo;
+    mixtoCancelado = false; // El usuario aceptó correctamente
+    $('#modalPagoMixto').modal('hide');
+    console.log("Datos guardados: Tarjeta - " + montoTarjeta + ", Efectivo - " + montoEfectivo);
+  } else {
+    document.getElementById('errorMonto').style.display = 'block';
   }
+}
 
-  function validarPagoMixto() {
-    const totalFactura = parseFloat({{ factura.total|floatformat:2 }});
-    const montoTarjeta = parseFloat(document.getElementById('montoTarjeta').value) || 0;
-    const montoEfectivo = parseFloat(document.getElementById('montoEfectivo').value) || 0;
-
-    if (montoTarjeta + montoEfectivo === totalFactura) {
-      document.getElementById('inputMontoTarjeta').value = montoTarjeta;
-      document.getElementById('inputMontoEfectivo').value = montoEfectivo;
-      $('#modalPagoMixto').modal('hide');
-      console.log("Datos guardados: Tarjeta - " + montoTarjeta + ", Efectivo - " + montoEfectivo);
-    } else {
-      document.getElementById('errorMonto').style.display = 'block';
-    }
-  }
-
-  // Desmarcar el checkbox de "mixto" al cerrar el modal
-  $('#modalPagoMixto').on('hidden.bs.modal', function () {
+// Solo desmarcar si fue cancelado
+$('#modalPagoMixto').on('hidden.bs.modal', function () {
+  if (mixtoCancelado) {
     document.getElementById('exampleRadiosMixto').checked = false;
     document.getElementById('exampleRadios1').checked = true;
-  });
+  }
+});
+
+// Si el usuario cancela manualmente
+$('#modalPagoMixto .btn-secondary').on('click', function () {
+  mixtoCancelado = true;
+});
 
   function verificarPago(event) {
     const tipoPago = document.querySelector('input[name="opcionTipoPago"]:checked').value;
