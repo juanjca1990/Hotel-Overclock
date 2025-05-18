@@ -27,8 +27,11 @@ def buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedo
         elementos.append({'fecha': fecha_liquidacion, 'monto': total , 'factura_id': factura_id})
     return elementos
 
-def cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin):
-    vendedores = Vendedor.objects.all()
+def cargar_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor_id=None):
+    if vendedor_id:
+        vendedores = Vendedor.objects.filter(id=vendedor_id)
+    else:
+        vendedores = Vendedor.objects.all()
     facturas_pendientes = []
     for vendedor in vendedores:
         montos_pendientes = buscar_monto_total_liquidaciones_pendientes(fecha_inicio, fecha_fin, vendedor)
