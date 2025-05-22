@@ -130,6 +130,11 @@ class Persona(models.Model):
     apellido = models.CharField(max_length=200)
     usuario = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL)
     imagen = models.ImageField(upload_to='media/perfiles/', blank=True, null=True)  # Agrega este campo
+    telefono = models.CharField(max_length=30, blank=True, null=True)
+    direccion = models.CharField(max_length=255, blank=True, null=True)
+    ciudad = models.CharField(max_length=100, blank=True, null=True)
+    pais = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.apellido}, {self.nombre}"
