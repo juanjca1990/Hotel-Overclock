@@ -37,6 +37,17 @@
     width: 50% ;
 }
 
+    @media (max-width: 992px) {
+        #container-opciones label {
+            width: 200px !important;
+            padding: 10px !important;
+            font-size: 1.1rem !important;
+        }
+        #container-opciones label h1 {
+            font-size: 1.2rem !important;
+        }
+}
+
 @media (max-width: 1468px) {
     .datosHotel .row {
         flex-direction: column;
