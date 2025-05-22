@@ -98,11 +98,9 @@ class CategoriaForm(ModelForm):
      )
 
 class VendedorForm(ModelForm):
-    email = EmailField(label='email')
     usuario = CharField(label='nombre de usuario')
     contrasenia = CharField(label='contraseña')
     
-    email.widget.attrs.update({'class': 'form-control'})
     usuario.widget.attrs.update({'class': 'form-control'})
     contrasenia.widget.attrs.update({'class': 'form-control'})
 
@@ -118,6 +116,11 @@ class VendedorForm(ModelForm):
         self.fields['apellido'].widget.attrs.update({'class': 'form-control'})
         self.fields['documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_documento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['ciudad'].widget.attrs.update({'class': 'form-control'})
+        self.fields['pais'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
 
 
 #user_name, email, password
@@ -137,6 +140,11 @@ class EncargadoForm(ModelForm):
         self.fields['documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['clave'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['ciudad'].widget.attrs.update({'class': 'form-control'})
+        self.fields['pais'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
 
         
         

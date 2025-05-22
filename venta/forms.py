@@ -21,5 +21,10 @@ class ClienteForm(ModelForm):
         self.fields['apellido'].widget.attrs.update({'class': 'form-control'})
         self.fields['documento'].widget.attrs.update({'class': 'form-control'})
         self.fields['tipo_documento'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
+        self.fields['ciudad'].widget.attrs.update({'class': 'form-control'})
+        self.fields['pais'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
 
 

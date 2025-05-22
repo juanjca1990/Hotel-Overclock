@@ -333,6 +333,7 @@ def vendedores(request):
             "documento": vendedor.persona.documento,
             "estoyHabilitado": vendedor.estoyHabilitado,
             "hoteles": hoteles,
+            "telefono": vendedor.persona.telefono,
         })
 
     # Encargados
@@ -348,6 +349,7 @@ def vendedores(request):
             "clave": encargado.clave,
             "bajaEncargado": encargado.bajaEncargado,
             "hoteles": hoteles,
+            "telefono": encargado.persona.telefono,
         })
 
     return render(
@@ -392,6 +394,10 @@ def vendedorModificar(request, vendedor):
             vendedorInstancia.persona.usuario.email = request.POST['email']
             vendedorInstancia.persona.usuario.username = request.POST['usuario']
             vendedorInstancia.persona.usuario.password = request.POST['contrasenia']
+            vendedorInstancia.persona.telefono = request.POST['telefono']
+            vendedorInstancia.persona.direccion = request.POST['direccion']
+            vendedorInstancia.persona.ciudad = request.POST['ciudad']
+            vendedorInstancia.persona.pais = request.POST['pais']
 
             vendedorInstancia.persona.usuario.save()
             vendedorInstancia.persona.save()
@@ -408,6 +414,10 @@ def vendedorModificar(request, vendedor):
         form.fields["email"].initial = vendedorInstancia.persona.usuario.email
         form.fields["usuario"].initial = vendedorInstancia.persona.usuario.username
         form.fields["contrasenia"].initial = vendedorInstancia.persona.usuario.password
+        form.fields["telefono"].initial = vendedorInstancia.persona.telefono
+        form.fields["direccion"].initial = vendedorInstancia.persona.direccion
+        form.fields["ciudad"].initial = vendedorInstancia.persona.ciudad
+        form.fields["pais"].initial = vendedorInstancia.persona.pais
     return render(request, "core/modals/modal_vendedor_modificar.html", {"colVendedores": colVendedores, "formulario": form, "vendedor": vendedorInstancia})
 
 
@@ -510,6 +520,10 @@ def encargadoModificar(request, encargado):
             encargadoInstancia.persona.documento = request.POST['documento']
             encargadoInstancia.persona.tipo_documento = request.POST['tipo_documento']
             encargadoInstancia.clave = request.POST['clave']
+            encargadoInstancia.persona.telefono = request.POST['telefono']
+            encargadoInstancia.persona.direccion = request.POST['direccion']
+            encargadoInstancia.persona.ciudad = request.POST['ciudad']
+            encargadoInstancia.persona.pais = request.POST['pais']
 
             encargadoInstancia.persona.save()
             encargadoInstancia.save()
@@ -523,6 +537,10 @@ def encargadoModificar(request, encargado):
         form.fields["documento"].initial = encargadoInstancia.persona.documento
         form.fields["tipo_documento"].initial = encargadoInstancia.persona.tipo_documento
         form.fields["clave"].initial = encargadoInstancia.clave
+        form.fields["telefono"].initial = encargadoInstancia.persona.telefono
+        form.fields["direccion"].initial = encargadoInstancia.persona.direccion
+        form.fields["ciudad"].initial = encargadoInstancia.persona.ciudad
+        form.fields["pais"].initial = encargadoInstancia.persona.pais
     return render(request, "core/modals/modal_encargado_modificar.html", {"colEncargados": colEncargados, "formulario": form, "encargado": encargadoInstancia})
 
 

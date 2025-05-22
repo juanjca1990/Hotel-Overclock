@@ -152,16 +152,22 @@ def cliente_aniadir(request):
                 return redirect('venta:vistaCliente')
     return render(request,"venta/modals/modal_aniadir_cliente.html",{"formulario":form})    
 
-def cliente_modificar(request,cliente):
-    clienteInstancia=get_object_or_404(Cliente,pk=cliente)
+def cliente_modificar(request, cliente):
+    clienteInstancia = get_object_or_404(Cliente, pk=cliente)
     colClientes = Cliente.objects.all()
     if request.method == 'POST':
         form = ClienteForm(request.POST, instance=clienteInstancia)
         if form.is_valid():
+            # Actualiza todos los campos de Persona
             clienteInstancia.persona.nombre = request.POST['nombre']
             clienteInstancia.persona.apellido = request.POST['apellido']
             clienteInstancia.persona.documento = request.POST['documento']
             clienteInstancia.persona.tipo_documento = request.POST['tipo_documento']
+            clienteInstancia.persona.telefono = request.POST['telefono']
+            clienteInstancia.persona.direccion = request.POST['direccion']
+            clienteInstancia.persona.ciudad = request.POST['ciudad']
+            clienteInstancia.persona.pais = request.POST['pais']
+            clienteInstancia.persona.email = request.POST['email']
             clienteInstancia.persona.save()
             clienteInstancia.save()
             return redirect('venta:vistaCliente')
@@ -173,7 +179,12 @@ def cliente_modificar(request,cliente):
         form.fields["apellido"].initial = clienteInstancia.persona.apellido
         form.fields["documento"].initial = clienteInstancia.persona.documento
         form.fields["tipo_documento"].initial = clienteInstancia.persona.tipo_documento
-    return render(request,"venta/modals/modal_modificar_cliente.html",{"cliente":clienteInstancia,"formulario":form})
+        form.fields["telefono"].initial = clienteInstancia.persona.telefono
+        form.fields["direccion"].initial = clienteInstancia.persona.direccion
+        form.fields["ciudad"].initial = clienteInstancia.persona.ciudad
+        form.fields["pais"].initial = clienteInstancia.persona.pais
+        form.fields["email"].initial = clienteInstancia.persona.email
+    return render(request, "venta/modals/modal_modificar_cliente.html", {"cliente": clienteInstancia, "formulario": form})
 
     
 def vista_carrito(request):
