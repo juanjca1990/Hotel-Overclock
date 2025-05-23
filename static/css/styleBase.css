@@ -162,3 +162,9 @@ a:link, a:visited, a:active a{
     }
 }
 
+@media (max-width: 670px) {
+    #dropdown-menu {
+        margin-top: 130px;
+    }   
+}
+

@@ -6,6 +6,12 @@
     margin-top: 70px
 }
 
+@media (max-width: 670px) {
+    .titulos {
+        margin-top: 130px;
+    }   
+}
+
 .lugarImagen{
     padding: 3vh 0 0 0;
     /*outline: 1px solid red;*/
