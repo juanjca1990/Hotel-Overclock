@@ -48,13 +48,13 @@
                     ☰
                 </button>
             </div>
-            <div class="col-8">
+            <div class="cabecera-nombre col-8">
                 {% block header %}
                 
                 {% endblock header %}
                 
             </div>
-            <div class="col-2">
+            <div class="cabecera-carrito col-2">
                 {% block headerContenido %}
                 
                 {% endblock headerContenido %}
@@ -62,7 +62,7 @@
              {% block carrito %}
              {% endblock carrito %}
             </div>
-            <div class="col-2">
+            <div class="cabecera-cerrarsesion col-2">
          
                 {% block cerrarSecion %}
                     <button onclick="location.href='/core/logout'" style="text-decoration:none; align-items:right;"
@@ -136,6 +136,39 @@
         }
 
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function headerResponsive() {
+                const cabecera = document.querySelector('.cabecera-nombre');
+                const carrito = document.querySelector('.cabecera-carrito');
+                const cerrarSesion = document.querySelector('.cabecera-cerrarsesion');
+                const container = document.querySelector('.container-fluid');
+                if (!cabecera) return;
+                if (!carrito) return;
+                if (!cerrarSesion) return;
+                //if (!container) return;
+                if (window.innerWidth <= 992) {
+                    cabecera.classList.remove('col-8');
+                    cabecera.classList.add('col-5');
+                    carrito.classList.remove('col-2');
+                    carrito.classList.add('col-4');
+                    cerrarSesion.classList.remove('col-2');
+                    cerrarSesion.classList.add('col-3');
+
+                } else {
+                    cabecera.classList.remove('col-5');
+                    cabecera.classList.add('col-8');
+                    carrito.classList.remove('col-4');
+                    carrito.classList.add('col-2');
+                    cerrarSesion.classList.remove('col-3');
+                    cerrarSesion.classList.add('col-2');
+                }
+            }
+            headerResponsive();
+            window.addEventListener('resize', headerResponsive);
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
