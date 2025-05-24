@@ -1,4 +1,8 @@
-<div class="modal-xl modal-dialog" style="margin-top: 100px;">
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static '/css/styleBase.css' %}">
+{% endblock extra_css %}
+<div class="modalito modal-xl modal-dialog" style="margin-top: 100px;">
     <div class="modal-content">
       <div class="modal-header">
             <h5 class="modal-title " id="exampleModalLabel">

@@ -153,6 +153,11 @@ a:link, a:visited, a:active a{
 }
 
 @media (max-width: 992px) {
+    .modalito {
+        margin-left: 200px !important;
+        margin-right: auto !important;
+    }
+    
     #dropdown-menu {
         display: block;
     }
@@ -162,9 +167,35 @@ a:link, a:visited, a:active a{
     }
 }
 
+@media (max-width: 800px) {
+    .modalito {
+        margin-left: 100px !important;
+        margin-right: auto !important;
+    }
+}
+
 @media (max-width: 670px) {
     #dropdown-menu {
         margin-top: 130px;
-    }   
+    }
+    .modalito {
+        margin-left: 10px !important;
+        margin-right: auto !important;
+    }  
+    .modalito2 {
+        margin-left: 10px !important;
+        margin-right: auto !important;
+    }
 }
+@media (max-width: 640px) {
+    .modalito {
+        margin-left: 0px !important;
+        margin-right: auto !important;
+    }  
+    .modalito2 {
+        margin-left: 0px !important;
+        margin-right: auto !important;
+    }
+}
+
 
