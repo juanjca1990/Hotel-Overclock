@@ -60,9 +60,11 @@
                     <td>{{hotel.categoria.nombre}}</td>
                     {% if hotel.es_comercializable %}
                         <td>
-                            <button type="button" class="btn btn-success ml-4 float-right btn-sm">
-                                <a href="{% url 'hotel:desafiliar_hotel' hotel.pk %}" class="text-white" style="text-decoration: none;">Desafiliar</a>
-                            </button>
+                            <a href="{% url 'hotel:desafiliar_hotel' hotel.pk %}"
+                               class="btn btn-success ml-4 float-right btn-sm text-white desafiliar-link"
+                               style="text-decoration: none;">
+                                Desafiliar
+                            </a>
                         </td>
                     {% else %}
                         <td></td>
@@ -97,7 +99,7 @@
 {% endblock content %}
 
 {% block extrajs %}
-
+<script src="{% static '/js/sweetalert2@10.js' %}"></script>
 <script type="text/javascript">
     //SCRIPT DE DATATABLE
     const $ = jQuery.noConflict();
@@ -108,12 +110,32 @@
     });
 
     $('[data-navigate]').on('click', (event) => {
-        event.stopPropagation();
-        let data = $(event.currentTarget).data();
-        console.log(data);
-        location.assign(data.navigate);
+        // Solo navega si no se hizo clic en un enlace de desafiliación
+        if (!$(event.target).closest('.desafiliar-link').length) {
+            let data = $(event.currentTarget).data();
+            location.assign(data.navigate);
+        }
+    });
+
+    // Confirmación para desafiliar hotel
+    $(document).on('click', '.desafiliar-link', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const url = $(this).attr('href');
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "¿Desea desafiliar este hotel?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, desafiliar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
     });
 </script>
-
-
 {% endblock extrajs%}
