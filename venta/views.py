@@ -453,4 +453,26 @@ def lista_compras_cliente(request, id_cliente , id_persona):
     
     return render(request, 'venta/lista_compras_cliente.html', context)
 
+from .models import Liquidacion
+from core.models import Persona
+
+def listado_liquidaciones_realizadas(request):
+    personaInstancia = request.user.persona
+    fecha_inicio = request.POST.get('fecha_inicio_realizadas')
+    fecha_fin = request.POST.get('fecha_fin_realizadas')
+
+    liquidaciones_realizadas = Liquidacion.objects.filter(abonado__isnull=False)
+    if fecha_inicio and fecha_fin:
+        liquidaciones_realizadas = liquidaciones_realizadas.filter(
+            abonado__range=[fecha_inicio, fecha_fin]
+        )
+
+    context = {
+        "liquidaciones_realizadas": liquidaciones_realizadas.order_by('-abonado'),
+        "administrador": personaInstancia,
+        "fecha_inicio_realizadas": fecha_inicio,
+        "fecha_fin_realizadas": fecha_fin,
+    }
+    return render(request, "venta/listado_liquidaciones_realizadas.html", context)
+
 
