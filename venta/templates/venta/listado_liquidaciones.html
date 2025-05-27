@@ -39,6 +39,9 @@
         </select>
         
         <input type="submit" name="cargar" id="cargar" value="Cargar liquidaciones pendientes" class="btn btn-success" style="margin-left: 10px;">
+        <button type="button" class="btn btn-success" style="margin-left: 10px;" onclick="location.href='{% url 'venta:listado_liquidaciones_realizadas' %}'">
+            Ver liquidaciones realizadas
+        </button>
         <button type="button" class="btn btn-success" style="margin-left: 10px;">
             <a href="{% url 'venta:limpiar_preferencias_liquidaciones' %}" class="text-white" style="text-decoration: none;">Limpiar Preferencias</a>
         </button>
