@@ -74,6 +74,24 @@ def buscarHabitaciones(request,hotel):
         paquete=get_object_or_404(PaqueteTuristico,pk=venta.paquete)
         if paquete in colPaquetes:
             colPaquetes.remove(paquete)
+    # elimino los paquetes donde una habitacion ya está alquilada para las fechas seleccionadas
+    paquetes_a_remover = []
+    for paquete in colPaquetes:
+        habitaciones_en_paquete = paquete.get_habitaciones()
+        for habitacion in habitaciones_en_paquete:
+            # Verifica si la habitación está alquilada en el rango de fechas
+            alquileres = habitacion.alquileres.all()
+            for alquiler in alquileres:
+                # Si hay cruce de fechas, se debe eliminar el paquete
+                if not (alquiler.fin < fecha_inicio or alquiler.inicio > fecha_fin):
+                    paquetes_a_remover.append(paquete)
+                    break
+            if paquete in paquetes_a_remover:
+                break
+    for paquete in paquetes_a_remover:
+        if paquete in colPaquetes:
+            colPaquetes.remove(paquete)
+            paquete.delete()  # Elimina el paquete de la base de datos
             
     # elimino las habitaciones que estan en un paquete del carrito para que no se puedan alquilar
     for paquete in ventas_paquetes_en_carrito:
