@@ -170,8 +170,17 @@ def tipoHabitacionEliminar(request, hotel, tipo):
     hotelInstancia = get_object_or_404(Hotel, pk=hotel)
     tipoHabitacionInstancia = get_object_or_404(PrecioPorTipo, pk=tipo)
     if request.method == 'POST':
-        # Eliminar todas las habitaciones de este hotel con este tipo
-        Habitacion.objects.filter(hotel=hotelInstancia, tipo=tipoHabitacionInstancia.tipo).delete()
+        # 1. Buscar todas las habitaciones de este hotel con este tipo
+        habitaciones_a_eliminar = Habitacion.objects.filter(hotel=hotelInstancia, tipo=tipoHabitacionInstancia.tipo)
+        # 2. Buscar y eliminar paquetes turísticos que incluyan alguna de estas habitaciones
+        from hotel.models import PaqueteTuristico
+        paquetes_a_eliminar = PaqueteTuristico.objects.filter(
+            hotel=hotelInstancia, habitaciones__in=habitaciones_a_eliminar
+        ).distinct()
+        for paquete in paquetes_a_eliminar:
+            paquete.delete()
+        # 3. Eliminar las habitaciones y el tipo de habitación
+        habitaciones_a_eliminar.delete()
         tipoHabitacionInstancia.delete()
         return redirect('hotel:tipoHabitacionHotel', hotel)
     return render(request, "hotel/modals/modal_tipoHabitacionHotel_eliminar.html", {
