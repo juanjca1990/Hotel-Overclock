@@ -311,7 +311,15 @@ def cancelarFactura(request,factura):
 
 def vaciar_carrito_completo(request):
     carrito = Carrito(request)
+    carrito.set_cliente(None)
     carrito.vaciar_carrito()
+    # Limpiar datos del cliente seleccionado en la sesión
+    if 'nombre_cliente' in request.session:
+        del request.session['nombre_cliente']
+    if 'apellido_cliente' in request.session:
+        del request.session['apellido_cliente']
+    if 'dni_cliente' in request.session:
+        del request.session['dni_cliente']
     return redirect("venta:vendedor")
 
 
